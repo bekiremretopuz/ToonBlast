@@ -1,4 +1,4 @@
-import { UserInterface } from "app/View/UserInterface";
+import { UserInterface } from "app/Components/UserInterface";
 export class UserInterfaceController extends PIXI.Container {
   private _userInterface: UserInterface;
   constructor() {

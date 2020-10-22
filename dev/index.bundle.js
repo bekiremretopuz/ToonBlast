@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,10 +70,10 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var LoaderStage_1 = __webpack_require__(13);
-var LocalStorage_1 = __webpack_require__(33);
+var LoaderStage_1 = __webpack_require__(12);
+var LocalStorage_1 = __webpack_require__(34);
 var StageManager_1 = __webpack_require__(1);
-var DisplayManager_1 = __webpack_require__(34);
+var DisplayManager_1 = __webpack_require__(35);
 var EmreBase;
 (function (EmreBase) {
     var EntryPoint = (function () {
@@ -166,7 +166,10 @@ var StageManager = (function (_super) {
         var _this = _super.call(this) || this;
         _this._rootContainer = new PIXI.Container();
         _this._scenes = {};
-        _this._gameMask = new PIXI.Graphics().beginFill(0x000000, 0).drawRect(0, 0, 750, 1334).endFill();
+        _this._gameMask = new PIXI.Graphics()
+            .beginFill(0x000000, 0)
+            .drawRect(0, 0, 750, 1334)
+            .endFill();
         _this._gameMask.name = "GameMask";
         _this._rootContainer = new PIXI.Container();
         _this._rootContainer.name = "RootContainer";
@@ -338,9 +341,9 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(35));
-__export(__webpack_require__(54));
+__export(__webpack_require__(36));
 __export(__webpack_require__(55));
+__export(__webpack_require__(56));
 
 
 /***/ }),
@@ -719,169 +722,21 @@ module.exports = g;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SimpleButton2D = (function (_super) {
-    __extends(SimpleButton2D, _super);
-    function SimpleButton2D(frame, position, callback, name) {
-        var _this = _super.call(this, PIXI.Texture.from(frame + "_normal")) || this;
-        _this._isDown = false;
-        _this._isOver = false;
-        _this._isEnabled = true;
-        _this._normalFrame = frame + "_normal";
-        _this._overFrame = frame + "_over";
-        _this._downFrame = frame + "_down";
-        _this._disabledFrame = frame + "_disabled";
-        _this._callback = callback;
-        _this.position.set(position.x, position.y);
-        _this.interactive = true;
-        _this.buttonMode = true;
-        _this.name = name || "";
-        _this.on("pointerdown", _this.onPointerDown, _this);
-        _this.on("pointerover", _this.onPointerOver, _this);
-        _this.on("pointerout", _this.onPointerOut, _this);
-        _this.on("pointerup", _this.onPointerUp, _this);
-        return _this;
-    }
-    SimpleButton2D.prototype.onPointerDown = function (e) {
-        this.isDown = true;
-        this.texture = PIXI.Texture.from(this._downFrame);
-        this._callback(this);
-    };
-    SimpleButton2D.prototype.onPointerUp = function (e) {
-        this.isDown = false;
-        if (this.isOver) {
-            this.texture = PIXI.Texture.from(this._overFrame);
-        }
-        else {
-            this.texture = PIXI.Texture.from(this._normalFrame);
-        }
-    };
-    SimpleButton2D.prototype.onPointerOver = function (e) {
-        this.isOver = true;
-        if (this.isDown) {
-            return;
-        }
-        this.texture = PIXI.Texture.from(this._overFrame);
-    };
-    SimpleButton2D.prototype.onPointerOut = function (e) {
-        this.isOver = false;
-        if (this.isDown) {
-            return;
-        }
-        this.texture = PIXI.Texture.from(this._normalFrame);
-    };
-    SimpleButton2D.prototype.setDisabled = function () {
-        this.buttonMode = false;
-        this.interactive = false;
-        this.texture = PIXI.Texture.from(this._disabledFrame);
-    };
-    SimpleButton2D.prototype.setTexture = function (frame, currentFrame, name) {
-        this._normalFrame = frame + "_normal";
-        this._overFrame = frame + "_over";
-        this._downFrame = frame + "_down";
-        this._disabledFrame = frame + "_disabled";
-        this.name = name;
-        if (currentFrame != null || currentFrame != "")
-            this._texture = PIXI.Texture.from(currentFrame);
-    };
-    SimpleButton2D.prototype.setEnabled = function () {
-        this.buttonMode = true;
-        this.interactive = true;
-    };
-    Object.defineProperty(SimpleButton2D.prototype, "isDown", {
-        get: function () {
-            return this._isDown;
-        },
-        set: function (value) {
-            if (value != this._isDown)
-                this._isDown = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SimpleButton2D.prototype, "isOver", {
-        get: function () {
-            return this._isOver;
-        },
-        set: function (value) {
-            if (value != this._isOver)
-                this._isOver = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SimpleButton2D.prototype, "Interactive", {
-        get: function () {
-            return this.interactive;
-        },
-        set: function (value) {
-            this.interactive = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SimpleButton2D.prototype, "isEnabled", {
-        get: function () {
-            return this._isEnabled;
-        },
-        set: function (value) {
-            if (!value) {
-                this.setDisabled();
-            }
-            else {
-                this.setEnabled();
-            }
-            this._isEnabled = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SimpleButton2D.prototype, "ButtonMode", {
-        get: function () {
-            return this.buttonMode;
-        },
-        set: function (value) {
-            this.buttonMode = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return SimpleButton2D;
-}(PIXI.Sprite));
-exports.SimpleButton2D = SimpleButton2D;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(8);
+__webpack_require__(7);
 var EntryPoint_1 = __webpack_require__(0);
 new EntryPoint_1.EmreBase.EntryPoint();
 window.Game = EntryPoint_1.EmreBase;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(9);
+var content = __webpack_require__(8);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -889,7 +744,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(11)(content, options);
+var update = __webpack_require__(10)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -906,10 +761,10 @@ if(false) {
 }
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)(false);
+exports = module.exports = __webpack_require__(9)(false);
 // imports
 
 
@@ -920,7 +775,7 @@ exports.push([module.i, "* {\n    padding: 0;\n    margin: 0;\n}\n\nhtml {\n    
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports) {
 
 /*
@@ -1002,7 +857,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1058,7 +913,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(12);
+var	fixUrls = __webpack_require__(11);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1374,7 +1229,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports) {
 
 
@@ -1469,7 +1324,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1486,9 +1341,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var StageManager_1 = __webpack_require__(1);
-var AssetsLoader_1 = __webpack_require__(14);
+var AssetsLoader_1 = __webpack_require__(13);
 var EntryPoint_1 = __webpack_require__(0);
-var BaseGame_1 = __webpack_require__(23);
+var BaseGame_1 = __webpack_require__(22);
 var LoaderStage = (function (_super) {
     __extends(LoaderStage, _super);
     function LoaderStage() {
@@ -1497,7 +1352,10 @@ var LoaderStage = (function (_super) {
         return _this;
     }
     LoaderStage.prototype.awake = function () {
-        this._backgroundImageDefault = new PIXI.Graphics().beginFill(0x35a30e, 1).drawRect(0, 0, 1280, 720).endFill();
+        this._backgroundImageDefault = new PIXI.Graphics()
+            .beginFill(0x35a30e, 1)
+            .drawRect(0, 0, 1280, 720)
+            .endFill();
         this._backgroundImageDefault.name = "BackgroundImageDef";
         this.addChild(this._backgroundImageDefault);
         this._loadingSprite = new PIXI.Sprite(PIXI.Texture.EMPTY);
@@ -1516,7 +1374,7 @@ var LoaderStage = (function (_super) {
         this._game.localStorage.setItem("default", false);
     };
     LoaderStage.prototype.completeLoadAsset = function () {
-        this._game.stageManager.createScene("BaseGame", new BaseGame_1.BaseGame);
+        this._game.stageManager.createScene("BaseGame", new BaseGame_1.BaseGame());
         this._game.stageManager.goToScene("BaseGame", true);
     };
     LoaderStage.prototype.loadingAnimation = function () {
@@ -1528,15 +1386,14 @@ var LoaderStage = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    LoaderStage.prototype.killScene = function () {
-    };
+    LoaderStage.prototype.killScene = function () { };
     return LoaderStage;
 }(StageManager_1.Scene));
 exports.LoaderStage = LoaderStage;
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1552,8 +1409,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var pixi_assets_loader_1 = __webpack_require__(15);
-var SoundManager_1 = __webpack_require__(22);
+var pixi_assets_loader_1 = __webpack_require__(14);
+var SoundManager_1 = __webpack_require__(21);
 var EntryPoint_1 = __webpack_require__(0);
 var AssetsLoader = (function (_super) {
     __extends(AssetsLoader, _super);
@@ -1580,29 +1437,146 @@ var AssetsLoader = (function (_super) {
     AssetsLoader.prototype.loadAssets = function () {
         var _this = this;
         var assets = [
-            { id: "owl", url: "assets/gfx/animation/owl-pro.json", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "animation" },
-            { id: "Topaz-8-remake", url: "assets/fonts/stylesheet.css", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "fonts" },
-            { id: "background", url: "assets/gfx/background.jpg", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid1_normal", url: "assets/gfx/ui/solidColor1.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid1_down", url: "assets/gfx/ui/solidColor1.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid1_over", url: "assets/gfx/ui/solidColor1.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid1_disabled", url: "assets/gfx/ui/solidColor1.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid2_normal", url: "assets/gfx/ui/solidColor2.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid2_down", url: "assets/gfx/ui/solidColor2.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid2_over", url: "assets/gfx/ui/solidColor2.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid2_disabled", url: "assets/gfx/ui/solidColor2.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid3_normal", url: "assets/gfx/ui/solidColor3.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid3_down", url: "assets/gfx/ui/solidColor3.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid3_over", url: "assets/gfx/ui/solidColor3.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid3_disabled", url: "assets/gfx/ui/solidColor3.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid4_normal", url: "assets/gfx/ui/solidColor4.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid4_down", url: "assets/gfx/ui/solidColor4.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid4_over", url: "assets/gfx/ui/solidColor4.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solid4_disabled", url: "assets/gfx/ui/solidColor4.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solidParticle1", url: "assets/gfx/animation/solidColorParticle1.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "solidParticle2", url: "assets/gfx/animation/solidColorParticle2.png", priority: pixi_assets_loader_1.AssetPriority.HIGHEST, type: "texture" },
-            { id: "collect", url: "assets/sfx/cube_collect.wav", priority: pixi_assets_loader_1.AssetPriority.LOWEST, autoplay: false, loop: false, mute: false, rate: 1, type: "sound" },
-            { id: "explode", url: "assets/sfx/cube_explode.wav", priority: pixi_assets_loader_1.AssetPriority.LOWEST, autoplay: false, loop: false, mute: false, rate: 1, type: "sound" },
+            {
+                id: "spine",
+                url: "assets/gfx/animation/spineboy.json",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "animation",
+            },
+            {
+                id: "background",
+                url: "assets/gfx/background.jpg",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid1_normal",
+                url: "assets/gfx/ui/solidColor1.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid1_down",
+                url: "assets/gfx/ui/solidColor1.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid1_over",
+                url: "assets/gfx/ui/solidColor1.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid1_disabled",
+                url: "assets/gfx/ui/solidColor1.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid2_normal",
+                url: "assets/gfx/ui/solidColor2.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid2_down",
+                url: "assets/gfx/ui/solidColor2.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid2_over",
+                url: "assets/gfx/ui/solidColor2.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid2_disabled",
+                url: "assets/gfx/ui/solidColor2.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid3_normal",
+                url: "assets/gfx/ui/solidColor3.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid3_down",
+                url: "assets/gfx/ui/solidColor3.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid3_over",
+                url: "assets/gfx/ui/solidColor3.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid3_disabled",
+                url: "assets/gfx/ui/solidColor3.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid4_normal",
+                url: "assets/gfx/ui/solidColor4.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid4_down",
+                url: "assets/gfx/ui/solidColor4.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid4_over",
+                url: "assets/gfx/ui/solidColor4.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solid4_disabled",
+                url: "assets/gfx/ui/solidColor4.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solidParticle1",
+                url: "assets/gfx/animation/solidColorParticle1.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "solidParticle2",
+                url: "assets/gfx/animation/solidColorParticle2.png",
+                priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+                type: "texture",
+            },
+            {
+                id: "collect",
+                url: "assets/sfx/cube_collect.wav",
+                priority: pixi_assets_loader_1.AssetPriority.LOWEST,
+                autoplay: false,
+                loop: false,
+                mute: false,
+                rate: 1,
+                type: "sound",
+            },
+            {
+                id: "explode",
+                url: "assets/sfx/cube_explode.wav",
+                priority: pixi_assets_loader_1.AssetPriority.LOWEST,
+                autoplay: false,
+                loop: false,
+                mute: false,
+                rate: 1,
+                type: "sound",
+            },
         ];
         assets.forEach(function (asset) {
             if (!_this._assetsCount[asset.priority]) {
@@ -1625,17 +1599,28 @@ var AssetsLoader = (function (_super) {
     };
     AssetsLoader.prototype.onAssetsProgress = function (args) {
         var percentFactor = this._assetsCount[args.priority].total / this._totalAssets;
-        this._loadingProgress += (args.progress - this._assetsCount[args.priority].progress) * percentFactor;
+        this._loadingProgress +=
+            (args.progress - this._assetsCount[args.priority].progress) *
+                percentFactor;
         this._assetsCount[args.priority].progress = args.progress;
     };
     AssetsLoader.prototype.onAssetsError = function (args) {
         this.emit("assetLoadfailed");
     };
     AssetsLoader.prototype.onAllAssetsLoaded = function () {
+        var _this = this;
         if (this._doubleCheck == false) {
             if (this.isSoundLoaded) {
                 this._doubleCheck = true;
-                this.emit("completeLoadAsset");
+                WebFont.load({
+                    custom: {
+                        families: ["Topaz-8-remake"],
+                        urls: ["assets/fonts/stylesheet.css"],
+                    },
+                    active: function (familyName, fwd) {
+                        _this.emit("completeLoadAsset");
+                    },
+                });
             }
         }
     };
@@ -1644,14 +1629,6 @@ var AssetsLoader = (function (_super) {
         args.assets.forEach(function (loadAsset) {
             if (loadAsset.asset.type == "sound") {
                 _this._soundManager.addSound(loadAsset, _this._soundCount);
-            }
-            if (loadAsset.asset.type == "fonts") {
-                WebFont.load({
-                    custom: {
-                        families: ['Topaz-8-remake'],
-                        urls: ['assets/fonts/stylesheet.css']
-                    },
-                });
             }
         });
         this.createViewsByPriority(args.priority);
@@ -1706,7 +1683,7 @@ exports.AssetsLoader = AssetsLoader;
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1715,12 +1692,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(16));
-__export(__webpack_require__(21));
+__export(__webpack_require__(15));
+__export(__webpack_require__(20));
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1737,8 +1714,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var eventemitter3_1 = __webpack_require__(4);
-var PriorityQueue_1 = __webpack_require__(17);
-__webpack_require__(20);
+var PriorityQueue_1 = __webpack_require__(16);
+__webpack_require__(19);
 var PixiAssetsLoader = (function (_super) {
     __extends(PixiAssetsLoader, _super);
     function PixiAssetsLoader(pixiLoader) {
@@ -1938,14 +1915,14 @@ exports.PixiAssetsLoader = PixiAssetsLoader;
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util = __webpack_require__(2);
-var Heap_1 = __webpack_require__(18);
+var Heap_1 = __webpack_require__(17);
 var PriorityQueue = (function () {
     function PriorityQueue(compareFunction) {
         this.heap = new Heap_1.default(util.reverseCompareFunction(compareFunction));
@@ -1988,14 +1965,14 @@ exports.default = PriorityQueue;
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var collections = __webpack_require__(2);
-var arrays = __webpack_require__(19);
+var arrays = __webpack_require__(18);
 var Heap = (function () {
     function Heap(compareFunction) {
         this.data = [];
@@ -2094,7 +2071,7 @@ exports.default = Heap;
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2192,7 +2169,7 @@ exports.forEach = forEach;
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -5151,7 +5128,7 @@ exports.forEach = forEach;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5188,7 +5165,7 @@ exports.AssetPriority = AssetPriority;
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5213,7 +5190,7 @@ var SoundManager = (function (_super) {
         return _this;
     }
     SoundManager.prototype.addSound = function (loadAsset, length) {
-        if ((loadAsset.asset.id in this._sounds) == false) {
+        if (loadAsset.asset.id in this._sounds == false) {
             this._loadedSoundCount++;
             this._sounds[loadAsset.asset.id] = {
                 sound: new Howl({
@@ -5221,8 +5198,8 @@ var SoundManager = (function (_super) {
                     autoplay: loadAsset.asset.autoplay,
                     volume: loadAsset.asset.volume,
                     rate: loadAsset.asset.rate,
-                    loop: loadAsset.asset.loop
-                })
+                    loop: loadAsset.asset.loop,
+                }),
             };
             if (length == this._loadedSoundCount)
                 this.emit("sound", "createAllSound");
@@ -5252,7 +5229,7 @@ exports.default = SoundManager;
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5269,10 +5246,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var StageManager_1 = __webpack_require__(1);
-var AnimationsController_1 = __webpack_require__(24);
-var UserInterfaceController_1 = __webpack_require__(27);
+var AnimationsController_1 = __webpack_require__(23);
+var UserInterfaceController_1 = __webpack_require__(26);
 var EntryPoint_1 = __webpack_require__(0);
-var Grid_1 = __webpack_require__(31);
+var GridController_1 = __webpack_require__(30);
 var BaseGame = (function (_super) {
     __extends(BaseGame, _super);
     function BaseGame() {
@@ -5293,19 +5270,9 @@ var BaseGame = (function (_super) {
         this.addChild(this._userInterfaceController);
         this._animationController = new AnimationsController_1.AnimationsController();
         this.addChild(this._animationController);
-        var seq = [
-            ["solid1", "solid1", "solid3", "solid1", "solid4", "solid3", "solid2", "solid1", "solid4"],
-            ["solid2", "solid3", "solid2", "solid4", "solid2", "solid1", "solid4", "solid2", "solid2"],
-            ["solid3", "solid2", "solid1", "solid3", "solid3", "solid2", "solid1", "solid4", "solid3"],
-            ["solid1", "solid4", "solid4", "solid2", "solid4", "solid4", "solid2", "solid1", "solid4"],
-            ["solid4", "solid1", "solid1", "solid4", "solid3", "solid1", "solid2", "solid2", "solid1"],
-            ["solid3", "solid3", "solid2", "solid2", "solid1", "solid3", "solid3", "solid3", "solid2"],
-            ["solid2", "solid2", "solid3", "solid1", "solid2", "solid3", "solid4", "solid3", "solid2"],
-            ["solid4", "solid1", "solid3", "solid4", "solid1", "solid4", "solid1", "solid1", "solid3"],
-            ["solid1", "solid4", "solid4", "solid3", "solid2", "solid1", "solid2", "solid2", "solid4"]
-        ];
-        this._grid = new Grid_1.Grid(seq);
-        this.addChild(this._grid);
+        this._gridController = new GridController_1.GridController();
+        this.addChild(this._gridController);
+        ;
         this._game.sound.play("theme", 1, true);
         this.eventListener();
     };
@@ -5330,7 +5297,7 @@ exports.BaseGame = BaseGame;
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5346,7 +5313,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Animations_1 = __webpack_require__(25);
+var Animations_1 = __webpack_require__(24);
 var AnimationsController = (function (_super) {
     __extends(AnimationsController, _super);
     function AnimationsController() {
@@ -5364,7 +5331,7 @@ exports.AnimationsController = AnimationsController;
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5380,8 +5347,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(26);
+__webpack_require__(25);
 var EntryPoint_1 = __webpack_require__(0);
+var BoyAnimations;
+(function (BoyAnimations) {
+    BoyAnimations["Walk"] = "walk";
+    BoyAnimations["Jump"] = "jump";
+})(BoyAnimations || (BoyAnimations = {}));
 var Animations = (function (_super) {
     __extends(Animations, _super);
     function Animations() {
@@ -5391,10 +5363,14 @@ var Animations = (function (_super) {
         return _this;
     }
     Animations.prototype.awake = function () {
-        this._spineBoyAnim = new PIXI.spine.Spine(this._game.resource.loader.resources.owl.spineData);
+        this._spineBoyAnim = new PIXI.spine.Spine(this._game.resource.loader.resources.spine.spineData);
         this._spineBoyAnim.scale.set(0.5, 0.5);
-        this._spineBoyAnim.state.timeScale = 0.5;
-        this._spineBoyAnim.position.set(770, 710);
+        this._spineBoyAnim.state.timeScale = 1;
+        this._spineBoyAnim.position.set(137, 215);
+        this._spineBoyAnim.stateData.setMix(BoyAnimations.Walk, BoyAnimations.Walk, 0.01);
+        this._spineBoyAnim.stateData.setMix(BoyAnimations.Walk, BoyAnimations.Jump, 0.1);
+        this._spineBoyAnim.stateData.setMix(BoyAnimations.Jump, BoyAnimations.Walk, 0.1);
+        this._spineBoyAnim.state.setAnimation(0, BoyAnimations.Walk, true);
         this.addChild(this._spineBoyAnim);
     };
     return Animations;
@@ -5403,7 +5379,7 @@ exports.Animations = Animations;
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports) {
 
 var __extends = (this && this.__extends) || (function () {
@@ -12629,7 +12605,7 @@ var pixi_spine;
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12645,7 +12621,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var UserInterface_1 = __webpack_require__(28);
+var UserInterface_1 = __webpack_require__(27);
 var UserInterfaceController = (function (_super) {
     __extends(UserInterfaceController, _super);
     function UserInterfaceController() {
@@ -12667,7 +12643,7 @@ exports.UserInterfaceController = UserInterfaceController;
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12683,13 +12659,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SimpleSprite2D_1 = __webpack_require__(29);
-var SimpleButton2D_1 = __webpack_require__(6);
-var GameSettings_1 = __webpack_require__(30);
+var SimpleSprite2D_1 = __webpack_require__(28);
+var GameSettings_1 = __webpack_require__(29);
 var UserInterface = (function (_super) {
     __extends(UserInterface, _super);
     function UserInterface() {
         var _this = _super.call(this) || this;
+        _this._goalDesc = [];
+        _this._goalImage = [];
         _this.awake();
         return _this;
     }
@@ -12697,12 +12674,37 @@ var UserInterface = (function (_super) {
         this._backgroundImage = new SimpleSprite2D_1.SimpleSprite2D("background", { x: 0, y: 0 });
         this._backgroundImage.name = "BackgroundImage";
         this.addChild(this._backgroundImage);
-        this._btn = new SimpleButton2D_1.SimpleButton2D("solid1", { x: 90, y: 650 }, this.onButtonUp.bind(this), "UI1");
-        this._btn.anchor.set(0.5, 0.5);
-        this.addChild(this._btn);
         this._moveText = new PIXI.Text("27", GameSettings_1.DefaultTextStyle);
         this._moveText.position.set(620, 80);
         this.addChild(this._moveText);
+        for (var i = 0; i < 3; i++) {
+            this._goalImage[i] = new SimpleSprite2D_1.SimpleSprite2D("solid1_normal", {
+                x: 307 + i * 85,
+                y: 60,
+            });
+            this._goalImage[i].scale.set(0.6);
+            this.addChild(this._goalImage[i]);
+            this._goalDesc[i] = new PIXI.Text("", GameSettings_1.DefaultTextStyle);
+            this._goalDesc[i].position.set(65 + i * 5, 100);
+            this._goalDesc[i].scale.set(0.9);
+            this._goalImage[i].addChild(this._goalDesc[i]);
+        }
+        this.setGoal(["solid1_normal", "solid2_normal", "solid3_normal"], [5, 10, 16]);
+    };
+    UserInterface.prototype.setGoal = function (solid, count) {
+        this.clearGoalProp();
+        for (var i = 0; i < solid.length; i++) {
+            this._goalImage[i].texture = PIXI.Texture.from(solid[i]);
+            this._goalDesc[i].text = count[i].toString();
+        }
+    };
+    UserInterface.prototype.clearGoalProp = function () {
+        for (var i = 0; i < this._goalImage.length; i++) {
+            this._goalImage[i].texture = PIXI.Texture.WHITE;
+        }
+        for (var i = 0; i < this._goalDesc.length; i++) {
+            this._goalDesc[i].text = "";
+        }
     };
     UserInterface.prototype.onButtonUp = function (name) {
         switch (name) {
@@ -12717,7 +12719,7 @@ exports.UserInterface = UserInterface;
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12761,40 +12763,145 @@ exports.SimpleSprite2D = SimpleSprite2D;
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DefaultTextStyle = ({
+exports.DefaultTextStyle = {
     fontFamily: "Topaz-8-remake",
     fontSize: 42,
     fill: "#1f140a",
     align: "center",
     stroke: "#cecece",
     strokeThickness: 3,
-});
+};
 exports.PLAYACTION = "play";
 exports.INIT = "init";
 exports.ERROR = "error";
 exports.PSEUDO_REEL_SET = [
-    ["T", "J", "Q", "K", "K", "T", "K", "P", "J", "J", "Q", "K", "K", "J", "Q", "K", "A", "T", "Q", "T"],
-    ["Q", "Q", "A", "J", "A", "Q", "A", "A", "J", "Q", "T", "K", "T", "K", "Q", "J", "A", "J", "J", "K"],
-    ["A", "J", "T", "K", "P", "J", "J", "Q", "K", "J", "P", "P", "T", "Q", "J", "Q", "K", "J", "Q", "A"],
-    ["A", "Q", "T", "K", "T", "J", "Q", "K", "K", "T", "A", "J", "A", "J", "Q", "T", "K", "P", "J", "J"],
-    ["K", "P", "Q", "Q", "K", "A", "Q", "Q", "J", "Q", "T", "Q", "J", "Q", "K", "P", "A", "Q", "A", "T"]
+    [
+        "T",
+        "J",
+        "Q",
+        "K",
+        "K",
+        "T",
+        "K",
+        "P",
+        "J",
+        "J",
+        "Q",
+        "K",
+        "K",
+        "J",
+        "Q",
+        "K",
+        "A",
+        "T",
+        "Q",
+        "T",
+    ],
+    [
+        "Q",
+        "Q",
+        "A",
+        "J",
+        "A",
+        "Q",
+        "A",
+        "A",
+        "J",
+        "Q",
+        "T",
+        "K",
+        "T",
+        "K",
+        "Q",
+        "J",
+        "A",
+        "J",
+        "J",
+        "K",
+    ],
+    [
+        "A",
+        "J",
+        "T",
+        "K",
+        "P",
+        "J",
+        "J",
+        "Q",
+        "K",
+        "J",
+        "P",
+        "P",
+        "T",
+        "Q",
+        "J",
+        "Q",
+        "K",
+        "J",
+        "Q",
+        "A",
+    ],
+    [
+        "A",
+        "Q",
+        "T",
+        "K",
+        "T",
+        "J",
+        "Q",
+        "K",
+        "K",
+        "T",
+        "A",
+        "J",
+        "A",
+        "J",
+        "Q",
+        "T",
+        "K",
+        "P",
+        "J",
+        "J",
+    ],
+    [
+        "K",
+        "P",
+        "Q",
+        "Q",
+        "K",
+        "A",
+        "Q",
+        "Q",
+        "J",
+        "Q",
+        "T",
+        "Q",
+        "J",
+        "Q",
+        "K",
+        "P",
+        "A",
+        "Q",
+        "A",
+        "T",
+    ],
 ];
 exports.configs = {
     reel: {
         animationDuration: 3,
         startTween: {
             duration: 0.3,
-            intensity: 25
+            intensity: 25,
         },
         finishedTween: {
             duration: 0.25,
-            intensity: 25
+            intensity: 25,
         },
     },
 };
@@ -12808,6 +12915,141 @@ var GameSettings = (function () {
     return GameSettings;
 }());
 exports.GameSettings = GameSettings;
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Grid_1 = __webpack_require__(31);
+var GridController = (function (_super) {
+    __extends(GridController, _super);
+    function GridController() {
+        var _this = _super.call(this) || this;
+        _this.awake();
+        return _this;
+    }
+    GridController.prototype.awake = function () {
+        var seq = [
+            [
+                "solid1",
+                "solid1",
+                "solid3",
+                "solid1",
+                "solid4",
+                "solid3",
+                "solid2",
+                "solid1",
+                "solid4",
+            ],
+            [
+                "solid2",
+                "solid3",
+                "solid2",
+                "solid4",
+                "solid2",
+                "solid1",
+                "solid4",
+                "solid2",
+                "solid2",
+            ],
+            [
+                "solid3",
+                "solid2",
+                "solid1",
+                "solid3",
+                "solid3",
+                "solid2",
+                "solid1",
+                "solid4",
+                "solid3",
+            ],
+            [
+                "solid1",
+                "solid4",
+                "solid4",
+                "solid2",
+                "solid4",
+                "solid4",
+                "solid2",
+                "solid1",
+                "solid4",
+            ],
+            [
+                "solid4",
+                "solid1",
+                "solid1",
+                "solid4",
+                "solid3",
+                "solid1",
+                "solid2",
+                "solid2",
+                "solid1",
+            ],
+            [
+                "solid3",
+                "solid3",
+                "solid2",
+                "solid2",
+                "solid1",
+                "solid3",
+                "solid3",
+                "solid3",
+                "solid2",
+            ],
+            [
+                "solid2",
+                "solid2",
+                "solid3",
+                "solid1",
+                "solid2",
+                "solid3",
+                "solid4",
+                "solid3",
+                "solid2",
+            ],
+            [
+                "solid4",
+                "solid1",
+                "solid3",
+                "solid4",
+                "solid1",
+                "solid4",
+                "solid1",
+                "solid1",
+                "solid3",
+            ],
+            [
+                "solid1",
+                "solid4",
+                "solid4",
+                "solid3",
+                "solid2",
+                "solid1",
+                "solid2",
+                "solid2",
+                "solid4",
+            ],
+        ];
+        this._grid = new Grid_1.Grid(seq);
+        this.addChild(this._grid);
+    };
+    return GridController;
+}(PIXI.Container));
+exports.GridController = GridController;
 
 
 /***/ }),
@@ -12827,8 +13069,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SimpleButton2D_1 = __webpack_require__(6);
-var gsap_1 = __webpack_require__(32);
+var SimpleButton2D_1 = __webpack_require__(32);
+var gsap_1 = __webpack_require__(33);
 var Grid = (function (_super) {
     __extends(Grid, _super);
     function Grid(sequence) {
@@ -12842,24 +13084,115 @@ var Grid = (function (_super) {
         for (var i = 0; i < 9; i++) {
             this._symbol[i] = [];
             for (var j = 0; j < 9; j++) {
-                this._symbol[i][j] = new SimpleButton2D_1.SimpleButton2D(this.sequence[j][i], { x: 80 + (i * 75), y: 360 + (j * 90) }, this.onButtonClick.bind(this), "solid1");
-                this._symbol[i][j].anchor.set(.5, .5);
-                this._symbol[i][j].scale.set(.75, .75);
+                this._symbol[i][j] = new SimpleButton2D_1.SimpleButton2D(this.sequence[j][i], { x: 80 + i * 75, y: 360 + j * 90 }, this.onButtonClick.bind(this, [i, j]), "solid1");
+                this._symbol[i][j].anchor.set(0.5, 0.5);
+                this._symbol[i][j].scale.set(0.75, 0.75);
                 this.addChild(this._symbol[i][j]);
             }
         }
     };
-    Grid.prototype.onButtonClick = function (button) {
-        this.rotateAnimation(button);
+    Grid.prototype.onButtonClick = function (index, button) {
+        var _this = this;
+        var matches = this.findCluster();
+        matches.forEach(function (match) {
+            console.log(match, index);
+            if (match.column == index[1] && match.row == index[0]) {
+                for (var i = 0; i < match.length; i++) {
+                    if (match.horizontal) {
+                        _this._symbol[index[0]][index[1] + i].destroy();
+                    }
+                    else {
+                        _this._symbol[index[0] + i][index[1]].destroy();
+                    }
+                }
+            }
+            else {
+                if (button)
+                    _this.rotateAnimation(button);
+                return;
+            }
+        });
     };
     Grid.prototype.rotateAnimation = function (target) {
         if (this._rotateAnimation)
             this._rotateAnimation.seek(1, false);
-        this._rotateAnimation = gsap_1.TweenMax.to(target, .075, {
-            rotation: .35,
-            repeat: 7,
-            yoyo: true
+        if (this._scaleAnimation)
+            this._scaleAnimation.seek(1, false);
+        gsap_1.TweenMax.killTweensOf(target.scale);
+        gsap_1.TweenMax.killTweensOf(target.rotation);
+        this._rotateAnimation = gsap_1.TweenMax.to(target, 0.1, {
+            rotation: Math.random() < 0.5 ? 0.1 : -0.1,
+            repeat: 5,
+            yoyo: true,
         });
+        this._scaleAnimation = gsap_1.TweenMax.to(target.scale, 0.1, {
+            x: 0.65,
+            y: 0.65,
+            repeat: 3,
+            yoyo: true,
+        });
+    };
+    Grid.prototype.findCluster = function () {
+        var clusters = [];
+        for (var j = 0; j < 9; j++) {
+            var matchlength = 1;
+            for (var i = 0; i < 9; i++) {
+                var checkcluster = false;
+                if (i == 9 - 1) {
+                    checkcluster = true;
+                }
+                else {
+                    if (this.sequence[i][j] == this.sequence[i + 1][j] &&
+                        this.sequence[i][j] != "") {
+                        matchlength += 1;
+                    }
+                    else {
+                        checkcluster = true;
+                    }
+                }
+                if (checkcluster) {
+                    if (matchlength >= 2) {
+                        clusters.push({
+                            column: i + 1 - matchlength,
+                            row: j,
+                            length: matchlength,
+                            horizontal: true,
+                        });
+                    }
+                    matchlength = 1;
+                }
+            }
+        }
+        for (var i = 0; i < 9; i++) {
+            var matchlength = 1;
+            for (var j = 0; j < 9; j++) {
+                var checkcluster = false;
+                if (j == 9 - 1) {
+                    checkcluster = true;
+                }
+                else {
+                    if (this.sequence[i][j] == this.sequence[i][j + 1] &&
+                        this.sequence[i][j] != "") {
+                        matchlength += 1;
+                    }
+                    else {
+                        checkcluster = true;
+                    }
+                }
+                if (checkcluster) {
+                    if (matchlength >= 2) {
+                        clusters.push({
+                            column: i,
+                            row: j + 1 - matchlength,
+                            length: matchlength,
+                            horizontal: false,
+                        });
+                    }
+                    matchlength = 1;
+                }
+            }
+        }
+        return clusters;
     };
     return Grid;
 }(PIXI.Container));
@@ -12868,6 +13201,154 @@ exports.Grid = Grid;
 
 /***/ }),
 /* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var SimpleButton2D = (function (_super) {
+    __extends(SimpleButton2D, _super);
+    function SimpleButton2D(frame, position, callback, name) {
+        var _this = _super.call(this, PIXI.Texture.from(frame + "_normal")) || this;
+        _this._isDown = false;
+        _this._isOver = false;
+        _this._isEnabled = true;
+        _this._normalFrame = frame + "_normal";
+        _this._overFrame = frame + "_over";
+        _this._downFrame = frame + "_down";
+        _this._disabledFrame = frame + "_disabled";
+        _this._callback = callback;
+        _this.position.set(position.x, position.y);
+        _this.interactive = true;
+        _this.buttonMode = true;
+        _this.name = name || "";
+        _this.on("pointerdown", _this.onPointerDown, _this);
+        _this.on("pointerover", _this.onPointerOver, _this);
+        _this.on("pointerout", _this.onPointerOut, _this);
+        _this.on("pointerup", _this.onPointerUp, _this);
+        return _this;
+    }
+    SimpleButton2D.prototype.onPointerDown = function (e) {
+        this.isDown = true;
+        this.texture = PIXI.Texture.from(this._downFrame);
+        this._callback(this);
+    };
+    SimpleButton2D.prototype.onPointerUp = function (e) {
+        this.isDown = false;
+        if (this.isOver) {
+            this.texture = PIXI.Texture.from(this._overFrame);
+        }
+        else {
+            this.texture = PIXI.Texture.from(this._normalFrame);
+        }
+    };
+    SimpleButton2D.prototype.onPointerOver = function (e) {
+        this.isOver = true;
+        if (this.isDown) {
+            return;
+        }
+        this.texture = PIXI.Texture.from(this._overFrame);
+    };
+    SimpleButton2D.prototype.onPointerOut = function (e) {
+        this.isOver = false;
+        if (this.isDown) {
+            return;
+        }
+        this.texture = PIXI.Texture.from(this._normalFrame);
+    };
+    SimpleButton2D.prototype.setDisabled = function () {
+        this.buttonMode = false;
+        this.interactive = false;
+        this.texture = PIXI.Texture.from(this._disabledFrame);
+    };
+    SimpleButton2D.prototype.setTexture = function (frame, currentFrame, name) {
+        this._normalFrame = frame + "_normal";
+        this._overFrame = frame + "_over";
+        this._downFrame = frame + "_down";
+        this._disabledFrame = frame + "_disabled";
+        this.name = name;
+        if (currentFrame != null || currentFrame != "")
+            this._texture = PIXI.Texture.from(currentFrame);
+    };
+    SimpleButton2D.prototype.setEnabled = function () {
+        this.buttonMode = true;
+        this.interactive = true;
+    };
+    Object.defineProperty(SimpleButton2D.prototype, "isDown", {
+        get: function () {
+            return this._isDown;
+        },
+        set: function (value) {
+            if (value != this._isDown)
+                this._isDown = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SimpleButton2D.prototype, "isOver", {
+        get: function () {
+            return this._isOver;
+        },
+        set: function (value) {
+            if (value != this._isOver)
+                this._isOver = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SimpleButton2D.prototype, "Interactive", {
+        get: function () {
+            return this.interactive;
+        },
+        set: function (value) {
+            this.interactive = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SimpleButton2D.prototype, "isEnabled", {
+        get: function () {
+            return this._isEnabled;
+        },
+        set: function (value) {
+            if (!value) {
+                this.setDisabled();
+            }
+            else {
+                this.setEnabled();
+            }
+            this._isEnabled = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SimpleButton2D.prototype, "ButtonMode", {
+        get: function () {
+            return this.buttonMode;
+        },
+        set: function (value) {
+            this.buttonMode = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return SimpleButton2D;
+}(PIXI.Sprite));
+exports.SimpleButton2D = SimpleButton2D;
+
+
+/***/ }),
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -20876,7 +21357,7 @@ if (_gsScope._gsDefine) { _gsScope._gsQueue.pop()(); } //necessary in case Tween
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20922,7 +21403,7 @@ exports.LocalStorage = LocalStorage;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20980,7 +21461,7 @@ exports.DisplayManager = DisplayManager;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20997,24 +21478,24 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var EventEmitter = __webpack_require__(4);
-__webpack_require__(36);
-var pixi_app_wrapper_1 = __webpack_require__(3);
 __webpack_require__(37);
-var PIXI = __webpack_require__(38);
-var screenfull = __webpack_require__(39);
-var media_info_viewer_1 = __webpack_require__(40);
-var align_bottom_center_1 = __webpack_require__(42);
-var align_bottom_left_1 = __webpack_require__(43);
-var align_bottom_right_1 = __webpack_require__(44);
-var align_middle_1 = __webpack_require__(45);
-var align_middle_left_1 = __webpack_require__(46);
-var align_middle_right_1 = __webpack_require__(47);
-var align_top_center_1 = __webpack_require__(48);
-var align_top_left_1 = __webpack_require__(49);
-var align_top_right_1 = __webpack_require__(50);
-var scale_full_size_1 = __webpack_require__(51);
-var scale_keep_aspect_ratio_1 = __webpack_require__(52);
-var scale_none_1 = __webpack_require__(53);
+var pixi_app_wrapper_1 = __webpack_require__(3);
+__webpack_require__(38);
+var PIXI = __webpack_require__(39);
+var screenfull = __webpack_require__(40);
+var media_info_viewer_1 = __webpack_require__(41);
+var align_bottom_center_1 = __webpack_require__(43);
+var align_bottom_left_1 = __webpack_require__(44);
+var align_bottom_right_1 = __webpack_require__(45);
+var align_middle_1 = __webpack_require__(46);
+var align_middle_left_1 = __webpack_require__(47);
+var align_middle_right_1 = __webpack_require__(48);
+var align_top_center_1 = __webpack_require__(49);
+var align_top_left_1 = __webpack_require__(50);
+var align_top_right_1 = __webpack_require__(51);
+var scale_full_size_1 = __webpack_require__(52);
+var scale_keep_aspect_ratio_1 = __webpack_require__(53);
+var scale_none_1 = __webpack_require__(54);
 var PixiAppWrapper = (function (_super) {
     __extends(PixiAppWrapper, _super);
     function PixiAppWrapper(options) {
@@ -21262,7 +21743,7 @@ exports.PixiAppWrapper = PixiAppWrapper;
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports) {
 
 /*!
@@ -22149,7 +22630,7 @@ exports.PixiAppWrapper = PixiAppWrapper;
 }(window, FPSMeter));
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports) {
 
 var pixi_display;
@@ -22880,13 +23361,13 @@ var pixi_display;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = PIXI;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports) {
 
 /*!
@@ -23060,14 +23541,14 @@ module.exports = PIXI;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var pixi_app_wrapper_1 = __webpack_require__(3);
-__webpack_require__(41);
+__webpack_require__(42);
 var MediaInfoViewer = (function () {
     function MediaInfoViewer() {
         this.createContainer();
@@ -23121,7 +23602,7 @@ exports.MediaInfoViewer = MediaInfoViewer;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports) {
 
 if (!Math.gcd) {
@@ -23138,7 +23619,7 @@ if (!Math.gcd) {
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23159,7 +23640,7 @@ exports.AlignBottomCenter = AlignBottomCenter;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23180,7 +23661,7 @@ exports.AlignBottomLeft = AlignBottomLeft;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23201,7 +23682,7 @@ exports.AlignBottomRight = AlignBottomRight;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23222,7 +23703,7 @@ exports.AlignMiddle = AlignMiddle;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23243,7 +23724,7 @@ exports.AlignMiddleLeft = AlignMiddleLeft;
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23264,7 +23745,7 @@ exports.AlignMiddleRight = AlignMiddleRight;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23285,7 +23766,7 @@ exports.AlignTopCenter = AlignTopCenter;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23303,7 +23784,7 @@ exports.AlignTopLeft = AlignTopLeft;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23324,7 +23805,7 @@ exports.AlignTopRight = AlignTopRight;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23345,7 +23826,7 @@ exports.ScaleFullSize = ScaleFullSize;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23364,7 +23845,7 @@ exports.ScaleKeepAspectRatio = ScaleKeepAspectRatio;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23385,7 +23866,7 @@ exports.ScaleNone = ScaleNone;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23398,7 +23879,7 @@ exports.pixiAppWrapperEvent = {
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
