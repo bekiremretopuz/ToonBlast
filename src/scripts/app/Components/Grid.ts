@@ -1,26 +1,37 @@
 import { SimpleButton2D } from "app/Display/SimpleButton2D";
+import { GameProperty } from "app/Helper/GameSettings";
 import { TweenLite, TweenMax } from "gsap";
 export class Grid extends PIXI.Container {
-  private _symbol: SimpleButton2D[][] = [];
+  private _gridContainer: PIXI.Container;
+  private _symbol: any[][] = [];
   private _rotateAnimation: TweenMax;
   private _scaleAnimation: TweenMax;
+  private _gridMask: PIXI.Graphics;
   constructor(private readonly sequence: string[][]) {
     super();
-    this.init();
   }
 
-  private init() {
-    for (let i = 0; i < 9; i++) {
+  public createGrid(column: number, row: number) {
+    this._gridContainer = new PIXI.Container();
+    this.addChild(this._gridContainer);
+    this._gridMask = new PIXI.Graphics()
+      .beginFill(0xcecece, 1)
+      .drawRect(40, 300, 680, 825)
+      .endFill();
+    this._gridContainer.mask = this._gridMask;
+    this.addChild(this._gridMask);
+    for (let i = 0; i < column; i++) {
       this._symbol[i] = [];
-      for (let j = 0; j < 9; j++) {
+      for (let j = 0; j < row; j++) {
         this._symbol[i][j] = new SimpleButton2D(
           this.sequence[j][i],
           { x: 80 + i * 75, y: 360 + j * 90 },
           this.onButtonClick.bind(this, [i, j])
         );
+        this._symbol[i][j].type = this.sequence[j][i];
         this._symbol[i][j].anchor.set(0.5, 0.5);
         this._symbol[i][j].scale.set(0.75, 0.75);
-        this.addChild(this._symbol[i][j]);
+        this._gridContainer.addChild(this._symbol[i][j]);
       }
     }
   }
@@ -47,19 +58,42 @@ export class Grid extends PIXI.Container {
     });
   }
 
-  public matchAnimation(i: number, j: number): void{
+  public matchAnimation(column: number, row: number) {
     if (this._rotateAnimation) {
-       this._rotateAnimation.kill();
-       this._rotateAnimation.seek(this._rotateAnimation.duration, false);
+      this._rotateAnimation.kill();
+      this._rotateAnimation.seek(this._rotateAnimation.duration, false);
     }
     if (this._scaleAnimation) {
       this._scaleAnimation.kill();
       this._scaleAnimation.seek(this._scaleAnimation.duration, false);
     }
-    this._symbol[i][j].destroy();
+    this._symbol[column][row].scale.set(0.1, 0.1); //match animation olucak
+    this.createSymbol(column, row, "solid1"); // random yada belli bir oranda gelicek
+    for (let i = 0; i < row; i++) { 
+      const posY = this._symbol[column][i].position.y;
+      TweenLite.to(this._symbol[column][i].position, 1, {
+        y: posY + 90,
+      });
+    }
+    this._symbol[column][row].emit("matchcompleted");
   }
 
-  public get symbol(): SimpleButton2D[][]    {
-          return this._symbol;
+  private createSymbol(column: number, row: number, symbolName: string): void { //bunun yerine shifting yapicam.
+    this._symbol[column][row].type = symbolName;
+    const name = symbolName + "_normal";
+    this._symbol[column][row].texture = PIXI.Texture.from(name);
+    this._symbol[column][row].scale.set(0.75, 0.75);
+    this._symbol[column][row].position.set(80 + column * 75, 250);
+    this.fallNewSymbol(column, row);
+  }
+
+  private fallNewSymbol(column: number, row: number): void {
+    TweenLite.to(this._symbol[column][row].position, 1, {
+      y: 360,
+    });
+  }
+
+  public get symbol(): any[][] {
+    return this._symbol;
   }
 }
