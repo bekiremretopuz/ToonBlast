@@ -1,10 +1,4 @@
-import {
-  Asset,
-  AssetPriority,
-  LoadAsset,
-  PixiAssetsLoader,
-  SoundAsset,
-} from "pixi-assets-loader";
+import { AssetPriority, LoadAsset, PixiAssetsLoader } from "pixi-assets-loader";
 import SoundManager from "./SoundController";
 import { EmreBase } from "src/scripts/game/EntryPoint";
 import { assets } from "../GameSettings";
@@ -17,8 +11,6 @@ export class ResourceController extends PIXI.utils.EventEmitter {
   private _loadingProgress: number;
   private _soundManager: SoundManager = new SoundManager();
   private _isSoundLoaded: boolean;
-  private _soundCount: number = 0;
-  private _doubleCheck: boolean = false;
   private _game: EmreBase.EntryPoint;
   constructor() {
     super();
@@ -28,7 +20,6 @@ export class ResourceController extends PIXI.utils.EventEmitter {
   public init(): void {
     this.loadFont();
     this.isSoundLoaded = false;
-    this._soundManager.on("sound", this.onSoundManager, this);
   }
 
   private loadFont(): void {
@@ -43,16 +34,6 @@ export class ResourceController extends PIXI.utils.EventEmitter {
     });
   }
 
-  private onSoundManager(value: string): void {
-    switch (value) {
-      case "createAllSound":
-        console.log("createAllsound");
-        
-        //    this.emit("completeLoadAsset");
-        break;
-    }
-  }
-
   public loadAssets(): void {
     assets.forEach((asset) => {
       if (!this._assetsCount[asset.priority]) {
@@ -60,7 +41,6 @@ export class ResourceController extends PIXI.utils.EventEmitter {
       } else {
         this._assetsCount[asset.priority].total++;
       }
-      if (asset.type == "sound") this._soundCount++;
     });
 
     this._loadingProgress = 0;
@@ -77,7 +57,7 @@ export class ResourceController extends PIXI.utils.EventEmitter {
     this._loader.on(
       PixiAssetsLoader.ASSET_ERROR,
       this.onAssetsError.bind(this)
-    ); 
+    );
     this._loader.addAssets(assets).load();
   }
   private onAssetsProgress(args: { priority: number; progress: number }): void {
@@ -92,7 +72,7 @@ export class ResourceController extends PIXI.utils.EventEmitter {
 
   private onAssetsError(args: LoadAsset): void {
     this.emit("assetLoadfailed");
-  } 
+  }
 
   private onAssetsLoaded(args: {
     priority: number;
@@ -107,8 +87,6 @@ export class ResourceController extends PIXI.utils.EventEmitter {
   }
 
   private createViewsByPriority(priority: number): void {
-    console.log("prio", priority);
-    
     switch (priority) {
       case AssetPriority.HIGHEST:
         this.emit("completeLoadHighAsset");

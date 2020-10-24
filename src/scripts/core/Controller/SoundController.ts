@@ -15,8 +15,6 @@ export default class SoundController extends PIXI.utils.EventEmitter {
           loop: loadAsset.asset.loop,
         }),
       };
-      console.log("lol");
-      
     }
   }
 
