@@ -10,6 +10,7 @@ export class LoaderStage extends Scene {
   private _gameName: PIXI.Text;
   private _loadingSprite: PIXI.Sprite;
   private _loadingProgressText: PIXI.Text;
+  private _loadingText: PIXI.Text;
   private _game: EmreBase.EntryPoint;
   private _startGameText: PIXI.Text;
   constructor() {
@@ -39,10 +40,13 @@ export class LoaderStage extends Scene {
     this._loadingSprite.name = "LoadingSprite";
     this.addChild(this._loadingSprite);
     //Find the status of the asset installation
-    this._loadingProgressText = new PIXI.Text("", {});
+    this._loadingText = new PIXI.Text("Loader Scene", {});
+    this._loadingText.anchor.set(0.5, 0.5);
+    this._loadingText.position.set(390, 640);
+    this.addChild(this._loadingText);
+    this._loadingProgressText = new PIXI.Text("", DefaultTextStyle);
     this._loadingProgressText.anchor.set(0.5, 0.5);
-    this._loadingProgressText.position.set(390, 640);
-    this._loadingProgressText.visible = true;
+    this._loadingProgressText.position.set(385, 700);
     this.addChild(this._loadingProgressText);
     this.loadingAnimation();
   }
@@ -64,7 +68,7 @@ export class LoaderStage extends Scene {
     );
     this._startGameText.anchor.set(0.5, 0.5);
     this._startGameText.scale.set(0.9, 0.9);
-    this._startGameText.position.set(390, 1150);
+    this._startGameText.position.set(374, 1150);
     this.addChild(this._startGameText);
     this._backgroundImageDefault.buttonMode = true;
     this._backgroundImageDefault.interactive = true;
@@ -75,8 +79,7 @@ export class LoaderStage extends Scene {
   }
 
   public progressUpdate(value: number): void {
-    this._loadingProgressText.text =
-      "Loader Stage\n    Loading\n       " + value.toFixed(0);
+    this._loadingProgressText.text = value.toFixed(0);
   }
 
   public killScene(): void {}
