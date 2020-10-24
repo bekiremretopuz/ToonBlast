@@ -3,22 +3,39 @@ import { StorageController } from "../core/Controller/StorageController";
 import { StageController } from "../core/Controller/StageController";
 import { LoaderStage } from "./View/LoaderStage";
 import SoundController from "../core/Controller/SoundController";
+import { ResourceController } from "../core/Controller/ResourceController";
+import { BaseGame } from "./View/BaseGame";
 export module EmreBase {
   export class EntryPoint {
     private static _instance: EntryPoint;
     private _displayManager: DisplayController;
     private _stageManager: StageController;
     private _localStorage: StorageController;
+    private _resourceController: ResourceController;
     private _loader: LoaderStage;
     constructor() {
       EntryPoint._instance = this;
       this._stageManager = new StageController();
       this._displayManager = new DisplayController(this._stageManager.root);
-      this._localStorage = new StorageController();
-      this._loader = new LoaderStage();
       this._displayManager.create();
-      this._stageManager.createScene("LoaderStage", this._loader);
-      this._stageManager.goToScene("LoaderStage", true);
+      this._localStorage = new StorageController();
+      this._resourceController = new ResourceController();
+      this._resourceController.once("completeLoadFont", () => {
+        this._resourceController.loadAssets();
+        this._resourceController.once("completeLoadHighAsset", () => {
+          this._loader = new LoaderStage();
+          this._stageManager.createScene("LoaderStage", this._loader);
+          this._stageManager.goToScene("LoaderStage", true);
+          this._resourceController.on("progress", (value: number) => {
+            this._loader.progressUpdate(value);
+          });
+          this._resourceController.once("completeLoadNormalAsset", () => {
+            this._loader.clickAndStartGame();
+          });
+        
+        });
+      });
+      this._resourceController.init();
     }
 
     public get localStorage(): StorageController {
@@ -26,11 +43,11 @@ export module EmreBase {
     }
 
     public get sound(): SoundController {
-      return this._loader.assetsLoader.soundManager;
+      return this._resourceController.soundManager;
     }
 
     public get resource(): any {
-      return this._loader.assetsLoader.loader;
+      return this._resourceController.loader;
     }
 
     public get stageManager(): StageController {

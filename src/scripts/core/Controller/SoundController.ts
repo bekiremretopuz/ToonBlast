@@ -1,13 +1,11 @@
 export default class SoundController extends PIXI.utils.EventEmitter {
   private _sounds: { [key: string]: any } = {};
-  private _loadedSoundCount: number = 0;
   constructor() {
     super();
   }
 
-  public addSound(loadAsset: any, length: number): void {
+  public addSound(loadAsset: any): void {
     if (loadAsset.asset.id in this._sounds == false) {
-      this._loadedSoundCount++;
       this._sounds[loadAsset.asset.id] = {
         sound: new Howl({
           src: loadAsset.asset.url,
@@ -17,8 +15,8 @@ export default class SoundController extends PIXI.utils.EventEmitter {
           loop: loadAsset.asset.loop,
         }),
       };
-      if (length == this._loadedSoundCount)
-        this.emit("sound", "createAllSound");
+      console.log("lol");
+      
     }
   }
 

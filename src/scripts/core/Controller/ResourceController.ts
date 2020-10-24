@@ -7,6 +7,7 @@ import {
 } from "pixi-assets-loader";
 import SoundManager from "./SoundController";
 import { EmreBase } from "src/scripts/game/EntryPoint";
+import { assets } from "../GameSettings";
 export class ResourceController extends PIXI.utils.EventEmitter {
   private _loader: PixiAssetsLoader;
   private _assetsCount: {
@@ -22,165 +23,37 @@ export class ResourceController extends PIXI.utils.EventEmitter {
   constructor() {
     super();
     this._game = EmreBase.EntryPoint.instance;
+  }
+
+  public init(): void {
+    this.loadFont();
     this.isSoundLoaded = false;
     this._soundManager.on("sound", this.onSoundManager, this);
-    this.loadAssets();
+  }
+
+  private loadFont(): void {
+    WebFont.load({
+      custom: {
+        families: ["Topaz-8-remake"],
+        urls: ["assets/fonts/stylesheet.css"],
+      },
+      active: (familyName: any, fwd: any) => {
+        this.emit("completeLoadFont");
+      },
+    });
   }
 
   private onSoundManager(value: string): void {
     switch (value) {
       case "createAllSound":
-        this.isSoundLoaded = true;
-        this.onAllAssetsLoaded();
+        console.log("createAllsound");
+        
+        //    this.emit("completeLoadAsset");
         break;
     }
   }
 
-  private loadAssets(): void {
-    const assets = [
-      {
-        id: "spine",
-        url: "assets/gfx/animation/spineboy.json",
-        priority: AssetPriority.HIGHEST,
-        type: "animation",
-      },
-      // { id: "Topaz-8-remake", url: "assets/fonts/stylesheet.css", priority: AssetPriority.HIGHEST, type: "fonts" },
-      {
-        id: "background",
-        url: "assets/gfx/background.jpg",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid1_normal",
-        url: "assets/gfx/ui/solidColor1.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid1_down",
-        url: "assets/gfx/ui/solidColor1.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid1_over",
-        url: "assets/gfx/ui/solidColor1.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid1_disabled",
-        url: "assets/gfx/ui/solidColor1.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid2_normal",
-        url: "assets/gfx/ui/solidColor2.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid2_down",
-        url: "assets/gfx/ui/solidColor2.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid2_over",
-        url: "assets/gfx/ui/solidColor2.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid2_disabled",
-        url: "assets/gfx/ui/solidColor2.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid3_normal",
-        url: "assets/gfx/ui/solidColor3.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid3_down",
-        url: "assets/gfx/ui/solidColor3.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid3_over",
-        url: "assets/gfx/ui/solidColor3.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid3_disabled",
-        url: "assets/gfx/ui/solidColor3.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid4_normal",
-        url: "assets/gfx/ui/solidColor4.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid4_down",
-        url: "assets/gfx/ui/solidColor4.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid4_over",
-        url: "assets/gfx/ui/solidColor4.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solid4_disabled",
-        url: "assets/gfx/ui/solidColor4.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solidParticle1",
-        url: "assets/gfx/animation/solidColorParticle1.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "solidParticle2",
-        url: "assets/gfx/animation/solidColorParticle2.png",
-        priority: AssetPriority.HIGHEST,
-        type: "texture",
-      },
-      {
-        id: "collect",
-        url: "assets/sfx/cube_collect.wav",
-        priority: AssetPriority.LOWEST,
-        autoplay: false,
-        loop: false,
-        mute: false,
-        rate: 1,
-        type: "sound",
-      } as Asset,
-      {
-        id: "explode",
-        url: "assets/sfx/cube_explode.wav",
-        priority: AssetPriority.LOWEST,
-        autoplay: false,
-        loop: false,
-        mute: false,
-        rate: 1,
-        type: "sound",
-      } as Asset,
-    ];
-
+  public loadAssets(): void {
     assets.forEach((asset) => {
       if (!this._assetsCount[asset.priority]) {
         this._assetsCount[asset.priority] = { total: 1, progress: 0 };
@@ -192,7 +65,6 @@ export class ResourceController extends PIXI.utils.EventEmitter {
 
     this._loadingProgress = 0;
     this._totalAssets = assets.length;
-
     this._loader = new PixiAssetsLoader();
     this._loader.on(
       PixiAssetsLoader.PRIORITY_GROUP_LOADED,
@@ -205,11 +77,7 @@ export class ResourceController extends PIXI.utils.EventEmitter {
     this._loader.on(
       PixiAssetsLoader.ASSET_ERROR,
       this.onAssetsError.bind(this)
-    );
-    this._loader.on(
-      PixiAssetsLoader.ALL_ASSETS_LOADED,
-      this.onAllAssetsLoaded.bind(this)
-    );
+    ); 
     this._loader.addAssets(assets).load();
   }
   private onAssetsProgress(args: { priority: number; progress: number }): void {
@@ -219,28 +87,12 @@ export class ResourceController extends PIXI.utils.EventEmitter {
       (args.progress - this._assetsCount[args.priority].progress) *
       percentFactor;
     this._assetsCount[args.priority].progress = args.progress;
+    this.emit("progress", this._loadingProgress);
   }
 
   private onAssetsError(args: LoadAsset): void {
     this.emit("assetLoadfailed");
-  }
-
-  private onAllAssetsLoaded(): void {
-    if (this._doubleCheck == false) {
-      if (this.isSoundLoaded) {
-        this._doubleCheck = true;
-        WebFont.load({
-          custom: {
-            families: ["Topaz-8-remake"],
-            urls: ["assets/fonts/stylesheet.css"],
-          },
-          active: (familyName: any, fwd: any) => {
-            this.emit("completeLoadAsset");
-          },
-        });
-      }
-    }
-  }
+  } 
 
   private onAssetsLoaded(args: {
     priority: number;
@@ -248,13 +100,15 @@ export class ResourceController extends PIXI.utils.EventEmitter {
   }): void {
     args.assets.forEach((loadAsset) => {
       if (loadAsset.asset.type == "sound") {
-        this._soundManager.addSound(loadAsset, this._soundCount);
+        this._soundManager.addSound(loadAsset);
       }
     });
     this.createViewsByPriority(args.priority);
   }
 
   private createViewsByPriority(priority: number): void {
+    console.log("prio", priority);
+    
     switch (priority) {
       case AssetPriority.HIGHEST:
         this.emit("completeLoadHighAsset");
