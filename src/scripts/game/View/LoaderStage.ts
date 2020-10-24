@@ -3,7 +3,6 @@ import { Scene } from "src/scripts/core/Controller/StageController";
 import { DefaultTextStyle } from "src/scripts/core/GameSettings";
 import { EmreBase } from "src/scripts/game/EntryPoint";
 import { BaseGame } from "./BaseGame";
-
 export class LoaderStage extends Scene {
   //If a class is taken extends from the Scene, that class has to contain two functions.(awake, killScene)
   private _backgroundImageDefault: PIXI.Graphics;

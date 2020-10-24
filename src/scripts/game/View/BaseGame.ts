@@ -3,10 +3,11 @@ import { UserInterfaceController } from "src/scripts/game/Controller/UserInterfa
 import { EmreBase } from "src/scripts/game/EntryPoint";
 import { GridController } from "src/scripts/game/Controller/GridController";
 import { Scene } from "src/scripts/core/Controller/StageController";
+import { BoyAnimations } from "app/Components/Animations";
 export class BaseGame extends Scene {
   private _game: EmreBase.EntryPoint;
   private _animationController: AnimationsController;
-  private _userInterfaceController: UserInterfaceController;
+  private _uiController: UserInterfaceController;
   private _gridController: GridController;
   constructor() {
     super();
@@ -15,8 +16,8 @@ export class BaseGame extends Scene {
 
   public awake(): void {
     //Interface control initiliaze
-    this._userInterfaceController = new UserInterfaceController();
-    this.addChild(this._userInterfaceController);
+    this._uiController = new UserInterfaceController();
+    this.addChild(this._uiController);
     //Animation control initiliaze
     this._animationController = new AnimationsController();
     this.addChild(this._animationController);
@@ -30,21 +31,27 @@ export class BaseGame extends Scene {
   }
 
   private eventListener(): void {
-    this._userInterfaceController.on(
-      "actiontaken",
-      this.onControlEventHandler,
-      this
-    );
+    this._uiController.on("actiontaken", this.onControlEventHandler, this);
+    this._gridController.on("animationstatus", this.onGridEventHandler, this);
   }
 
   //UserInterfaceControl Event Handler.
   private onControlEventHandler(action: string, value: string): void {
     switch (action) {
-      case "UI1":
-        this._game.sound.play("click", 1, false);
+      case "bla":
+        this._game.sound.play("collect", 1, false);
         break;
-      case "UI2":
-        this._game.sound.play("click", 1, false);
+      case "bla":
+        this._game.sound.play("collect", 1, false);
+        break;
+    }
+  }
+
+  private onGridEventHandler(action: string): void {
+    switch (action) {
+      case "match":
+        this._animationController.setCharacterAnimation(BoyAnimations.Jump);
+        this._game.sound.play("explode", 1, true);
         break;
     }
   }

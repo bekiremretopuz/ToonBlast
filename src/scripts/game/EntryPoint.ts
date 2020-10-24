@@ -4,7 +4,6 @@ import { StageController } from "../core/Controller/StageController";
 import { LoaderStage } from "./View/LoaderStage";
 import SoundController from "../core/Controller/SoundController";
 import { ResourceController } from "../core/Controller/ResourceController";
-import { BaseGame } from "./View/BaseGame";
 export module EmreBase {
   export class EntryPoint {
     private static _instance: EntryPoint;
