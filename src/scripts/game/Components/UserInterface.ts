@@ -1,12 +1,12 @@
 import { Text } from "pixi.js";
 import { SimpleSprite2D } from "src/scripts/core/Parts/SimpleSprite2D";
 import { SimpleButton2D } from "src/scripts/core/Parts/SimpleButton2D";
-import { DefaultTextStyle } from "src/scripts/core/GameSettings";
+import { DefaultTextStyle } from "app/Config/GameSettings";
 export class UserInterface extends PIXI.Container {
   private _backgroundImage: SimpleSprite2D;
   private _moveText: Text;
-  private _goalDesc: Text[] = [];
-  private _goalImage: SimpleSprite2D[] = []; 
+  private _goalCount: Text[] = [];
+  private _goalImage: SimpleSprite2D[] = [];
   constructor() {
     super();
     this.awake();
@@ -30,18 +30,20 @@ export class UserInterface extends PIXI.Container {
       this._goalImage[i].scale.set(0.6);
       this.addChild(this._goalImage[i]);
       //Goal Text
-      this._goalDesc[i] = new PIXI.Text("", DefaultTextStyle);
-      this._goalDesc[i].position.set(65 + i * 5, 100);
-      this._goalDesc[i].scale.set(0.9);
-      this._goalImage[i].addChild(this._goalDesc[i]);
+      this._goalCount[i] = new PIXI.Text("", DefaultTextStyle);
+      this._goalCount[i].position.set(68 + i * 5, 105);
+      this._goalCount[i].scale.set(0.9);
+      this._goalImage[i].addChild(this._goalCount[i]);
     }
   }
 
-  public setGoal(value:{ symbol: string; count: number }[]): void {
+  public setGoal(value: { symbol: string; count: number }[]): void {
     //this.clearGoalProp();
     for (let i = 0; i < value.length; i++) {
-      this._goalImage[i].texture = PIXI.Texture.from(value[i].symbol + "_normal");
-      this._goalDesc[i].text = value[i].count.toString();
+      this._goalImage[i].texture = PIXI.Texture.from(
+        value[i].symbol + "_normal"
+      );
+      this._goalCount[i].text = value[i].count.toString();
     }
   }
 
@@ -53,8 +55,8 @@ export class UserInterface extends PIXI.Container {
     for (let i = 0; i < this._goalImage.length; i++) {
       this._goalImage[i].texture = PIXI.Texture.WHITE;
     }
-    for (let i = 0; i < this._goalDesc.length; i++) {
-      this._goalDesc[i].text = "";
+    for (let i = 0; i < this._goalCount.length; i++) {
+      this._goalCount[i].text = "";
     }
   }
   //Button OnClick

@@ -5,8 +5,10 @@ import { GridController } from "src/scripts/game/Controller/GridController";
 import { Scene } from "src/scripts/core/Controller/StageController";
 import { BoyAnimations } from "app/Components/Animations";
 import { GameResultPopup } from "app/Components/GameResultPopup";
+import { Data } from "app/Model/Data";
 export class BaseGame extends Scene {
   private _game: EmreBase.EntryPoint;
+  private _dataController: Data;
   private _animationController: AnimationsController;
   private _uiController: UserInterfaceController;
   private _gridController: GridController;
@@ -17,14 +19,22 @@ export class BaseGame extends Scene {
   }
 
   public awake(): void {
+    //Data controller initiliaze
+    this._dataController = new Data(this._game);
     //Interface control initiliaze
-    this._uiController = new UserInterfaceController(this.gameSettings);
+    this._uiController = new UserInterfaceController(
+      this.gameSettings,
+      this._dataController.getLevel
+    );
     this.addChild(this._uiController);
     //Animation control initiliaze
     this._animationController = new AnimationsController();
     this.addChild(this._animationController);
     //Grid initiliaze
-    this._gridController = new GridController(this.gameSettings);
+    this._gridController = new GridController(
+      this.gameSettings,
+      this._dataController.getLevel
+    );
     this.addChild(this._gridController);
     //Game result initiliaze
     this._gameResult = new GameResultPopup();

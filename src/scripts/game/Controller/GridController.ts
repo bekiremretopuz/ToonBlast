@@ -10,19 +10,24 @@ export class GridController extends PIXI.Container {
   private _grid: Grid;
   private _clusters: clusterType[] = [];
   private _currentSequence: string[][] = [];
-  constructor(private readonly gameSettings: any) {
+  constructor(
+    private readonly gameSettings: any,
+    private readonly level: number
+  ) {
     super();
     this.awake();
   }
 
   private awake(): void {
-    this._currentSequence = this.gameSettings.Levels[0].initialSeqeunce;
+    this._currentSequence = this.gameSettings.Levels[
+      this.level
+    ].initialSeqeunce;
     this._grid = new Grid(this._currentSequence);
     this.addChild(this._grid);
     this._grid.on("animationstatus", this.onGridHandler, this);
     this._grid.createGrid(
-      this.gameSettings.Levels[0].column,
-      this.gameSettings.Levels[0].row
+      this.gameSettings.Levels[this.level].column,
+      this.gameSettings.Levels[this.level].row
     );
     this.updateCurrentSequence();
   }

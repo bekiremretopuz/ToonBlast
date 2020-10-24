@@ -3,7 +3,7 @@ export class UserInterfaceController extends PIXI.Container {
   private _userInterface: UserInterface;
   private _moves: number;
   private _goal: { symbol: string; count: number }[] = [];
-  constructor(private gameSettings: any) {
+  constructor(private gameSettings: any, private readonly level: number) {
     super();
     this.awake();
   }
@@ -11,10 +11,12 @@ export class UserInterfaceController extends PIXI.Container {
   private awake(): void {
     this._userInterface = new UserInterface();
     this._userInterface.on("actiontaken", this.onInterfaceHandler, this);
-    this.setGoals(this.gameSettings.Levels[0].goal);
-    this.setMoves(this.gameSettings.Levels[0].moves);
+    this.setGoals(this.gameSettings.Levels[this.level].goal);
+    this.setMoves(this.gameSettings.Levels[this.level].moves);
     this.addChild(this._userInterface);
   }
+
+
 
   private onInterfaceHandler(action: string): void {
     this.emit("actiontaken", action);
