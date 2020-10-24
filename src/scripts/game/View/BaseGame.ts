@@ -4,11 +4,13 @@ import { EmreBase } from "src/scripts/game/EntryPoint";
 import { GridController } from "src/scripts/game/Controller/GridController";
 import { Scene } from "src/scripts/core/Controller/StageController";
 import { BoyAnimations } from "app/Components/Animations";
+import { GameResultPopup } from "app/Components/GameResultPopup";
 export class BaseGame extends Scene {
   private _game: EmreBase.EntryPoint;
   private _animationController: AnimationsController;
   private _uiController: UserInterfaceController;
   private _gridController: GridController;
+  private _gameResult: GameResultPopup;
   constructor() {
     super();
     this._game = EmreBase.EntryPoint.instance;
@@ -24,6 +26,9 @@ export class BaseGame extends Scene {
     //Grid initiliaze
     this._gridController = new GridController();
     this.addChild(this._gridController);
+    //Game result initiliaze
+    this._gameResult = new GameResultPopup();
+    this.addChild(this._gameResult);
     //Theme music play.
     this._game.sound.play("theme", 1, true);
     //Listen to event.
@@ -33,6 +38,7 @@ export class BaseGame extends Scene {
   private eventListener(): void {
     this._uiController.on("actiontaken", this.onControlEventHandler, this);
     this._gridController.on("animationstatus", this.onGridEventHandler, this);
+    this._gameResult.on("actiontaken", this.onGameResultEventHandler, this);
   }
 
   //UserInterfaceControl Event Handler.
@@ -43,6 +49,14 @@ export class BaseGame extends Scene {
         break;
       case "bla":
         this._game.sound.play("collect", 1, false);
+        break;
+    }
+  }
+
+  private onGameResultEventHandler(action: string, value: string): void {
+    switch (action) {
+      case "restartGame":
+        //RestartGame
         break;
     }
   }

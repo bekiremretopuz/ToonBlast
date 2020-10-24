@@ -28,6 +28,7 @@ export class Grid extends PIXI.Container {
           this.onButtonClick.bind(this, [i, j])
         );
         this._symbol[i][j].type = this.sequence[j][i];
+        this._symbol[i][j].shift = 0;
         this._symbol[i][j].anchor.set(0.5, 0.5);
         this._symbol[i][j].scale.set(0.75, 0.75);
         this._gridContainer.addChild(this._symbol[i][j]);

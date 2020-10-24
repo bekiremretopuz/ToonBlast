@@ -1,7 +1,7 @@
 import { AssetPriority, LoadAsset, PixiAssetsLoader } from "pixi-assets-loader";
 import SoundManager from "./SoundController";
 import { EmreBase } from "src/scripts/game/EntryPoint";
-import { assets } from "../GameSettings";
+import { AssetsList } from "../GameSettings";
 export class ResourceController extends PIXI.utils.EventEmitter {
   private _loader: PixiAssetsLoader;
   private _assetsCount: {
@@ -35,7 +35,7 @@ export class ResourceController extends PIXI.utils.EventEmitter {
   }
 
   public loadAssets(): void {
-    assets.forEach((asset) => {
+    AssetsList.forEach((asset) => {
       if (!this._assetsCount[asset.priority]) {
         this._assetsCount[asset.priority] = { total: 1, progress: 0 };
       } else {
@@ -44,7 +44,7 @@ export class ResourceController extends PIXI.utils.EventEmitter {
     });
 
     this._loadingProgress = 0;
-    this._totalAssets = assets.length;
+    this._totalAssets = AssetsList.length;
     this._loader = new PixiAssetsLoader();
     this._loader.on(
       PixiAssetsLoader.PRIORITY_GROUP_LOADED,
@@ -58,7 +58,7 @@ export class ResourceController extends PIXI.utils.EventEmitter {
       PixiAssetsLoader.ASSET_ERROR,
       this.onAssetsError.bind(this)
     );
-    this._loader.addAssets(assets).load();
+    this._loader.addAssets(AssetsList).load();
   }
   private onAssetsProgress(args: { priority: number; progress: number }): void {
     const percentFactor =

@@ -61,10 +61,8 @@ export class LoaderStage extends Scene {
   }
 
   public clickAndStartGame(): void {
-    this._startGameText = new PIXI.Text(
-      "TAP ANYWHERE TO START",
-      DefaultTextStyle
-    );
+    const text = "TAP ANYWHERE TO START";
+    this._startGameText = new PIXI.Text(text, DefaultTextStyle);
     this._startGameText.anchor.set(0.5, 0.5);
     this._startGameText.scale.set(0.9, 0.9);
     this._startGameText.position.set(374, 1150);
