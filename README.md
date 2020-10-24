@@ -1,7 +1,4 @@
-# README #
-Author
-Bekir Emre Topuz 
-### How do I get set up? ###
-* clone repo
-* npm install  
-* npm start  
+# ToonBlast
+Peak Games Interview Task
+npm install & npm start
+localhost:9000

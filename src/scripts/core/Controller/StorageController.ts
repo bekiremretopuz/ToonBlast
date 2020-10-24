@@ -1,4 +1,4 @@
-export class LocalStorage extends PIXI.utils.EventEmitter {
+export class StorageController extends PIXI.utils.EventEmitter {
   private _localStorage: any;
 
   constructor() {

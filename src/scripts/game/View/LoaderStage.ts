@@ -1,14 +1,12 @@
-import { TweenMax, Power0 } from "gsap";
-import { Scene } from "app/Helper/StageManager";
-import { AssetsLoader } from "app/Helper/AssetsLoader";
-import { EmreBase } from "app/EntryPoint";
-
+import { ResourceController } from "src/scripts/core/Controller/ResourceController";
+import { Scene } from "src/scripts/core/Controller/StageController";
+import { EmreBase } from "src/scripts/game/EntryPoint";
 import { BaseGame } from "./BaseGame";
 
 export class LoaderStage extends Scene {
   //If a class is taken extends from the Scene, that class has to contain two functions.(awake, killScene)
   private _backgroundImageDefault: PIXI.Graphics;
-  private _assetLoader: AssetsLoader; // Asset loader utils.
+  private _assetLoader: ResourceController; // Asset loader utils.
   private _loadingSprite: PIXI.Sprite;
   private _loadingProgressText: PIXI.Text;
   private _game: EmreBase.EntryPoint;
@@ -37,7 +35,7 @@ export class LoaderStage extends Scene {
     this._loadingProgressText.position.set(640, 378);
     this._loadingProgressText.visible = true;
     this.addChild(this._loadingProgressText);
-    this._assetLoader = new AssetsLoader();
+    this._assetLoader = new ResourceController();
     this._assetLoader.on("completeLoadHighAsset", this.loadingAnimation, this);
     this._assetLoader.on("completeLoadAsset", this.completeLoadAsset, this);
     //Init localStorage set default.
@@ -61,7 +59,7 @@ export class LoaderStage extends Scene {
     // });
   }
 
-  public get assetsLoader(): AssetsLoader {
+  public get assetsLoader(): ResourceController {
     return this._assetLoader;
   }
 

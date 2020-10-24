@@ -1,9 +1,8 @@
-import { Scene } from "app/Helper/StageManager";
-import { AnimationsController } from "app/Controller/AnimationsController";
-import { UserInterfaceController } from "app/Controller/UserInterfaceController";
-import { EmreBase } from "app/EntryPoint";
-import { GridController } from "app/Controller/GridController";
-import { Grid } from "app/Components/Grid";
+import { AnimationsController } from "src/scripts/game/Controller/AnimationsController";
+import { UserInterfaceController } from "src/scripts/game/Controller/UserInterfaceController";
+import { EmreBase } from "src/scripts/game/EntryPoint";
+import { GridController } from "src/scripts/game/Controller/GridController";
+import { Scene } from "src/scripts/core/Controller/StageController";
 export class BaseGame extends Scene {
   private _game: EmreBase.EntryPoint;
   private _animationController: AnimationsController;
@@ -11,8 +10,8 @@ export class BaseGame extends Scene {
   private _gridController: GridController;
   constructor() {
     super();
-    this._game = EmreBase.EntryPoint.instance; 
-  } 
+    this._game = EmreBase.EntryPoint.instance;
+  }
 
   public awake(): void {
     //Interface control initiliaze
@@ -23,7 +22,7 @@ export class BaseGame extends Scene {
     this.addChild(this._animationController);
     //Grid initiliaze
     this._gridController = new GridController();
-    this.addChild(this._gridController);;
+    this.addChild(this._gridController);
     //Theme music play.
     this._game.sound.play("theme", 1, true);
     //Listen to event.

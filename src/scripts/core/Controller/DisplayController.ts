@@ -4,7 +4,7 @@ import {
   pixiAppWrapperEvent as WrapperEvent,
   PixiAppWrapperOptions as WrapperOpts,
 } from "pixi-app-wrapper";
-export class DisplayManager extends PIXI.utils.EventEmitter {
+export class DisplayController extends PIXI.utils.EventEmitter {
   private _app: Wrapper;
   private _rootContainer: PIXI.Container;
   constructor(rootContainer: PIXI.Container) {
@@ -21,7 +21,7 @@ export class DisplayManager extends PIXI.utils.EventEmitter {
     const appOptions: WrapperOpts = {
       width: 750,
       height: 1334,
-      scale: "full-size",
+      scale: "keep-aspect-ratio",
       align: "top-center",
       resolution: window.devicePixelRatio || 1,
       antialias: true,

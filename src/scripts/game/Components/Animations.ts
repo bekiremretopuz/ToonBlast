@@ -1,6 +1,6 @@
 import "pixi-spine";
-import { EmreBase } from "app/EntryPoint";
-import { SequenceAnimation } from "app/Display/SequenceAnimation";
+import { EmreBase } from "src/scripts/game/EntryPoint";
+import { SequenceAnimation } from "src/scripts/core/Parts/SequenceAnimation";
 enum BoyAnimations {
   Walk = "walk",
   Jump = "jump",

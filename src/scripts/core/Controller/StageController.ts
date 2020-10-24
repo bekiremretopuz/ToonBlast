@@ -2,7 +2,7 @@ export abstract class Scene extends PIXI.Container {
   public abstract awake(...args: any[]): void;
   public abstract killScene(...args: any[]): void;
 }
-export class StageManager extends PIXI.utils.EventEmitter {
+export class StageController extends PIXI.utils.EventEmitter {
   private _rootContainer: PIXI.Container = new PIXI.Container();
   private _scenes: any = {};
   private _currentStage: Scene;

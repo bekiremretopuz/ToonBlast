@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,18 +70,18 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var LoaderStage_1 = __webpack_require__(12);
-var LocalStorage_1 = __webpack_require__(34);
-var StageManager_1 = __webpack_require__(1);
-var DisplayManager_1 = __webpack_require__(35);
+var DisplayController_1 = __webpack_require__(14);
+var StorageController_1 = __webpack_require__(35);
+var StageController_1 = __webpack_require__(2);
+var LoaderStage_1 = __webpack_require__(36);
 var EmreBase;
 (function (EmreBase) {
     var EntryPoint = (function () {
         function EntryPoint() {
             EntryPoint._instance = this;
-            this._stageManager = new StageManager_1.StageManager();
-            this._displayManager = new DisplayManager_1.DisplayManager(this._stageManager.root);
-            this._localStorage = new LocalStorage_1.LocalStorage();
+            this._stageManager = new StageController_1.StageController();
+            this._displayManager = new DisplayController_1.DisplayController(this._stageManager.root);
+            this._localStorage = new StorageController_1.StorageController();
             this._loader = new LoaderStage_1.LoaderStage();
             this._displayManager.create();
             this._stageManager.createScene("LoaderStage", this._loader);
@@ -141,6 +141,21 @@ var EmreBase;
 
 "use strict";
 
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(15));
+__export(__webpack_require__(33));
+__export(__webpack_require__(34));
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -160,9 +175,9 @@ var Scene = (function (_super) {
     return Scene;
 }(PIXI.Container));
 exports.Scene = Scene;
-var StageManager = (function (_super) {
-    __extends(StageManager, _super);
-    function StageManager() {
+var StageController = (function (_super) {
+    __extends(StageController, _super);
+    function StageController() {
         var _this = _super.call(this) || this;
         _this._rootContainer = new PIXI.Container();
         _this._scenes = {};
@@ -177,7 +192,7 @@ var StageManager = (function (_super) {
         _this._rootContainer.mask = _this._gameMask;
         return _this;
     }
-    StageManager.prototype.createScene = function (id, TScene) {
+    StageController.prototype.createScene = function (id, TScene) {
         if (this._scenes[id])
             return undefined;
         var scene = TScene;
@@ -185,7 +200,7 @@ var StageManager = (function (_super) {
         this._rootContainer.addChild(this._scenes[id]);
         return scene;
     };
-    StageManager.prototype.goToScene = function (id, reset) {
+    StageController.prototype.goToScene = function (id, reset) {
         if (this._scenes[id]) {
             if (this._currentStage) {
                 if (reset) {
@@ -203,27 +218,27 @@ var StageManager = (function (_super) {
         }
         return false;
     };
-    Object.defineProperty(StageManager.prototype, "scenes", {
+    Object.defineProperty(StageController.prototype, "scenes", {
         get: function () {
             return this._scenes;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(StageManager.prototype, "root", {
+    Object.defineProperty(StageController.prototype, "root", {
         get: function () {
             return this._rootContainer;
         },
         enumerable: true,
         configurable: true
     });
-    return StageManager;
+    return StageController;
 }(PIXI.utils.EventEmitter));
-exports.StageManager = StageManager;
+exports.StageController = StageController;
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -329,21 +344,6 @@ function compareToEquals(compareFunction) {
     };
 }
 exports.compareToEquals = compareToEquals;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(36));
-__export(__webpack_require__(55));
-__export(__webpack_require__(56));
 
 
 /***/ }),
@@ -691,6 +691,30 @@ if (true) {
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Maths = (function () {
+    function Maths() {
+    }
+    Maths.gcd = function (n, m) {
+        var r = 0;
+        while (n !== 0) {
+            r = m % n;
+            m = n;
+            n = r;
+        }
+        return m;
+    };
+    return Maths;
+}());
+exports.Maths = Maths;
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
 var g;
@@ -717,26 +741,148 @@ module.exports = g;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(7);
+exports.DefaultTextStyle = {
+    fontFamily: "Topaz-8-remake",
+    fontSize: 42,
+    fill: "#1f140a",
+    align: "center",
+    stroke: "#cecece",
+    strokeThickness: 3,
+};
+exports.INITIAL_SEQ = [
+    [
+        "solid1",
+        "solid1",
+        "solid3",
+        "solid1",
+        "solid4",
+        "solid3",
+        "solid2",
+        "solid1",
+        "solid4",
+    ],
+    [
+        "solid2",
+        "solid3",
+        "solid2",
+        "solid4",
+        "solid2",
+        "solid1",
+        "solid4",
+        "solid2",
+        "solid2",
+    ],
+    [
+        "solid3",
+        "solid2",
+        "solid1",
+        "solid3",
+        "solid3",
+        "solid2",
+        "solid1",
+        "solid4",
+        "solid3",
+    ],
+    [
+        "solid1",
+        "solid4",
+        "solid4",
+        "solid2",
+        "solid4",
+        "solid4",
+        "solid2",
+        "solid1",
+        "solid4",
+    ],
+    [
+        "solid4",
+        "solid1",
+        "solid1",
+        "solid4",
+        "solid3",
+        "solid1",
+        "solid2",
+        "solid2",
+        "solid1",
+    ],
+    [
+        "solid3",
+        "solid3",
+        "solid2",
+        "solid2",
+        "solid1",
+        "solid3",
+        "solid3",
+        "solid3",
+        "solid2",
+    ],
+    [
+        "solid2",
+        "solid2",
+        "solid3",
+        "solid1",
+        "solid2",
+        "solid3",
+        "solid4",
+        "solid3",
+        "solid2",
+    ],
+    [
+        "solid4",
+        "solid1",
+        "solid3",
+        "solid4",
+        "solid1",
+        "solid4",
+        "solid1",
+        "solid1",
+        "solid3",
+    ],
+    [
+        "solid1",
+        "solid4",
+        "solid4",
+        "solid3",
+        "solid2",
+        "solid1",
+        "solid2",
+        "solid2",
+        "solid4",
+    ],
+];
+exports.GameProperty = {
+    colums: 9,
+    row: 9,
+};
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+__webpack_require__(9);
 var EntryPoint_1 = __webpack_require__(0);
 new EntryPoint_1.EmreBase.EntryPoint();
 window.Game = EntryPoint_1.EmreBase;
 
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(8);
+var content = __webpack_require__(10);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -744,14 +890,14 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(10)(content, options);
+var update = __webpack_require__(12)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/typings-for-css-modules-loader/lib/index.js??ref--2-1!./style.css", function() {
-			var newContent = require("!!../../node_modules/typings-for-css-modules-loader/lib/index.js??ref--2-1!./style.css");
+		module.hot.accept("!!../../../node_modules/typings-for-css-modules-loader/lib/index.js??ref--2-1!./style.css", function() {
+			var newContent = require("!!../../../node_modules/typings-for-css-modules-loader/lib/index.js??ref--2-1!./style.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -761,10 +907,10 @@ if(false) {
 }
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(9)(false);
+exports = module.exports = __webpack_require__(11)(false);
 // imports
 
 
@@ -775,7 +921,7 @@ exports.push([module.i, "* {\n    padding: 0;\n    margin: 0;\n}\n\nhtml {\n    
 
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports) {
 
 /*
@@ -857,7 +1003,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -913,7 +1059,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(11);
+var	fixUrls = __webpack_require__(13);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1229,7 +1375,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports) {
 
 
@@ -1324,7 +1470,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1340,10 +1486,2552 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var StageManager_1 = __webpack_require__(1);
-var AssetsLoader_1 = __webpack_require__(13);
+var pixi_app_wrapper_1 = __webpack_require__(1);
+var DisplayController = (function (_super) {
+    __extends(DisplayController, _super);
+    function DisplayController(rootContainer) {
+        var _this = _super.call(this) || this;
+        _this._rootContainer = rootContainer;
+        return _this;
+    }
+    DisplayController.prototype.create = function () {
+        var canvas = pixi_app_wrapper_1.Dom.getElementOrCreateNew("app-canvas", "canvas", document.getElementById("app-root"));
+        var appOptions = {
+            width: 750,
+            height: 1334,
+            scale: "keep-aspect-ratio",
+            align: "top-center",
+            resolution: window.devicePixelRatio || 1,
+            antialias: true,
+            roundPixels: true,
+            transparent: false,
+            backgroundColor: 0x000000,
+            view: canvas,
+            showFPS: false,
+            showMediaInfo: false,
+            changeOrientation: false,
+        };
+        this._app = new pixi_app_wrapper_1.PixiAppWrapper(appOptions);
+        this._app.on(pixi_app_wrapper_1.pixiAppWrapperEvent.RESIZE_END, this.onResizeEnd.bind(this));
+        this._rootContainer.name = "RootContainer";
+        this._app.stage.addChild(this._rootContainer);
+    };
+    DisplayController.prototype.onResizeEnd = function (args) {
+        this.emit("resize", args.stage.size.width, args.stage.size.height);
+        if (args.stage.orientation.changed) {
+            this.emit("orientationchange", args.stage.orientation.landscape);
+        }
+    };
+    return DisplayController;
+}(PIXI.utils.EventEmitter));
+exports.DisplayController = DisplayController;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventEmitter = __webpack_require__(4);
+__webpack_require__(16);
+var pixi_app_wrapper_1 = __webpack_require__(1);
+__webpack_require__(17);
+var PIXI = __webpack_require__(18);
+var screenfull = __webpack_require__(19);
+var media_info_viewer_1 = __webpack_require__(20);
+var align_bottom_center_1 = __webpack_require__(21);
+var align_bottom_left_1 = __webpack_require__(22);
+var align_bottom_right_1 = __webpack_require__(23);
+var align_middle_1 = __webpack_require__(24);
+var align_middle_left_1 = __webpack_require__(25);
+var align_middle_right_1 = __webpack_require__(26);
+var align_top_center_1 = __webpack_require__(27);
+var align_top_left_1 = __webpack_require__(28);
+var align_top_right_1 = __webpack_require__(29);
+var scale_full_size_1 = __webpack_require__(30);
+var scale_keep_aspect_ratio_1 = __webpack_require__(31);
+var scale_none_1 = __webpack_require__(32);
+var PixiAppWrapper = (function (_super) {
+    __extends(PixiAppWrapper, _super);
+    function PixiAppWrapper(options) {
+        var _this = _super.call(this) || this;
+        _this.defaultScaleMethod = "none";
+        _this.defaultAlignMethod = "top-left";
+        _this.defaultOptions = {
+            width: 1280,
+            height: 720,
+            scale: _this.defaultScaleMethod,
+            align: _this.defaultAlignMethod,
+            showFPS: false,
+            showMediaInfo: false,
+        };
+        _this.fpsmeterOptions = {
+            theme: "transparent",
+            heat: 1,
+            graph: 1,
+            history: 20,
+            zIndex: 100,
+        };
+        if (!options) {
+            options = _this.defaultOptions;
+        }
+        _this.resizing = false;
+        _this.mediaInfoViewer = new media_info_viewer_1.MediaInfoViewer();
+        _this.app = new PIXI.Application(options);
+        _this.app.stage = new PIXI.display.Stage();
+        _this.configure(options);
+        _this.appOptions = options;
+        _this.resize.bind(_this);
+        _this.ticker.add(_this.resize.bind(_this));
+        return _this;
+    }
+    PixiAppWrapper.toggleFulscreen = function (element) {
+        var target = element ? element : document.documentElement;
+        if (screenfull.enabled) {
+            screenfull.toggle(target);
+        }
+    };
+    Object.defineProperty(PixiAppWrapper.prototype, "initialHeight", {
+        get: function () {
+            return this.height;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PixiAppWrapper.prototype, "initialWidth", {
+        get: function () {
+            return this.width;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PixiAppWrapper.prototype, "stage", {
+        get: function () {
+            return this.app.stage;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PixiAppWrapper.prototype, "ticker", {
+        get: function () {
+            return this.app.ticker;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PixiAppWrapper.prototype, "renderer", {
+        get: function () {
+            return this.app.renderer;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PixiAppWrapper.prototype, "screen", {
+        get: function () {
+            return this.app.screen;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PixiAppWrapper.prototype, "view", {
+        get: function () {
+            return this.app.view;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    PixiAppWrapper.prototype.getMediaInfo = function () {
+        return {
+            display: {
+                screen: {
+                    width: this.screen.width,
+                    height: this.screen.height,
+                },
+                view: {
+                    width: this.view.clientWidth,
+                    height: this.view.clientHeight,
+                },
+                stage: {
+                    x: this.stage.x,
+                    y: this.stage.y,
+                    initialWidth: this.initialWidth,
+                    initialHeight: this.initialHeight,
+                    currentWidth: Math.ceil(this.initialWidth * this.stage.scale.x),
+                    currentHeight: Math.ceil(this.initialHeight * this.stage.scale.y),
+                    scaleX: this.stage.scale.x.toFixed(2),
+                    scaleY: this.stage.scale.y.toFixed(2),
+                    scaling: this.appOptions.scale ? this.appOptions.scale.valueOf() : this.defaultScaleMethod,
+                    alignment: this.appOptions.align ? this.appOptions.align.valueOf() : this.defaultAlignMethod,
+                    orientation: this.landscape ? "landscape" : "portrait",
+                },
+            },
+        };
+    };
+    PixiAppWrapper.prototype.configure = function (options) {
+        this.width = options.width;
+        this.height = options.height;
+        this.landscape = (this.width >= this.height);
+        switch (options.align) {
+            case "top-center":
+                this.alignStrategy = new align_top_center_1.AlignTopCenter();
+                break;
+            case "top-right":
+                this.alignStrategy = new align_top_right_1.AlignTopRight();
+                break;
+            case "middle-left":
+                this.alignStrategy = new align_middle_left_1.AlignMiddleLeft();
+                break;
+            case "middle":
+                this.alignStrategy = new align_middle_1.AlignMiddle();
+                break;
+            case "middle-right":
+                this.alignStrategy = new align_middle_right_1.AlignMiddleRight();
+                break;
+            case "bottom-left":
+                this.alignStrategy = new align_bottom_left_1.AlignBottomLeft();
+                break;
+            case "bottom-center":
+                this.alignStrategy = new align_bottom_center_1.AlignBottomCenter();
+                break;
+            case "bottom-right":
+                this.alignStrategy = new align_bottom_right_1.AlignBottomRight();
+                break;
+            default:
+                this.alignStrategy = new align_top_left_1.AlignTopLeft();
+                break;
+        }
+        switch (options.scale) {
+            case "keep-aspect-ratio":
+                this.scaleStrategy = new scale_keep_aspect_ratio_1.ScaleKeepAspectRatio();
+                break;
+            case "full-size":
+                this.scaleStrategy = new scale_full_size_1.ScaleFullSize();
+                break;
+            default:
+                this.scaleStrategy = new scale_none_1.ScaleNone();
+                break;
+        }
+        if (options.showFPS) {
+            this.createFPSmeter();
+        }
+        if (!options.showMediaInfo) {
+            this.mediaInfoViewer.hide();
+        }
+        if (!options.view) {
+            document.body.appendChild(this.app.view);
+        }
+    };
+    PixiAppWrapper.prototype.createFPSmeter = function () {
+        this.fpsmeter = new FPSMeter(pixi_app_wrapper_1.Dom.getElementOrBody("fps-meter"), this.fpsmeterOptions);
+        this.ticker.add(this.fpsmeter.tick);
+        this.fpsmeter.show();
+    };
+    PixiAppWrapper.prototype.resize = function () {
+        var multiplier = this.renderer.options.resolution || 1;
+        var width = Math.floor(this.view.clientWidth * multiplier);
+        var height = Math.floor(this.view.clientHeight * multiplier);
+        if (!this.resizing && (this.view.width !== width || this.view.height !== height)) {
+            this.resizing = true;
+            this.emit(pixi_app_wrapper_1.pixiAppWrapperEvent.RESIZE_START);
+            this.renderer.resize(this.view.clientWidth, this.view.clientHeight);
+            var orientationChanged = this.orientate();
+            this.scale();
+            this.align();
+            this.mediaInfoViewer.update(this.getMediaInfo());
+            this.resizing = false;
+            this.emit(pixi_app_wrapper_1.pixiAppWrapperEvent.RESIZE_END, {
+                stage: {
+                    position: {
+                        x: this.stage.position.x,
+                        y: this.stage.position.y,
+                    },
+                    scale: {
+                        x: this.stage.scale.x,
+                        y: this.stage.scale.y,
+                    },
+                    size: {
+                        width: this.initialWidth * this.stage.scale.x,
+                        height: this.initialHeight * this.stage.scale.y,
+                    },
+                    orientation: {
+                        landscape: this.landscape,
+                        changed: orientationChanged,
+                    },
+                },
+                view: {
+                    width: this.view.width,
+                    height: this.view.height,
+                },
+            });
+        }
+    };
+    PixiAppWrapper.prototype.orientate = function () {
+        var changed = false;
+        if (this.appOptions.changeOrientation) {
+            if (this.landscape && this.view.clientHeight > this.view.clientWidth) {
+                changed = true;
+                this.landscape = false;
+            }
+            else if (!this.landscape && this.view.clientWidth > this.view.clientHeight) {
+                changed = true;
+                this.landscape = true;
+            }
+        }
+        return changed;
+    };
+    PixiAppWrapper.prototype.swapSize = function () {
+        var tempW = this.width;
+        this.width = this.height;
+        this.height = tempW;
+    };
+    PixiAppWrapper.prototype.scale = function () {
+        var _a = this.scaleStrategy.scale(this.initialWidth, this.initialHeight, this.view.clientWidth, this.view.clientHeight), scaleX = _a.scaleX, scaleY = _a.scaleY;
+        this.stage.scale.set(scaleX, scaleY);
+    };
+    PixiAppWrapper.prototype.align = function () {
+        var _a = this.alignStrategy.align(this.initialWidth * this.stage.scale.x, this.initialHeight * this.stage.scale.y, this.view.clientWidth, this.view.clientHeight), x = _a.x, y = _a.y;
+        this.stage.position.set(x, y);
+    };
+    return PixiAppWrapper;
+}(EventEmitter));
+exports.PixiAppWrapper = PixiAppWrapper;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+/*!
+ * FPSMeter 0.3.1 - 9th May 2013
+ * https://github.com/Darsain/fpsmeter
+ *
+ * Licensed under the MIT license.
+ * http://opensource.org/licenses/MIT
+ */
+;(function (w, undefined) {
+	'use strict';
+
+	/**
+	 * Create a new element.
+	 *
+	 * @param  {String} name Element type name.
+	 *
+	 * @return {Element}
+	 */
+	function newEl(name) {
+		return document.createElement(name);
+	}
+
+	/**
+	 * Apply theme CSS properties to element.
+	 *
+	 * @param  {Element} element DOM element.
+	 * @param  {Object}  theme   Theme object.
+	 *
+	 * @return {Element}
+	 */
+	function applyTheme(element, theme) {
+		for (var name in theme) {
+			try {
+				element.style[name] = theme[name];
+			} catch (e) {}
+		}
+		return element;
+	}
+
+	/**
+	 * Return type of the value.
+	 *
+	 * @param  {Mixed} value
+	 *
+	 * @return {String}
+	 */
+	function type(value) {
+		if (value == null) {
+			return String(value);
+		}
+
+		if (typeof value === 'object' || typeof value === 'function') {
+			return Object.prototype.toString.call(value).match(/\s([a-z]+)/i)[1].toLowerCase() || 'object';
+		}
+
+		return typeof value;
+	}
+
+	/**
+	 * Check whether the value is in an array.
+	 *
+	 * @param  {Mixed} value
+	 * @param  {Array} array
+	 *
+	 * @return {Integer} Array index or -1 when not found.
+	 */
+	function inArray(value, array) {
+		if (type(array) !== 'array') {
+			return -1;
+		}
+		if (array.indexOf) {
+			return array.indexOf(value);
+		}
+		for (var i = 0, l = array.length; i < l; i++) {
+			if (array[i] === value) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * Poor man's deep object extend.
+	 *
+	 * Example:
+	 *   extend({}, defaults, options);
+	 *
+	 * @return {Void}
+	 */
+	function extend() {
+		var args = arguments;
+		for (var key in args[1]) {
+			if (args[1].hasOwnProperty(key)) {
+				switch (type(args[1][key])) {
+					case 'object':
+						args[0][key] = extend({}, args[0][key], args[1][key]);
+						break;
+
+					case 'array':
+						args[0][key] = args[1][key].slice(0);
+						break;
+
+					default:
+						args[0][key] = args[1][key];
+				}
+			}
+		}
+		return args.length > 2 ?
+			extend.apply(null, [args[0]].concat(Array.prototype.slice.call(args, 2))) :
+			args[0];
+	}
+
+	/**
+	 * Convert HSL color to HEX string.
+	 *
+	 * @param  {Array} hsl Array with [hue, saturation, lightness].
+	 *
+	 * @return {Array} Array with [red, green, blue].
+	 */
+	function hslToHex(h, s, l) {
+		var r, g, b;
+		var v, min, sv, sextant, fract, vsf;
+
+		if (l <= 0.5) {
+			v = l * (1 + s);
+		} else {
+			v = l + s - l * s;
+		}
+
+		if (v === 0) {
+			return '#000';
+		} else {
+			min = 2 * l - v;
+			sv = (v - min) / v;
+			h = 6 * h;
+			sextant = Math.floor(h);
+			fract = h - sextant;
+			vsf = v * sv * fract;
+			if (sextant === 0 || sextant === 6) {
+				r = v;
+				g = min + vsf;
+				b = min;
+			} else if (sextant === 1) {
+				r = v - vsf;
+				g = v;
+				b = min;
+			} else if (sextant === 2) {
+				r = min;
+				g = v;
+				b = min + vsf;
+			} else if (sextant === 3) {
+				r = min;
+				g = v - vsf;
+				b = v;
+			} else if (sextant === 4) {
+				r = min + vsf;
+				g = min;
+				b = v;
+			} else {
+				r = v;
+				g = min;
+				b = v - vsf;
+			}
+			return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+		}
+	}
+
+	/**
+	 * Helper function for hslToHex.
+	 */
+	function componentToHex(c) {
+		c = Math.round(c * 255).toString(16);
+		return c.length === 1 ? '0' + c : c;
+	}
+
+	/**
+	 * Manage element event listeners.
+	 *
+	 * @param  {Node}     element
+	 * @param  {Event}    eventName
+	 * @param  {Function} handler
+	 * @param  {Bool}     remove
+	 *
+	 * @return {Void}
+	 */
+	function listener(element, eventName, handler, remove) {
+		if (element.addEventListener) {
+			element[remove ? 'removeEventListener' : 'addEventListener'](eventName, handler, false);
+		} else if (element.attachEvent) {
+			element[remove ? 'detachEvent' : 'attachEvent']('on' + eventName, handler);
+		}
+	}
+
+	// Preferred timing funtion
+	var getTime;
+	(function () {
+		var perf = w.performance;
+		if (perf && (perf.now || perf.webkitNow)) {
+			var perfNow = perf.now ? 'now' : 'webkitNow';
+			getTime = perf[perfNow].bind(perf);
+		} else {
+			getTime = function () {
+				return +new Date();
+			};
+		}
+	}());
+
+	// Local WindowAnimationTiming interface polyfill
+	var cAF = w.cancelAnimationFrame || w.cancelRequestAnimationFrame;
+	var rAF = w.requestAnimationFrame;
+	(function () {
+		var vendors = ['moz', 'webkit', 'o'];
+		var lastTime = 0;
+
+		// For a more accurate WindowAnimationTiming interface implementation, ditch the native
+		// requestAnimationFrame when cancelAnimationFrame is not present (older versions of Firefox)
+		for (var i = 0, l = vendors.length; i < l && !cAF; ++i) {
+			cAF = w[vendors[i]+'CancelAnimationFrame'] || w[vendors[i]+'CancelRequestAnimationFrame'];
+			rAF = cAF && w[vendors[i]+'RequestAnimationFrame'];
+		}
+
+		if (!cAF) {
+			rAF = function (callback) {
+				var currTime = getTime();
+				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+				lastTime = currTime + timeToCall;
+				return w.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall);
+			};
+
+			cAF = function (id) {
+				clearTimeout(id);
+			};
+		}
+	}());
+
+	// Property name for assigning element text content
+	var textProp = type(document.createElement('div').textContent) === 'string' ? 'textContent' : 'innerText';
+
+	/**
+	 * FPSMeter class.
+	 *
+	 * @param {Element} anchor  Element to append the meter to. Default is document.body.
+	 * @param {Object}  options Object with options.
+	 */
+	function FPSMeter(anchor, options) {
+		// Optional arguments
+		if (type(anchor) === 'object' && anchor.nodeType === undefined) {
+			options = anchor;
+			anchor = document.body;
+		}
+		if (!anchor) {
+			anchor = document.body;
+		}
+
+		// Private properties
+		var self = this;
+		var o = extend({}, FPSMeter.defaults, options || {});
+
+		var el = {};
+		var cols = [];
+		var theme, heatmaps;
+		var heatDepth = 100;
+		var heating = [];
+
+		var thisFrameTime = 0;
+		var frameTime = o.threshold;
+		var frameStart = 0;
+		var lastLoop = getTime() - frameTime;
+		var time;
+
+		var fpsHistory = [];
+		var durationHistory = [];
+
+		var frameID, renderID;
+		var showFps = o.show === 'fps';
+		var graphHeight, count, i, j;
+
+		// Exposed properties
+		self.options = o;
+		self.fps = 0;
+		self.duration = 0;
+		self.isPaused = 0;
+
+		/**
+		 * Tick start for measuring the actual rendering duration.
+		 *
+		 * @return {Void}
+		 */
+		self.tickStart = function () {
+			frameStart = getTime();
+		};
+
+		/**
+		 * FPS tick.
+		 *
+		 * @return {Void}
+		 */
+		self.tick = function () {
+			time = getTime();
+			thisFrameTime = time - lastLoop;
+			frameTime += (thisFrameTime - frameTime) / o.smoothing;
+			self.fps = 1000 / frameTime;
+			self.duration = frameStart < lastLoop ? frameTime : time - frameStart;
+			lastLoop = time;
+		};
+
+		/**
+		 * Pause display rendering.
+		 *
+		 * @return {Object} FPSMeter instance.
+		 */
+		self.pause = function () {
+			if (frameID) {
+				self.isPaused = 1;
+				clearTimeout(frameID);
+				cAF(frameID);
+				cAF(renderID);
+				frameID = renderID = 0;
+			}
+			return self;
+		};
+
+		/**
+		 * Resume display rendering.
+		 *
+		 * @return {Object} FPSMeter instance.
+		 */
+		self.resume = function () {
+			if (!frameID) {
+				self.isPaused = 0;
+				requestRender();
+			}
+			return self;
+		};
+
+		/**
+		 * Update options.
+		 *
+		 * @param {String} name  Option name.
+		 * @param {Mixed}  value New value.
+		 *
+		 * @return {Object} FPSMeter instance.
+		 */
+		self.set = function (name, value) {
+			o[name] = value;
+			showFps = o.show === 'fps';
+
+			// Rebuild or reposition elements when specific option has been updated
+			if (inArray(name, rebuilders) !== -1) {
+				createMeter();
+			}
+			if (inArray(name, repositioners) !== -1) {
+				positionMeter();
+			}
+			return self;
+		};
+
+		/**
+		 * Change meter into rendering duration mode.
+		 *
+		 * @return {Object} FPSMeter instance.
+		 */
+		self.showDuration = function () {
+			self.set('show', 'ms');
+			return self;
+		};
+
+		/**
+		 * Change meter into FPS mode.
+		 *
+		 * @return {Object} FPSMeter instance.
+		 */
+		self.showFps = function () {
+			self.set('show', 'fps');
+			return self;
+		};
+
+		/**
+		 * Toggles between show: 'fps' and show: 'duration'.
+		 *
+		 * @return {Object} FPSMeter instance.
+		 */
+		self.toggle = function () {
+			self.set('show', showFps ? 'ms' : 'fps');
+			return self;
+		};
+
+		/**
+		 * Hide the FPSMeter. Also pauses the rendering.
+		 *
+		 * @return {Object} FPSMeter instance.
+		 */
+		self.hide = function () {
+			self.pause();
+			el.container.style.display = 'none';
+			return self;
+		};
+
+		/**
+		 * Show the FPSMeter. Also resumes the rendering.
+		 *
+		 * @return {Object} FPSMeter instance.
+		 */
+		self.show = function () {
+			self.resume();
+			el.container.style.display = 'block';
+			return self;
+		};
+
+		/**
+		 * Check the current FPS and save it in history.
+		 *
+		 * @return {Void}
+		 */
+		function historyTick() {
+			for (i = o.history; i--;) {
+				fpsHistory[i] = i === 0 ? self.fps : fpsHistory[i-1];
+				durationHistory[i] = i === 0 ? self.duration : durationHistory[i-1];
+			}
+		}
+
+		/**
+		 * Returns heat hex color based on values passed.
+		 *
+		 * @param  {Integer} heatmap
+		 * @param  {Integer} value
+		 * @param  {Integer} min
+		 * @param  {Integer} max
+		 *
+		 * @return {Integer}
+		 */
+		function getHeat(heatmap, value, min, max) {
+			return heatmaps[0|heatmap][Math.round(Math.min((value - min) / (max - min) * heatDepth, heatDepth))];
+		}
+
+		/**
+		 * Update counter number and legend.
+		 *
+		 * @return {Void}
+		 */
+		function updateCounter() {
+			// Update legend only when changed
+			if (el.legend.fps !== showFps) {
+				el.legend.fps = showFps;
+				el.legend[textProp] = showFps ? 'FPS' : 'ms';
+			}
+			// Update counter with a nicely formated & readable number
+			count = showFps ? self.fps : self.duration;
+			el.count[textProp] = count > 999 ? '999+' : count.toFixed(count > 99 ? 0 : o.decimals);
+		}
+
+		/**
+		 * Render current FPS state.
+		 *
+		 * @return {Void}
+		 */
+		function render() {
+			time = getTime();
+			// If renderer stopped reporting, do a simulated drop to 0 fps
+			if (lastLoop < time - o.threshold) {
+				self.fps -= self.fps / Math.max(1, o.smoothing * 60 / o.interval);
+				self.duration = 1000 / self.fps;
+			}
+
+			historyTick();
+			updateCounter();
+
+			// Apply heat to elements
+			if (o.heat) {
+				if (heating.length) {
+					for (i = heating.length; i--;) {
+						heating[i].el.style[theme[heating[i].name].heatOn] = showFps ?
+							getHeat(theme[heating[i].name].heatmap, self.fps, 0, o.maxFps) :
+							getHeat(theme[heating[i].name].heatmap, self.duration, o.threshold, 0);
+					}
+				}
+
+				if (el.graph && theme.column.heatOn) {
+					for (i = cols.length; i--;) {
+						cols[i].style[theme.column.heatOn] = showFps ?
+							getHeat(theme.column.heatmap, fpsHistory[i], 0, o.maxFps) :
+							getHeat(theme.column.heatmap, durationHistory[i], o.threshold, 0);
+					}
+				}
+			}
+
+			// Update graph columns height
+			if (el.graph) {
+				for (j = 0; j < o.history; j++) {
+					cols[j].style.height = (showFps ?
+						(fpsHistory[j] ? Math.round(graphHeight / o.maxFps * Math.min(fpsHistory[j], o.maxFps)) : 0) :
+						(durationHistory[j] ? Math.round(graphHeight / o.threshold * Math.min(durationHistory[j], o.threshold)) : 0)
+					) + 'px';
+				}
+			}
+		}
+
+		/**
+		 * Request rendering loop.
+		 *
+		 * @return {Int} Animation frame index.
+		 */
+		function requestRender() {
+			if (o.interval < 20) {
+				frameID = rAF(requestRender);
+				render();
+			} else {
+				frameID = setTimeout(requestRender, o.interval);
+				renderID = rAF(render);
+			}
+		}
+
+		/**
+		 * Meter events handler.
+		 *
+		 * @return {Void}
+		 */
+		function eventHandler(event) {
+			event = event || window.event;
+			if (event.preventDefault) {
+				event.preventDefault();
+				event.stopPropagation();
+			} else {
+				event.returnValue = false;
+				event.cancelBubble = true;
+			}
+			self.toggle();
+		}
+
+		/**
+		 * Destroys the current FPSMeter instance.
+		 *
+		 * @return {Void}
+		 */
+		self.destroy = function () {
+			// Stop rendering
+			self.pause();
+			// Remove elements
+			removeMeter();
+			// Stop listening
+			self.tick = self.tickStart = function () {};
+		};
+
+		/**
+		 * Remove meter element.
+		 *
+		 * @return {Void}
+		 */
+		function removeMeter() {
+			// Unbind listeners
+			if (o.toggleOn) {
+				listener(el.container, o.toggleOn, eventHandler, 1);
+			}
+			// Detach element
+			anchor.removeChild(el.container);
+		}
+
+		/**
+		 * Sets the theme, and generates heatmaps when needed.
+		 */
+		function setTheme() {
+			theme = FPSMeter.theme[o.theme];
+
+			// Generate heatmaps
+			heatmaps = theme.compiledHeatmaps || [];
+			if (!heatmaps.length && theme.heatmaps.length) {
+				for (j = 0; j < theme.heatmaps.length; j++) {
+					heatmaps[j] = [];
+					for (i = 0; i <= heatDepth; i++) {
+						heatmaps[j][i] = hslToHex(0.33 / heatDepth * i, theme.heatmaps[j].saturation, theme.heatmaps[j].lightness);
+					}
+				}
+				theme.compiledHeatmaps = heatmaps;
+			}
+		}
+
+		/**
+		 * Creates and attaches the meter element.
+		 *
+		 * @return {Void}
+		 */
+		function createMeter() {
+			// Remove old meter if present
+			if (el.container) {
+				removeMeter();
+			}
+
+			// Set theme
+			setTheme();
+
+			// Create elements
+			el.container = applyTheme(newEl('div'), theme.container);
+			el.count = el.container.appendChild(applyTheme(newEl('div'), theme.count));
+			el.legend = el.container.appendChild(applyTheme(newEl('div'), theme.legend));
+			el.graph = o.graph ? el.container.appendChild(applyTheme(newEl('div'), theme.graph)) : 0;
+
+			// Add elements to heating array
+			heating.length = 0;
+			for (var key in el) {
+				if (el[key] && theme[key].heatOn) {
+					heating.push({
+						name: key,
+						el: el[key]
+					});
+				}
+			}
+
+			// Graph
+			cols.length = 0;
+			if (el.graph) {
+				// Create graph
+				el.graph.style.width = (o.history * theme.column.width + (o.history - 1) * theme.column.spacing) + 'px';
+
+				// Add columns
+				for (i = 0; i < o.history; i++) {
+					cols[i] = el.graph.appendChild(applyTheme(newEl('div'), theme.column));
+					cols[i].style.position = 'absolute';
+					cols[i].style.bottom = 0;
+					cols[i].style.right = (i * theme.column.width + i * theme.column.spacing) + 'px';
+					cols[i].style.width = theme.column.width + 'px';
+					cols[i].style.height = '0px';
+				}
+			}
+
+			// Set the initial state
+			positionMeter();
+			updateCounter();
+
+			// Append container to anchor
+			anchor.appendChild(el.container);
+
+			// Retrieve graph height after it was appended to DOM
+			if (el.graph) {
+				graphHeight = el.graph.clientHeight;
+			}
+
+			// Add event listeners
+			if (o.toggleOn) {
+				if (o.toggleOn === 'click') {
+					el.container.style.cursor = 'pointer';
+				}
+				listener(el.container, o.toggleOn, eventHandler);
+			}
+		}
+
+		/**
+		 * Positions the meter based on options.
+		 *
+		 * @return {Void}
+		 */
+		function positionMeter() {
+			applyTheme(el.container, o);
+		}
+
+		/**
+		 * Construct.
+		 */
+		(function () {
+			// Create meter element
+			createMeter();
+			// Start rendering
+			requestRender();
+		}());
+	}
+
+	// Expose the extend function
+	FPSMeter.extend = extend;
+
+	// Expose the FPSMeter class
+	window.FPSMeter = FPSMeter;
+
+	// Default options
+	FPSMeter.defaults = {
+		interval:  100,     // Update interval in milliseconds.
+		smoothing: 10,      // Spike smoothing strength. 1 means no smoothing.
+		show:      'fps',   // Whether to show 'fps', or 'ms' = frame duration in milliseconds.
+		toggleOn:  'click', // Toggle between show 'fps' and 'ms' on this event.
+		decimals:  1,       // Number of decimals in FPS number. 1 = 59.9, 2 = 59.94, ...
+		maxFps:    60,      // Max expected FPS value.
+		threshold: 100,     // Minimal tick reporting interval in milliseconds.
+
+		// Meter position
+		position: 'absolute', // Meter position.
+		zIndex:   10,         // Meter Z index.
+		left:     '5px',      // Meter left offset.
+		top:      '5px',      // Meter top offset.
+		right:    'auto',     // Meter right offset.
+		bottom:   'auto',     // Meter bottom offset.
+		margin:   '0 0 0 0',  // Meter margin. Helps with centering the counter when left: 50%;
+
+		// Theme
+		theme: 'dark', // Meter theme. Build in: 'dark', 'light', 'transparent', 'colorful'.
+		heat:  0,      // Allow themes to use coloring by FPS heat. 0 FPS = red, maxFps = green.
+
+		// Graph
+		graph:   0, // Whether to show history graph.
+		history: 20 // How many history states to show in a graph.
+	};
+
+	// Option names that trigger FPSMeter rebuild or reposition when modified
+	var rebuilders = [
+		'toggleOn',
+		'theme',
+		'heat',
+		'graph',
+		'history'
+	];
+	var repositioners = [
+		'position',
+		'zIndex',
+		'left',
+		'top',
+		'right',
+		'bottom',
+		'margin'
+	];
+}(window));
+;(function (w, FPSMeter, undefined) {
+	'use strict';
+
+	// Themes object
+	FPSMeter.theme = {};
+
+	// Base theme with layout, no colors
+	var base = FPSMeter.theme.base = {
+		heatmaps: [],
+		container: {
+			// Settings
+			heatOn: null,
+			heatmap: null,
+
+			// Styles
+			padding: '5px',
+			minWidth: '95px',
+			height: '30px',
+			lineHeight: '30px',
+			textAlign: 'right',
+			textShadow: 'none'
+		},
+		count: {
+			// Settings
+			heatOn: null,
+			heatmap: null,
+
+			// Styles
+			position: 'absolute',
+			top: 0,
+			right: 0,
+			padding: '5px 10px',
+			height: '30px',
+			fontSize: '24px',
+			fontFamily: 'Consolas, Andale Mono, monospace',
+			zIndex: 2
+		},
+		legend: {
+			// Settings
+			heatOn: null,
+			heatmap: null,
+
+			// Styles
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			padding: '5px 10px',
+			height: '30px',
+			fontSize: '12px',
+			lineHeight: '32px',
+			fontFamily: 'sans-serif',
+			textAlign: 'left',
+			zIndex: 2
+		},
+		graph: {
+			// Settings
+			heatOn: null,
+			heatmap: null,
+
+			// Styles
+			position: 'relative',
+			boxSizing: 'padding-box',
+			MozBoxSizing: 'padding-box',
+			height: '100%',
+			zIndex: 1
+		},
+		column: {
+			// Settings
+			width: 4,
+			spacing: 1,
+			heatOn: null,
+			heatmap: null
+		}
+	};
+
+	// Dark theme
+	FPSMeter.theme.dark = FPSMeter.extend({}, base, {
+		heatmaps: [{
+			saturation: 0.8,
+			lightness: 0.8
+		}],
+		container: {
+			background: '#222',
+			color: '#fff',
+			border: '1px solid #1a1a1a',
+			textShadow: '1px 1px 0 #222'
+		},
+		count: {
+			heatOn: 'color'
+		},
+		column: {
+			background: '#3f3f3f'
+		}
+	});
+
+	// Light theme
+	FPSMeter.theme.light = FPSMeter.extend({}, base, {
+		heatmaps: [{
+			saturation: 0.5,
+			lightness: 0.5
+		}],
+		container: {
+			color: '#666',
+			background: '#fff',
+			textShadow: '1px 1px 0 rgba(255,255,255,.5), -1px -1px 0 rgba(255,255,255,.5)',
+			boxShadow: '0 0 0 1px rgba(0,0,0,.1)'
+		},
+		count: {
+			heatOn: 'color'
+		},
+		column: {
+			background: '#eaeaea'
+		}
+	});
+
+	// Colorful theme
+	FPSMeter.theme.colorful = FPSMeter.extend({}, base, {
+		heatmaps: [{
+			saturation: 0.5,
+			lightness: 0.6
+		}],
+		container: {
+			heatOn: 'backgroundColor',
+			background: '#888',
+			color: '#fff',
+			textShadow: '1px 1px 0 rgba(0,0,0,.2)',
+			boxShadow: '0 0 0 1px rgba(0,0,0,.1)'
+		},
+		column: {
+			background: '#777',
+			backgroundColor: 'rgba(0,0,0,.2)'
+		}
+	});
+
+	// Transparent theme
+	FPSMeter.theme.transparent = FPSMeter.extend({}, base, {
+		heatmaps: [{
+			saturation: 0.8,
+			lightness: 0.5
+		}],
+		container: {
+			padding: 0,
+			color: '#fff',
+			textShadow: '1px 1px 0 rgba(0,0,0,.5)'
+		},
+		count: {
+			padding: '0 5px',
+			height: '40px',
+			lineHeight: '40px'
+		},
+		legend: {
+			padding: '0 5px',
+			height: '40px',
+			lineHeight: '42px'
+		},
+		graph: {
+			height: '40px'
+		},
+		column: {
+			width: 5,
+			background: '#999',
+			heatOn: 'backgroundColor',
+			opacity: 0.5
+		}
+	});
+}(window, FPSMeter));
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+var pixi_display;
+(function (pixi_display) {
+    Object.assign(PIXI.Container.prototype, {
+        renderWebGL: function (renderer) {
+            if (this._activeParentLayer && this._activeParentLayer != renderer._activeLayer) {
+                return;
+            }
+            if (!this.visible) {
+                this.displayOrder = 0;
+                return;
+            }
+            this.displayOrder = renderer.incDisplayOrder();
+            if (this.worldAlpha <= 0 || !this.renderable) {
+                return;
+            }
+            this.containerRenderWebGL(renderer);
+        },
+        renderCanvas: function (renderer) {
+            if (this._activeParentLayer && this._activeParentLayer != renderer._activeLayer) {
+                return;
+            }
+            if (!this.visible) {
+                this.displayOrder = 0;
+                return;
+            }
+            this.displayOrder = renderer.incDisplayOrder();
+            if (this.worldAlpha <= 0 || !this.renderable) {
+                return;
+            }
+            this.containerRenderCanvas(renderer);
+        },
+        containerRenderWebGL: PIXI.Container.prototype.renderWebGL,
+        containerRenderCanvas: PIXI.Container.prototype.renderCanvas
+    });
+})(pixi_display || (pixi_display = {}));
+Object.assign(PIXI.DisplayObject.prototype, {
+    parentLayer: null,
+    _activeParentLayer: null,
+    parentGroup: null,
+    zOrder: 0,
+    zIndex: 0,
+    updateOrder: 0,
+    displayOrder: 0,
+    layerableChildren: true
+});
+if (PIXI.particles && PIXI.particles.ParticleContainer) {
+    PIXI.particles.ParticleContainer.prototype.layerableChildren = false;
+}
+else if (PIXI.ParticleContainer) {
+    PIXI.ParticleContainer.prototype.layerableChildren = false;
+}
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var pixi_display;
+(function (pixi_display) {
+    var utils = PIXI.utils;
+    var Group = (function (_super) {
+        __extends(Group, _super);
+        function Group(zIndex, sorting) {
+            var _this = _super.call(this) || this;
+            _this._activeLayer = null;
+            _this._activeStage = null;
+            _this._activeChildren = [];
+            _this._lastUpdateId = -1;
+            _this.useRenderTexture = false;
+            _this.useDoubleBuffer = false;
+            _this.sortPriority = 0;
+            _this.clearColor = new Float32Array([0, 0, 0, 0]);
+            _this.canDrawWithoutLayer = false;
+            _this.canDrawInParentStage = true;
+            _this.zIndex = 0;
+            _this.enableSort = false;
+            _this._tempResult = [];
+            _this._tempZero = [];
+            _this.useZeroOptimization = false;
+            _this.zIndex = zIndex;
+            _this.enableSort = !!sorting;
+            if (typeof sorting === 'function') {
+                _this.on('sort', sorting);
+            }
+            return _this;
+        }
+        Group.prototype.doSort = function (layer, sorted) {
+            if (this.listeners('sort', true)) {
+                for (var i = 0; i < sorted.length; i++) {
+                    this.emit('sort', sorted[i]);
+                }
+            }
+            if (this.useZeroOptimization) {
+                this.doSortWithZeroOptimization(layer, sorted);
+            }
+            else {
+                sorted.sort(Group.compareZIndex);
+            }
+        };
+        Group.compareZIndex = function (a, b) {
+            if (a.zIndex !== b.zIndex) {
+                return a.zIndex - b.zIndex;
+            }
+            if (a.zOrder > b.zOrder) {
+                return -1;
+            }
+            if (a.zOrder < b.zOrder) {
+                return 1;
+            }
+            return a.updateOrder - b.updateOrder;
+        };
+        Group.prototype.doSortWithZeroOptimization = function (layer, sorted) {
+            throw new Error("not implemented yet");
+        };
+        Group.prototype.clear = function () {
+            this._activeLayer = null;
+            this._activeStage = null;
+            this._activeChildren.length = 0;
+        };
+        Group.prototype.addDisplayObject = function (stage, displayObject) {
+            this.check(stage);
+            displayObject._activeParentLayer = this._activeLayer;
+            if (this._activeLayer) {
+                this._activeLayer._activeChildren.push(displayObject);
+            }
+            else {
+                this._activeChildren.push(displayObject);
+            }
+        };
+        Group.prototype.foundLayer = function (stage, layer) {
+            this.check(stage);
+            if (this._activeLayer != null) {
+                Group.conflict();
+            }
+            this._activeLayer = layer;
+            this._activeStage = stage;
+        };
+        Group.prototype.foundStage = function (stage) {
+            if (!this._activeLayer && !this.canDrawInParentStage) {
+                this.clear();
+            }
+        };
+        Group.prototype.check = function (stage) {
+            if (this._lastUpdateId < Group._layerUpdateId) {
+                this._lastUpdateId = Group._layerUpdateId;
+                this.clear();
+                this._activeStage = stage;
+            }
+            else if (this.canDrawInParentStage) {
+                var current = this._activeStage;
+                while (current && current != stage) {
+                    current = current._activeParentStage;
+                }
+                this._activeStage = current;
+                if (current == null) {
+                    this.clear();
+                    return;
+                }
+            }
+        };
+        Group.conflict = function () {
+            if (Group._lastLayerConflict + 5000 < Date.now()) {
+                Group._lastLayerConflict = Date.now();
+                console.log("PIXI-display plugin found two layers with the same group in one stage - that's not healthy. Please place a breakpoint here and debug it");
+            }
+        };
+        Group._layerUpdateId = 0;
+        Group._lastLayerConflict = 0;
+        return Group;
+    }(utils.EventEmitter));
+    pixi_display.Group = Group;
+})(pixi_display || (pixi_display = {}));
+var pixi_display;
+(function (pixi_display) {
+    var InteractionManager = PIXI.interaction.InteractionManager;
+    Object.assign(InteractionManager.prototype, {
+        _queue: [[], []],
+        _displayProcessInteractive: function (point, displayObject, hitTestOrder, interactive, outOfMask) {
+            if (!displayObject || !displayObject.visible) {
+                return 0;
+            }
+            var hit = 0, interactiveParent = interactive = displayObject.interactive || interactive;
+            if (displayObject.hitArea) {
+                interactiveParent = false;
+            }
+            if (displayObject._activeParentLayer) {
+                outOfMask = false;
+            }
+            var mask = displayObject._mask;
+            if (hitTestOrder < Infinity && mask) {
+                if (!mask.containsPoint(point)) {
+                    outOfMask = true;
+                }
+            }
+            if (hitTestOrder < Infinity && displayObject.filterArea) {
+                if (!displayObject.filterArea.contains(point.x, point.y)) {
+                    outOfMask = true;
+                }
+            }
+            var children = displayObject.children;
+            if (displayObject.interactiveChildren && children) {
+                for (var i = children.length - 1; i >= 0; i--) {
+                    var child = children[i];
+                    var hitChild = this._displayProcessInteractive(point, child, hitTestOrder, interactiveParent, outOfMask);
+                    if (hitChild) {
+                        if (!child.parent) {
+                            continue;
+                        }
+                        hit = hitChild;
+                        hitTestOrder = hitChild;
+                    }
+                }
+            }
+            if (interactive) {
+                if (!outOfMask) {
+                    if (hitTestOrder < displayObject.displayOrder) {
+                        if (displayObject.hitArea) {
+                            displayObject.worldTransform.applyInverse(point, this._tempPoint);
+                            if (displayObject.hitArea.contains(this._tempPoint.x, this._tempPoint.y)) {
+                                hit = displayObject.displayOrder;
+                            }
+                        }
+                        else if (displayObject.containsPoint) {
+                            if (displayObject.containsPoint(point)) {
+                                hit = displayObject.displayOrder;
+                            }
+                        }
+                    }
+                    if (displayObject.interactive) {
+                        this._queueAdd(displayObject, hit === Infinity ? 0 : hit);
+                    }
+                }
+                else {
+                    if (displayObject.interactive) {
+                        this._queueAdd(displayObject, 0);
+                    }
+                }
+            }
+            return hit;
+        },
+        processInteractive: function (strangeStuff, displayObject, func, hitTest, interactive) {
+            var interactionEvent = null;
+            var point = null;
+            if (strangeStuff.data &&
+                strangeStuff.data.global) {
+                interactionEvent = strangeStuff;
+                point = interactionEvent.data.global;
+            }
+            else {
+                point = strangeStuff;
+            }
+            this._startInteractionProcess();
+            this._displayProcessInteractive(point, displayObject, hitTest ? 0 : Infinity, false);
+            this._finishInteractionProcess(interactionEvent, func);
+        },
+        _startInteractionProcess: function () {
+            this._eventDisplayOrder = 1;
+            if (!this._queue) {
+                this._queue = [[], []];
+            }
+            this._queue[0].length = 0;
+            this._queue[1].length = 0;
+        },
+        _queueAdd: function (displayObject, order) {
+            var queue = this._queue;
+            if (order < this._eventDisplayOrder) {
+                queue[0].push(displayObject);
+            }
+            else {
+                if (order > this._eventDisplayOrder) {
+                    this._eventDisplayOrder = order;
+                    var q = queue[1];
+                    for (var i = 0; i < q.length; i++) {
+                        queue[0].push(q[i]);
+                    }
+                    queue[1].length = 0;
+                }
+                queue[1].push(displayObject);
+            }
+        },
+        _finishInteractionProcess: function (event, func) {
+            var queue = this._queue;
+            var q = queue[0];
+            var i = 0;
+            for (; i < q.length; i++) {
+                if (event) {
+                    if (func) {
+                        func(event, q[i], false);
+                    }
+                }
+                else {
+                    func(q[i], false);
+                }
+            }
+            q = queue[1];
+            for (i = 0; i < q.length; i++) {
+                if (event) {
+                    if (!event.target) {
+                        event.target = q[i];
+                    }
+                    if (func) {
+                        func(event, q[i], true);
+                    }
+                }
+                else {
+                    func(q[i], true);
+                }
+            }
+        }
+    });
+})(pixi_display || (pixi_display = {}));
+var pixi_display;
+(function (pixi_display) {
+    var LayerTextureCache = (function () {
+        function LayerTextureCache(layer) {
+            this.layer = layer;
+            this.renderTexture = null;
+            this.doubleBuffer = null;
+            this.currentBufferIndex = 0;
+            this._tempRenderTarget = null;
+        }
+        LayerTextureCache.prototype.initRenderTexture = function (renderer) {
+            var width = renderer ? renderer.screen.width : 100;
+            var height = renderer ? renderer.screen.height : 100;
+            var resolution = renderer ? renderer.resolution : PIXI.settings.RESOLUTION;
+            this.renderTexture = PIXI.RenderTexture.create(width, height, resolution);
+            if (this.layer.group.useDoubleBuffer) {
+                this.doubleBuffer = [
+                    PIXI.RenderTexture.create(width, height, resolution),
+                    PIXI.RenderTexture.create(width, height, resolution)
+                ];
+            }
+        };
+        LayerTextureCache.prototype.getRenderTexture = function () {
+            if (!this.renderTexture) {
+                this.initRenderTexture();
+            }
+            return this.renderTexture;
+        };
+        LayerTextureCache.prototype.pushTexture = function (renderer) {
+            var screen = renderer.screen;
+            if (!this.renderTexture) {
+                this.initRenderTexture(renderer);
+            }
+            var rt = this.renderTexture;
+            var group = this.layer.group;
+            var db = this.doubleBuffer;
+            if (rt.width !== screen.width ||
+                rt.height !== screen.height ||
+                rt.baseTexture.resolution !== renderer.resolution) {
+                rt.baseTexture.resolution = renderer.resolution;
+                rt.resize(screen.width, screen.height);
+                if (db) {
+                    db[0].baseTexture.resolution = renderer.resolution;
+                    db[0].resize(screen.width, screen.height);
+                    db[1].baseTexture.resolution = renderer.resolution;
+                    db[1].resize(screen.width, screen.height);
+                }
+            }
+            this._tempRenderTarget = renderer._activeRenderTarget;
+            renderer.currentRenderer.flush();
+            if (group.useDoubleBuffer) {
+                var buffer = db[this.currentBufferIndex];
+                if (!buffer.baseTexture._glTextures[renderer.CONTEXT_UID]) {
+                    renderer.bindRenderTexture(buffer, null);
+                    if (group.clearColor) {
+                        renderer.clear(group.clearColor);
+                    }
+                }
+                renderer.unbindTexture(rt);
+                rt.baseTexture._glTextures = buffer.baseTexture._glTextures;
+                rt.baseTexture._glRenderTargets = buffer.baseTexture._glRenderTargets;
+                this.currentBufferIndex = 1 - this.currentBufferIndex;
+                buffer = db[this.currentBufferIndex];
+                renderer.bindRenderTexture(buffer, null);
+            }
+            else {
+                renderer.bindRenderTexture(rt, undefined);
+            }
+            if (group.clearColor) {
+                renderer.clear(group.clearColor);
+            }
+        };
+        LayerTextureCache.prototype.popTexture = function (renderer) {
+            renderer.currentRenderer.flush();
+            renderer.bindRenderTarget(this._tempRenderTarget);
+            this._tempRenderTarget = null;
+        };
+        LayerTextureCache.prototype.destroy = function () {
+            if (this.renderTexture) {
+                this.renderTexture.destroy();
+                if (this.doubleBuffer) {
+                    this.doubleBuffer[0].destroy(true);
+                    this.doubleBuffer[1].destroy(true);
+                }
+            }
+        };
+        return LayerTextureCache;
+    }());
+    pixi_display.LayerTextureCache = LayerTextureCache;
+    var Layer = (function (_super) {
+        __extends(Layer, _super);
+        function Layer(group) {
+            if (group === void 0) { group = null; }
+            var _this = _super.call(this) || this;
+            _this.isLayer = true;
+            _this.group = null;
+            _this._activeChildren = [];
+            _this._tempChildren = null;
+            _this._activeStageParent = null;
+            _this._sortedChildren = [];
+            _this._tempLayerParent = null;
+            _this.insertChildrenBeforeActive = true;
+            _this.insertChildrenAfterActive = true;
+            if (group != null) {
+                _this.group = group;
+                _this.zIndex = group.zIndex;
+            }
+            else {
+                _this.group = new pixi_display.Group(0, false);
+            }
+            _this._tempChildren = _this.children;
+            return _this;
+        }
+        Layer.prototype.beginWork = function (stage) {
+            var active = this._activeChildren;
+            this._activeStageParent = stage;
+            this.group.foundLayer(stage, this);
+            var groupChildren = this.group._activeChildren;
+            active.length = 0;
+            for (var i = 0; i < groupChildren.length; i++) {
+                groupChildren[i]._activeParentLayer = this;
+                active.push(groupChildren[i]);
+            }
+            groupChildren.length = 0;
+        };
+        Layer.prototype.endWork = function () {
+            var children = this.children;
+            var active = this._activeChildren;
+            var sorted = this._sortedChildren;
+            for (var i = 0; i < active.length; i++) {
+                this.emit("display", active[i]);
+            }
+            sorted.length = 0;
+            if (this.insertChildrenBeforeActive) {
+                for (var i = 0; i < children.length; i++) {
+                    sorted.push(children[i]);
+                }
+            }
+            for (var i = 0; i < active.length; i++) {
+                sorted.push(active[i]);
+            }
+            if (!this.insertChildrenBeforeActive &&
+                this.insertChildrenAfterActive) {
+                for (var i = 0; i < children.length; i++) {
+                    sorted.push(children[i]);
+                }
+            }
+            if (this.group.enableSort) {
+                this.doSort();
+            }
+        };
+        Object.defineProperty(Layer.prototype, "useRenderTexture", {
+            get: function () {
+                return this.group.useRenderTexture;
+            },
+            set: function (value) {
+                this.group.useRenderTexture = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Layer.prototype, "useDoubleBuffer", {
+            get: function () {
+                return this.group.useDoubleBuffer;
+            },
+            set: function (value) {
+                this.group.useDoubleBuffer = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Layer.prototype, "clearColor", {
+            get: function () {
+                return this.group.clearColor;
+            },
+            set: function (value) {
+                this.group.clearColor = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Layer.prototype, "sortPriority", {
+            get: function () {
+                return this.group.sortPriority;
+            },
+            set: function (value) {
+                this.group.sortPriority = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Layer.prototype.getRenderTexture = function () {
+            if (!this.textureCache) {
+                this.textureCache = new LayerTextureCache(this);
+            }
+            return this.textureCache.getRenderTexture();
+        };
+        Layer.prototype.updateDisplayLayers = function () {
+        };
+        Layer.prototype.doSort = function () {
+            this.group.doSort(this, this._sortedChildren);
+        };
+        Layer.prototype._preRender = function (renderer) {
+            if (this._activeParentLayer && this._activeParentLayer != renderer._activeLayer) {
+                return false;
+            }
+            if (!this.visible) {
+                this.displayOrder = 0;
+                return false;
+            }
+            this.displayOrder = renderer.incDisplayOrder();
+            if (this.worldAlpha <= 0 || !this.renderable) {
+                return false;
+            }
+            if (this.children !== this._sortedChildren &&
+                this._tempChildren != this.children) {
+                this._tempChildren = this.children;
+            }
+            this._boundsID++;
+            this.children = this._sortedChildren;
+            this._tempLayerParent = renderer._activeLayer;
+            renderer._activeLayer = this;
+            return true;
+        };
+        Layer.prototype._postRender = function (renderer) {
+            this.children = this._tempChildren;
+            renderer._activeLayer = this._tempLayerParent;
+            this._tempLayerParent = null;
+        };
+        Layer.prototype.renderWebGL = function (renderer) {
+            if (!this._preRender(renderer)) {
+                return;
+            }
+            if (this.group.useRenderTexture) {
+                if (!this.textureCache) {
+                    this.textureCache = new LayerTextureCache(this);
+                }
+                this.textureCache.pushTexture(renderer);
+            }
+            this.containerRenderWebGL(renderer);
+            this._postRender(renderer);
+            if (this.group.useRenderTexture) {
+                this.textureCache.popTexture(renderer);
+            }
+        };
+        Layer.prototype.renderCanvas = function (renderer) {
+            if (this._preRender(renderer)) {
+                this.containerRenderCanvas(renderer);
+                this._postRender(renderer);
+            }
+        };
+        Layer.prototype.destroy = function (options) {
+            if (this.textureCache) {
+                this.textureCache.destroy();
+                this.textureCache = null;
+            }
+            _super.prototype.destroy.call(this, options);
+        };
+        return Layer;
+    }(PIXI.Container));
+    pixi_display.Layer = Layer;
+})(pixi_display || (pixi_display = {}));
+var pixi_display;
+(function (pixi_display) {
+    var Stage = (function (_super) {
+        __extends(Stage, _super);
+        function Stage() {
+            var _this = _super.call(this) || this;
+            _this.isStage = true;
+            _this._tempGroups = [];
+            _this._activeLayers = [];
+            _this._activeParentStage = null;
+            return _this;
+        }
+        Stage.prototype.clear = function () {
+            this._activeLayers.length = 0;
+            this._tempGroups.length = 0;
+        };
+        Stage.prototype.destroy = function (options) {
+            this.clear();
+            _super.prototype.destroy.call(this, options);
+        };
+        Stage.prototype._addRecursive = function (displayObject) {
+            if (!displayObject.visible) {
+                return;
+            }
+            if (displayObject.isLayer) {
+                var layer_1 = displayObject;
+                this._activeLayers.push(layer_1);
+                layer_1.beginWork(this);
+            }
+            if (displayObject != this && displayObject.isStage) {
+                var stage = displayObject;
+                stage.updateAsChildStage(this);
+                return;
+            }
+            var group = displayObject.parentGroup;
+            if (group !== null) {
+                group.addDisplayObject(this, displayObject);
+            }
+            var layer = displayObject.parentLayer;
+            if (layer !== null) {
+                group = layer.group;
+                group.addDisplayObject(this, displayObject);
+            }
+            displayObject.updateOrder = ++Stage._updateOrderCounter;
+            if (displayObject.alpha <= 0 || !displayObject.renderable
+                || !displayObject.layerableChildren
+                || group && group.sortPriority) {
+                return;
+            }
+            var children = displayObject.children;
+            if (children && children.length) {
+                for (var i = 0; i < children.length; i++) {
+                    this._addRecursive(children[i]);
+                }
+            }
+        };
+        Stage.prototype._addRecursiveChildren = function (displayObject) {
+            if (displayObject.alpha <= 0 || !displayObject.renderable
+                || !displayObject.layerableChildren) {
+                return;
+            }
+            var children = displayObject.children;
+            if (children && children.length) {
+                for (var i = 0; i < children.length; i++) {
+                    this._addRecursive(children[i]);
+                }
+            }
+        };
+        Stage.prototype._updateStageInner = function () {
+            this.clear();
+            this._addRecursive(this);
+            var layers = this._activeLayers;
+            for (var i = 0; i < layers.length; i++) {
+                var layer = layers[i];
+                if (layer.group.sortPriority) {
+                    layer.endWork();
+                    var sorted = layer._sortedChildren;
+                    for (var j = 0; j < sorted.length; j++) {
+                        this._addRecursiveChildren(sorted[j]);
+                    }
+                }
+            }
+            for (var i = 0; i < layers.length; i++) {
+                var layer = layers[i];
+                if (!layer.group.sortPriority) {
+                    layer.endWork();
+                }
+            }
+        };
+        Stage.prototype.updateAsChildStage = function (stage) {
+            this._activeParentStage = stage;
+            Stage._updateOrderCounter = 0;
+            this._updateStageInner();
+        };
+        Stage.prototype.updateStage = function () {
+            this._activeParentStage = null;
+            pixi_display.Group._layerUpdateId++;
+            this._updateStageInner();
+        };
+        ;
+        Stage._updateOrderCounter = 0;
+        return Stage;
+    }(pixi_display.Layer));
+    pixi_display.Stage = Stage;
+})(pixi_display || (pixi_display = {}));
+var pixi_display;
+(function (pixi_display) {
+    Object.assign(PIXI.WebGLRenderer.prototype, {
+        _lastDisplayOrder: 0,
+        _activeLayer: null,
+        incDisplayOrder: function () {
+            return ++this._lastDisplayOrder;
+        },
+        _oldRender: PIXI.WebGLRenderer.prototype.render,
+        render: function (displayObject, renderTexture, clear, transform, skipUpdateTransform) {
+            if (!renderTexture) {
+                this._lastDisplayOrder = 0;
+            }
+            this._activeLayer = null;
+            if (displayObject.isStage) {
+                displayObject.updateStage();
+            }
+            this._oldRender(displayObject, renderTexture, clear, transform, skipUpdateTransform);
+        }
+    });
+    Object.assign(PIXI.CanvasRenderer.prototype, {
+        _lastDisplayOrder: 0,
+        _activeLayer: null,
+        incDisplayOrder: function () {
+            return ++this._lastDisplayOrder;
+        },
+        _oldRender: PIXI.CanvasRenderer.prototype.render,
+        render: function (displayObject, renderTexture, clear, transform, skipUpdateTransform) {
+            if (!renderTexture) {
+                this._lastDisplayOrder = 0;
+            }
+            this._activeLayer = null;
+            if (displayObject.isStage) {
+                displayObject.updateStage();
+            }
+            this._oldRender(displayObject, renderTexture, clear, transform, skipUpdateTransform);
+        }
+    });
+})(pixi_display || (pixi_display = {}));
+var pixi_display;
+(function (pixi_display) {
+    PIXI.display = pixi_display;
+})(pixi_display || (pixi_display = {}));
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = PIXI;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+/*!
+* screenfull
+* v3.3.2 - 2017-10-27
+* (c) Sindre Sorhus; MIT License
+*/
+(function () {
+	'use strict';
+
+	var document = typeof window !== 'undefined' && typeof window.document !== 'undefined' ? window.document : {};
+	var isCommonjs = typeof module !== 'undefined' && module.exports;
+	var keyboardAllowed = typeof Element !== 'undefined' && 'ALLOW_KEYBOARD_INPUT' in Element;
+
+	var fn = (function () {
+		var val;
+
+		var fnMap = [
+			[
+				'requestFullscreen',
+				'exitFullscreen',
+				'fullscreenElement',
+				'fullscreenEnabled',
+				'fullscreenchange',
+				'fullscreenerror'
+			],
+			// New WebKit
+			[
+				'webkitRequestFullscreen',
+				'webkitExitFullscreen',
+				'webkitFullscreenElement',
+				'webkitFullscreenEnabled',
+				'webkitfullscreenchange',
+				'webkitfullscreenerror'
+
+			],
+			// Old WebKit (Safari 5.1)
+			[
+				'webkitRequestFullScreen',
+				'webkitCancelFullScreen',
+				'webkitCurrentFullScreenElement',
+				'webkitCancelFullScreen',
+				'webkitfullscreenchange',
+				'webkitfullscreenerror'
+
+			],
+			[
+				'mozRequestFullScreen',
+				'mozCancelFullScreen',
+				'mozFullScreenElement',
+				'mozFullScreenEnabled',
+				'mozfullscreenchange',
+				'mozfullscreenerror'
+			],
+			[
+				'msRequestFullscreen',
+				'msExitFullscreen',
+				'msFullscreenElement',
+				'msFullscreenEnabled',
+				'MSFullscreenChange',
+				'MSFullscreenError'
+			]
+		];
+
+		var i = 0;
+		var l = fnMap.length;
+		var ret = {};
+
+		for (; i < l; i++) {
+			val = fnMap[i];
+			if (val && val[1] in document) {
+				for (i = 0; i < val.length; i++) {
+					ret[fnMap[0][i]] = val[i];
+				}
+				return ret;
+			}
+		}
+
+		return false;
+	})();
+
+	var eventNameMap = {
+		change: fn.fullscreenchange,
+		error: fn.fullscreenerror
+	};
+
+	var screenfull = {
+		request: function (elem) {
+			var request = fn.requestFullscreen;
+
+			elem = elem || document.documentElement;
+
+			// Work around Safari 5.1 bug: reports support for
+			// keyboard in fullscreen even though it doesn't.
+			// Browser sniffing, since the alternative with
+			// setTimeout is even worse.
+			if (/ Version\/5\.1(?:\.\d+)? Safari\//.test(navigator.userAgent)) {
+				elem[request]();
+			} else {
+				elem[request](keyboardAllowed && Element.ALLOW_KEYBOARD_INPUT);
+			}
+		},
+		exit: function () {
+			document[fn.exitFullscreen]();
+		},
+		toggle: function (elem) {
+			if (this.isFullscreen) {
+				this.exit();
+			} else {
+				this.request(elem);
+			}
+		},
+		onchange: function (callback) {
+			this.on('change', callback);
+		},
+		onerror: function (callback) {
+			this.on('error', callback);
+		},
+		on: function (event, callback) {
+			var eventName = eventNameMap[event];
+			if (eventName) {
+				document.addEventListener(eventName, callback, false);
+			}
+		},
+		off: function (event, callback) {
+			var eventName = eventNameMap[event];
+			if (eventName) {
+				document.removeEventListener(eventName, callback, false);
+			}
+		},
+		raw: fn
+	};
+
+	if (!fn) {
+		if (isCommonjs) {
+			module.exports = false;
+		} else {
+			window.screenfull = false;
+		}
+
+		return;
+	}
+
+	Object.defineProperties(screenfull, {
+		isFullscreen: {
+			get: function () {
+				return Boolean(document[fn.fullscreenElement]);
+			}
+		},
+		element: {
+			enumerable: true,
+			get: function () {
+				return document[fn.fullscreenElement];
+			}
+		},
+		enabled: {
+			enumerable: true,
+			get: function () {
+				// Coerce to boolean in case of old WebKit
+				return Boolean(document[fn.fullscreenEnabled]);
+			}
+		}
+	});
+
+	if (isCommonjs) {
+		module.exports = screenfull;
+	} else {
+		window.screenfull = screenfull;
+	}
+})();
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var pixi_app_wrapper_1 = __webpack_require__(1);
+__webpack_require__(5);
+var math_1 = __webpack_require__(5);
+var MediaInfoViewer = (function () {
+    function MediaInfoViewer() {
+        this.createContainer();
+    }
+    MediaInfoViewer.prototype.update = function (newData) {
+        this.data = newData;
+        this.textContainer.innerHTML = this.getText();
+    };
+    MediaInfoViewer.prototype.show = function () {
+        this.rootContainer.className = this.rootContainer.className
+            .replace("hidden", "")
+            .trim();
+    };
+    MediaInfoViewer.prototype.hide = function () {
+        this.show();
+        this.rootContainer.className += " hidden";
+    };
+    MediaInfoViewer.prototype.createContainer = function () {
+        this.rootContainer = pixi_app_wrapper_1.Dom.getElementOrCreateNew("media-info", "div");
+        this.rootContainer.className = "media-info";
+        var closeBtn = document.createElement("button");
+        closeBtn.innerHTML = "[x]";
+        closeBtn.className = "media-info-close-button button";
+        closeBtn.title = "close";
+        closeBtn.onclick = this.hide.bind(this);
+        this.rootContainer.appendChild(closeBtn);
+        this.textContainer = document.createElement("div");
+        this.rootContainer.appendChild(this.textContainer);
+    };
+    MediaInfoViewer.prototype.getText = function () {
+        var stageInitialGCD = math_1.Maths.gcd(this.data.display.stage.initialWidth, this.data.display.stage.initialHeight);
+        return ("" +
+            "<div>[devicePixelRatio]</div>" +
+            ("<div>" + window.devicePixelRatio + "</div>") +
+            "<div>[window.inner]</div>" +
+            ("<div>" + window.innerWidth + "x" + window.innerHeight + "</div>") +
+            "<div>[app.screen]</div>" +
+            ("<div>" + this.data.display.screen.width + "x" + this.data.display.screen.height + "</div>") +
+            "<div>[app.view]</div>" +
+            ("<div>" + this.data.display.view.width + "x" + this.data.display.view.height + "</div>") +
+            "<div>[app.stage]</div>" +
+            ("<div>position (" + this.data.display.stage.x + ", " + this.data.display.stage.y + ")</div>") +
+            ("<div>initial " + this.data.display.stage.initialWidth + "x" + this.data.display.stage.initialHeight + " " + this.data.display.stage.initialWidth / stageInitialGCD + ":" + this.data.display.stage.initialHeight / stageInitialGCD + "</div>") +
+            ("<div>current " + this.data.display.stage.currentWidth + "x" + this.data.display.stage.currentHeight + "</div>") +
+            ("<div>scale (" + this.data.display.stage.scaleX + ", " + this.data.display.stage.scaleY + ")</div>") +
+            ("<div>scaling " + this.data.display.stage.scaling + "</div>") +
+            ("<div>alignment " + this.data.display.stage.alignment + "</div>") +
+            ("<div>orientation " + this.data.display.stage.orientation + "</div>"));
+    };
+    return MediaInfoViewer;
+}());
+exports.MediaInfoViewer = MediaInfoViewer;
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var AlignBottomCenter = (function () {
+    function AlignBottomCenter() {
+    }
+    AlignBottomCenter.prototype.align = function (width, height, containerWidth, containerHeight) {
+        return {
+            x: Math.round(containerWidth / 2 - width / 2),
+            y: Math.round(containerHeight - height),
+        };
+    };
+    return AlignBottomCenter;
+}());
+exports.AlignBottomCenter = AlignBottomCenter;
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var AlignBottomLeft = (function () {
+    function AlignBottomLeft() {
+    }
+    AlignBottomLeft.prototype.align = function (width, height, containerWidth, containerHeight) {
+        return {
+            x: 0,
+            y: Math.round(containerHeight - height),
+        };
+    };
+    return AlignBottomLeft;
+}());
+exports.AlignBottomLeft = AlignBottomLeft;
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var AlignBottomRight = (function () {
+    function AlignBottomRight() {
+    }
+    AlignBottomRight.prototype.align = function (width, height, containerWidth, containerHeight) {
+        return {
+            x: Math.round(containerWidth - width),
+            y: Math.round(containerHeight - height),
+        };
+    };
+    return AlignBottomRight;
+}());
+exports.AlignBottomRight = AlignBottomRight;
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var AlignMiddle = (function () {
+    function AlignMiddle() {
+    }
+    AlignMiddle.prototype.align = function (width, height, containerWidth, containerHeight) {
+        return {
+            x: Math.round(containerWidth / 2 - width / 2),
+            y: Math.round(containerHeight / 2 - height / 2),
+        };
+    };
+    return AlignMiddle;
+}());
+exports.AlignMiddle = AlignMiddle;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var AlignMiddleLeft = (function () {
+    function AlignMiddleLeft() {
+    }
+    AlignMiddleLeft.prototype.align = function (width, height, containerWidth, containerHeight) {
+        return {
+            x: 0,
+            y: Math.round(containerHeight / 2 - height / 2),
+        };
+    };
+    return AlignMiddleLeft;
+}());
+exports.AlignMiddleLeft = AlignMiddleLeft;
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var AlignMiddleRight = (function () {
+    function AlignMiddleRight() {
+    }
+    AlignMiddleRight.prototype.align = function (width, height, containerWidth, containerHeight) {
+        return {
+            x: Math.round(containerWidth - width),
+            y: Math.round(containerHeight / 2 - height / 2),
+        };
+    };
+    return AlignMiddleRight;
+}());
+exports.AlignMiddleRight = AlignMiddleRight;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var AlignTopCenter = (function () {
+    function AlignTopCenter() {
+    }
+    AlignTopCenter.prototype.align = function (width, height, containerWidth, containerHeight) {
+        return {
+            x: Math.round(containerWidth / 2 - width / 2),
+            y: 0,
+        };
+    };
+    return AlignTopCenter;
+}());
+exports.AlignTopCenter = AlignTopCenter;
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var AlignTopLeft = (function () {
+    function AlignTopLeft() {
+    }
+    AlignTopLeft.prototype.align = function (width, height, containerWidth, containerHeight) {
+        return { x: 0, y: 0 };
+    };
+    return AlignTopLeft;
+}());
+exports.AlignTopLeft = AlignTopLeft;
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var AlignTopRight = (function () {
+    function AlignTopRight() {
+    }
+    AlignTopRight.prototype.align = function (width, height, containerWidth, containerHeight) {
+        return {
+            x: Math.round(containerWidth - width),
+            y: 0,
+        };
+    };
+    return AlignTopRight;
+}());
+exports.AlignTopRight = AlignTopRight;
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ScaleFullSize = (function () {
+    function ScaleFullSize() {
+    }
+    ScaleFullSize.prototype.scale = function (initialWidth, initialHeight, finalWidth, finalHeight) {
+        return {
+            scaleX: finalWidth / initialWidth,
+            scaleY: finalHeight / initialHeight,
+        };
+    };
+    return ScaleFullSize;
+}());
+exports.ScaleFullSize = ScaleFullSize;
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ScaleKeepAspectRatio = (function () {
+    function ScaleKeepAspectRatio() {
+    }
+    ScaleKeepAspectRatio.prototype.scale = function (initialWidth, initialHeight, finalWidth, finalHeight) {
+        var scale = Math.min(finalWidth / initialWidth, finalHeight / initialHeight);
+        return { scaleX: scale, scaleY: scale };
+    };
+    return ScaleKeepAspectRatio;
+}());
+exports.ScaleKeepAspectRatio = ScaleKeepAspectRatio;
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ScaleNone = (function () {
+    function ScaleNone() {
+    }
+    ScaleNone.prototype.scale = function (initialWidth, initialHeight, finalWidth, finalHeight) {
+        return {
+            scaleX: 1,
+            scaleY: 1,
+        };
+    };
+    return ScaleNone;
+}());
+exports.ScaleNone = ScaleNone;
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.pixiAppWrapperEvent = {
+    RESIZE_START: "PixiAppWrapperEvent.RESIZE_START",
+    RESIZE_END: "PixiAppWrapperEvent.RESIZE_END",
+};
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom = (function () {
+    function Dom() {
+    }
+    Dom.getElementOrBody = function (elementId) {
+        var element = document.getElementById(elementId);
+        if (element !== null) {
+            return element;
+        }
+        else {
+            return document.body;
+        }
+    };
+    Dom.getElementOrCreateNew = function (elementId, tagName, container) {
+        var element = document.getElementById(elementId);
+        if (element === null) {
+            element = document.createElement(tagName);
+            element.id = elementId;
+            container = container ? container : document.body;
+            container.appendChild(element);
+        }
+        return element;
+    };
+    return Dom;
+}());
+exports.Dom = Dom;
+
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var StorageController = (function (_super) {
+    __extends(StorageController, _super);
+    function StorageController() {
+        var _this = _super.call(this) || this;
+        _this._localStorage = window.localStorage;
+        return _this;
+    }
+    StorageController.prototype.setItem = function (key, value) {
+        if (this.getItem(key) == null)
+            this.emit("insert", key, value);
+        else
+            this.emit("update", key, value);
+        this._localStorage.setItem(key, value);
+    };
+    StorageController.prototype.getItem = function (key) {
+        if (localStorage.getItem(key))
+            return this._localStorage.getItem(key);
+    };
+    StorageController.prototype.removeAll = function () {
+        this._localStorage.clear();
+    };
+    StorageController.prototype.removeItem = function (key) {
+        this._localStorage.removeItem(key);
+    };
+    return StorageController;
+}(PIXI.utils.EventEmitter));
+exports.StorageController = StorageController;
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ResourceController_1 = __webpack_require__(37);
+var StageController_1 = __webpack_require__(2);
 var EntryPoint_1 = __webpack_require__(0);
-var BaseGame_1 = __webpack_require__(22);
+var BaseGame_1 = __webpack_require__(46);
 var LoaderStage = (function (_super) {
     __extends(LoaderStage, _super);
     function LoaderStage() {
@@ -1368,7 +4056,7 @@ var LoaderStage = (function (_super) {
         this._loadingProgressText.position.set(640, 378);
         this._loadingProgressText.visible = true;
         this.addChild(this._loadingProgressText);
-        this._assetLoader = new AssetsLoader_1.AssetsLoader();
+        this._assetLoader = new ResourceController_1.ResourceController();
         this._assetLoader.on("completeLoadHighAsset", this.loadingAnimation, this);
         this._assetLoader.on("completeLoadAsset", this.completeLoadAsset, this);
         this._game.localStorage.setItem("default", false);
@@ -1388,12 +4076,12 @@ var LoaderStage = (function (_super) {
     });
     LoaderStage.prototype.killScene = function () { };
     return LoaderStage;
-}(StageManager_1.Scene));
+}(StageController_1.Scene));
 exports.LoaderStage = LoaderStage;
 
 
 /***/ }),
-/* 13 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1409,15 +4097,15 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var pixi_assets_loader_1 = __webpack_require__(14);
-var SoundManager_1 = __webpack_require__(21);
+var pixi_assets_loader_1 = __webpack_require__(38);
+var SoundController_1 = __webpack_require__(45);
 var EntryPoint_1 = __webpack_require__(0);
-var AssetsLoader = (function (_super) {
-    __extends(AssetsLoader, _super);
-    function AssetsLoader() {
+var ResourceController = (function (_super) {
+    __extends(ResourceController, _super);
+    function ResourceController() {
         var _this = _super.call(this) || this;
         _this._assetsCount = {};
-        _this._soundManager = new SoundManager_1.default();
+        _this._soundManager = new SoundController_1.default();
         _this._soundCount = 0;
         _this._doubleCheck = false;
         _this._game = EntryPoint_1.EmreBase.EntryPoint.instance;
@@ -1426,7 +4114,7 @@ var AssetsLoader = (function (_super) {
         _this.loadAssets();
         return _this;
     }
-    AssetsLoader.prototype.onSoundManager = function (value) {
+    ResourceController.prototype.onSoundManager = function (value) {
         switch (value) {
             case "createAllSound":
                 this.isSoundLoaded = true;
@@ -1434,7 +4122,7 @@ var AssetsLoader = (function (_super) {
                 break;
         }
     };
-    AssetsLoader.prototype.loadAssets = function () {
+    ResourceController.prototype.loadAssets = function () {
         var _this = this;
         var assets = [
             {
@@ -1597,17 +4285,17 @@ var AssetsLoader = (function (_super) {
         this._loader.on(pixi_assets_loader_1.PixiAssetsLoader.ALL_ASSETS_LOADED, this.onAllAssetsLoaded.bind(this));
         this._loader.addAssets(assets).load();
     };
-    AssetsLoader.prototype.onAssetsProgress = function (args) {
+    ResourceController.prototype.onAssetsProgress = function (args) {
         var percentFactor = this._assetsCount[args.priority].total / this._totalAssets;
         this._loadingProgress +=
             (args.progress - this._assetsCount[args.priority].progress) *
                 percentFactor;
         this._assetsCount[args.priority].progress = args.progress;
     };
-    AssetsLoader.prototype.onAssetsError = function (args) {
+    ResourceController.prototype.onAssetsError = function (args) {
         this.emit("assetLoadfailed");
     };
-    AssetsLoader.prototype.onAllAssetsLoaded = function () {
+    ResourceController.prototype.onAllAssetsLoaded = function () {
         var _this = this;
         if (this._doubleCheck == false) {
             if (this.isSoundLoaded) {
@@ -1624,7 +4312,7 @@ var AssetsLoader = (function (_super) {
             }
         }
     };
-    AssetsLoader.prototype.onAssetsLoaded = function (args) {
+    ResourceController.prototype.onAssetsLoaded = function (args) {
         var _this = this;
         args.assets.forEach(function (loadAsset) {
             if (loadAsset.asset.type == "sound") {
@@ -1633,7 +4321,7 @@ var AssetsLoader = (function (_super) {
         });
         this.createViewsByPriority(args.priority);
     };
-    AssetsLoader.prototype.createViewsByPriority = function (priority) {
+    ResourceController.prototype.createViewsByPriority = function (priority) {
         switch (priority) {
             case pixi_assets_loader_1.AssetPriority.HIGHEST:
                 this.emit("completeLoadHighAsset");
@@ -1646,14 +4334,14 @@ var AssetsLoader = (function (_super) {
                 break;
         }
     };
-    Object.defineProperty(AssetsLoader.prototype, "soundManager", {
+    Object.defineProperty(ResourceController.prototype, "soundManager", {
         get: function () {
             return this._soundManager;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(AssetsLoader.prototype, "isSoundLoaded", {
+    Object.defineProperty(ResourceController.prototype, "isSoundLoaded", {
         get: function () {
             return this._isSoundLoaded;
         },
@@ -1663,27 +4351,27 @@ var AssetsLoader = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(AssetsLoader.prototype, "loader", {
+    Object.defineProperty(ResourceController.prototype, "loader", {
         get: function () {
             return this._loader;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(AssetsLoader.prototype, "loadingProgress", {
+    Object.defineProperty(ResourceController.prototype, "loadingProgress", {
         get: function () {
             return this._loadingProgress;
         },
         enumerable: true,
         configurable: true
     });
-    return AssetsLoader;
+    return ResourceController;
 }(PIXI.utils.EventEmitter));
-exports.AssetsLoader = AssetsLoader;
+exports.ResourceController = ResourceController;
 
 
 /***/ }),
-/* 14 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1692,12 +4380,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(15));
-__export(__webpack_require__(20));
+__export(__webpack_require__(39));
+__export(__webpack_require__(44));
 
 
 /***/ }),
-/* 15 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1714,8 +4402,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var eventemitter3_1 = __webpack_require__(4);
-var PriorityQueue_1 = __webpack_require__(16);
-__webpack_require__(19);
+var PriorityQueue_1 = __webpack_require__(40);
+__webpack_require__(43);
 var PixiAssetsLoader = (function (_super) {
     __extends(PixiAssetsLoader, _super);
     function PixiAssetsLoader(pixiLoader) {
@@ -1915,14 +4603,14 @@ exports.PixiAssetsLoader = PixiAssetsLoader;
 
 
 /***/ }),
-/* 16 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var util = __webpack_require__(2);
-var Heap_1 = __webpack_require__(17);
+var util = __webpack_require__(3);
+var Heap_1 = __webpack_require__(41);
 var PriorityQueue = (function () {
     function PriorityQueue(compareFunction) {
         this.heap = new Heap_1.default(util.reverseCompareFunction(compareFunction));
@@ -1965,14 +4653,14 @@ exports.default = PriorityQueue;
 
 
 /***/ }),
-/* 17 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var collections = __webpack_require__(2);
-var arrays = __webpack_require__(18);
+var collections = __webpack_require__(3);
+var arrays = __webpack_require__(42);
 var Heap = (function () {
     function Heap(compareFunction) {
         this.data = [];
@@ -2071,13 +4759,13 @@ exports.default = Heap;
 
 
 /***/ }),
-/* 18 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var util = __webpack_require__(2);
+var util = __webpack_require__(3);
 function indexOf(array, item, equalsFunction) {
     var equals = equalsFunction || util.defaultEquals;
     var length = array.length;
@@ -2169,7 +4857,7 @@ exports.forEach = forEach;
 
 
 /***/ }),
-/* 19 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -5125,10 +7813,10 @@ exports.forEach = forEach;
   };
 })();
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
-/* 20 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5165,7 +7853,7 @@ exports.AssetPriority = AssetPriority;
 
 
 /***/ }),
-/* 21 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5181,15 +7869,15 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SoundManager = (function (_super) {
-    __extends(SoundManager, _super);
-    function SoundManager() {
+var SoundController = (function (_super) {
+    __extends(SoundController, _super);
+    function SoundController() {
         var _this = _super.call(this) || this;
         _this._sounds = {};
         _this._loadedSoundCount = 0;
         return _this;
     }
-    SoundManager.prototype.addSound = function (loadAsset, length) {
+    SoundController.prototype.addSound = function (loadAsset, length) {
         if (loadAsset.asset.id in this._sounds == false) {
             this._loadedSoundCount++;
             this._sounds[loadAsset.asset.id] = {
@@ -5205,7 +7893,7 @@ var SoundManager = (function (_super) {
                 this.emit("sound", "createAllSound");
         }
     };
-    SoundManager.prototype.play = function (key, volume, loop) {
+    SoundController.prototype.play = function (key, volume, loop) {
         if (volume === void 0) { volume = 1; }
         if (loop === void 0) { loop = false; }
         if (key in this._sounds) {
@@ -5215,21 +7903,21 @@ var SoundManager = (function (_super) {
             this._sounds[key].sound.play();
         }
     };
-    SoundManager.prototype.pause = function (key) {
+    SoundController.prototype.pause = function (key) {
         if (key in this._sounds)
             this._sounds[key].sound.pause();
     };
-    SoundManager.prototype.stop = function (key) {
+    SoundController.prototype.stop = function (key) {
         if (key in this._sounds)
             this._sounds[key].sound.stop();
     };
-    return SoundManager;
+    return SoundController;
 }(PIXI.utils.EventEmitter));
-exports.default = SoundManager;
+exports.default = SoundController;
 
 
 /***/ }),
-/* 22 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5245,26 +7933,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var StageManager_1 = __webpack_require__(1);
-var AnimationsController_1 = __webpack_require__(23);
-var UserInterfaceController_1 = __webpack_require__(26);
+var AnimationsController_1 = __webpack_require__(47);
+var UserInterfaceController_1 = __webpack_require__(50);
 var EntryPoint_1 = __webpack_require__(0);
-var GridController_1 = __webpack_require__(30);
+var GridController_1 = __webpack_require__(53);
+var StageController_1 = __webpack_require__(2);
 var BaseGame = (function (_super) {
     __extends(BaseGame, _super);
     function BaseGame() {
         var _this = _super.call(this) || this;
         _this._game = EntryPoint_1.EmreBase.EntryPoint.instance;
-        _this._game.displayManager.on("resize", _this.onResize, _this);
-        _this._game.displayManager.on("orientationchange", _this.onOrientationChanged, _this);
         return _this;
     }
-    BaseGame.prototype.onResize = function (width, height) {
-        console.log("resize", width, height);
-    };
-    BaseGame.prototype.onOrientationChanged = function (orientation) {
-        console.log("orientation", orientation);
-    };
     BaseGame.prototype.awake = function () {
         this._userInterfaceController = new UserInterfaceController_1.UserInterfaceController();
         this.addChild(this._userInterfaceController);
@@ -5272,7 +7952,6 @@ var BaseGame = (function (_super) {
         this.addChild(this._animationController);
         this._gridController = new GridController_1.GridController();
         this.addChild(this._gridController);
-        ;
         this._game.sound.play("theme", 1, true);
         this.eventListener();
     };
@@ -5292,12 +7971,12 @@ var BaseGame = (function (_super) {
     BaseGame.prototype.killScene = function () {
     };
     return BaseGame;
-}(StageManager_1.Scene));
+}(StageController_1.Scene));
 exports.BaseGame = BaseGame;
 
 
 /***/ }),
-/* 23 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5313,7 +7992,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Animations_1 = __webpack_require__(24);
+var Animations_1 = __webpack_require__(48);
 var AnimationsController = (function (_super) {
     __extends(AnimationsController, _super);
     function AnimationsController() {
@@ -5331,7 +8010,7 @@ exports.AnimationsController = AnimationsController;
 
 
 /***/ }),
-/* 24 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5347,7 +8026,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(25);
+__webpack_require__(49);
 var EntryPoint_1 = __webpack_require__(0);
 var BoyAnimations;
 (function (BoyAnimations) {
@@ -5379,7 +8058,7 @@ exports.Animations = Animations;
 
 
 /***/ }),
-/* 25 */
+/* 49 */
 /***/ (function(module, exports) {
 
 var __extends = (this && this.__extends) || (function () {
@@ -12605,7 +15284,7 @@ var pixi_spine;
 
 
 /***/ }),
-/* 26 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12621,7 +15300,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var UserInterface_1 = __webpack_require__(27);
+var UserInterface_1 = __webpack_require__(51);
 var UserInterfaceController = (function (_super) {
     __extends(UserInterfaceController, _super);
     function UserInterfaceController() {
@@ -12643,7 +15322,7 @@ exports.UserInterfaceController = UserInterfaceController;
 
 
 /***/ }),
-/* 27 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12659,8 +15338,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SimpleSprite2D_1 = __webpack_require__(28);
-var GameSettings_1 = __webpack_require__(29);
+var SimpleSprite2D_1 = __webpack_require__(52);
+var GameSettings_1 = __webpack_require__(7);
 var UserInterface = (function (_super) {
     __extends(UserInterface, _super);
     function UserInterface() {
@@ -12719,7 +15398,7 @@ exports.UserInterface = UserInterface;
 
 
 /***/ }),
-/* 28 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12763,162 +15442,7 @@ exports.SimpleSprite2D = SimpleSprite2D;
 
 
 /***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DefaultTextStyle = {
-    fontFamily: "Topaz-8-remake",
-    fontSize: 42,
-    fill: "#1f140a",
-    align: "center",
-    stroke: "#cecece",
-    strokeThickness: 3,
-};
-exports.PLAYACTION = "play";
-exports.INIT = "init";
-exports.ERROR = "error";
-exports.PSEUDO_REEL_SET = [
-    [
-        "T",
-        "J",
-        "Q",
-        "K",
-        "K",
-        "T",
-        "K",
-        "P",
-        "J",
-        "J",
-        "Q",
-        "K",
-        "K",
-        "J",
-        "Q",
-        "K",
-        "A",
-        "T",
-        "Q",
-        "T",
-    ],
-    [
-        "Q",
-        "Q",
-        "A",
-        "J",
-        "A",
-        "Q",
-        "A",
-        "A",
-        "J",
-        "Q",
-        "T",
-        "K",
-        "T",
-        "K",
-        "Q",
-        "J",
-        "A",
-        "J",
-        "J",
-        "K",
-    ],
-    [
-        "A",
-        "J",
-        "T",
-        "K",
-        "P",
-        "J",
-        "J",
-        "Q",
-        "K",
-        "J",
-        "P",
-        "P",
-        "T",
-        "Q",
-        "J",
-        "Q",
-        "K",
-        "J",
-        "Q",
-        "A",
-    ],
-    [
-        "A",
-        "Q",
-        "T",
-        "K",
-        "T",
-        "J",
-        "Q",
-        "K",
-        "K",
-        "T",
-        "A",
-        "J",
-        "A",
-        "J",
-        "Q",
-        "T",
-        "K",
-        "P",
-        "J",
-        "J",
-    ],
-    [
-        "K",
-        "P",
-        "Q",
-        "Q",
-        "K",
-        "A",
-        "Q",
-        "Q",
-        "J",
-        "Q",
-        "T",
-        "Q",
-        "J",
-        "Q",
-        "K",
-        "P",
-        "A",
-        "Q",
-        "A",
-        "T",
-    ],
-];
-exports.configs = {
-    reel: {
-        animationDuration: 3,
-        startTween: {
-            duration: 0.3,
-            intensity: 25,
-        },
-        finishedTween: {
-            duration: 0.25,
-            intensity: 25,
-        },
-    },
-};
-var GameSettings = (function () {
-    function GameSettings() {
-    }
-    GameSettings.resolvePlayAccessinble = function (value) {
-        GameSettings.playAccessible = value;
-    };
-    GameSettings.playAccessible = false;
-    return GameSettings;
-}());
-exports.GameSettings = GameSettings;
-
-
-/***/ }),
-/* 30 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12934,126 +15458,44 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Grid_1 = __webpack_require__(31);
+var Grid_1 = __webpack_require__(54);
+var GameSettings_1 = __webpack_require__(7);
 var GridController = (function (_super) {
     __extends(GridController, _super);
     function GridController() {
         var _this = _super.call(this) || this;
+        _this._clusters = [];
+        _this._currentSequence = [];
         _this.awake();
         return _this;
     }
     GridController.prototype.awake = function () {
-        var seq = [
-            [
-                "solid1",
-                "solid1",
-                "solid3",
-                "solid1",
-                "solid4",
-                "solid3",
-                "solid2",
-                "solid1",
-                "solid4",
-            ],
-            [
-                "solid2",
-                "solid3",
-                "solid2",
-                "solid4",
-                "solid2",
-                "solid1",
-                "solid4",
-                "solid2",
-                "solid2",
-            ],
-            [
-                "solid3",
-                "solid2",
-                "solid1",
-                "solid3",
-                "solid3",
-                "solid2",
-                "solid1",
-                "solid4",
-                "solid3",
-            ],
-            [
-                "solid1",
-                "solid4",
-                "solid4",
-                "solid2",
-                "solid4",
-                "solid4",
-                "solid2",
-                "solid1",
-                "solid4",
-            ],
-            [
-                "solid4",
-                "solid1",
-                "solid1",
-                "solid4",
-                "solid3",
-                "solid1",
-                "solid2",
-                "solid2",
-                "solid1",
-            ],
-            [
-                "solid3",
-                "solid3",
-                "solid2",
-                "solid2",
-                "solid1",
-                "solid3",
-                "solid3",
-                "solid3",
-                "solid2",
-            ],
-            [
-                "solid2",
-                "solid2",
-                "solid3",
-                "solid1",
-                "solid2",
-                "solid3",
-                "solid4",
-                "solid3",
-                "solid2",
-            ],
-            [
-                "solid4",
-                "solid1",
-                "solid3",
-                "solid4",
-                "solid1",
-                "solid4",
-                "solid1",
-                "solid1",
-                "solid3",
-            ],
-            [
-                "solid1",
-                "solid4",
-                "solid4",
-                "solid3",
-                "solid2",
-                "solid1",
-                "solid2",
-                "solid2",
-                "solid4",
-            ],
-        ];
-        this._grid = new Grid_1.Grid(seq);
+        this._currentSequence = GameSettings_1.INITIAL_SEQ;
+        this._grid = new Grid_1.Grid(GameSettings_1.INITIAL_SEQ);
         this.addChild(this._grid);
+        this._grid.on("animationstatus", this.onGridHandler, this);
+        this._grid.createGrid(GameSettings_1.GameProperty.colums, GameSettings_1.GameProperty.row);
+        this.updateCurrentSequence();
     };
+    GridController.prototype.onGridHandler = function (index, button) {
+        console.log("ongrid");
+        this.getMatches();
+    };
+    GridController.prototype.updateCurrentSequence = function () {
+        for (var i = 0; i < 9; i++) {
+            for (var j = 0; j < 9; j++) {
+                this._currentSequence[i][j] = this._grid.symbol[j][i].type;
+            }
+        }
+    };
+    GridController.prototype.getMatches = function () { };
     return GridController;
 }(PIXI.Container));
 exports.GridController = GridController;
 
 
 /***/ }),
-/* 31 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13069,49 +15511,38 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SimpleButton2D_1 = __webpack_require__(32);
-var gsap_1 = __webpack_require__(33);
+var SimpleButton2D_1 = __webpack_require__(55);
+var gsap_1 = __webpack_require__(56);
 var Grid = (function (_super) {
     __extends(Grid, _super);
     function Grid(sequence) {
         var _this = _super.call(this) || this;
         _this.sequence = sequence;
         _this._symbol = [];
-        _this.init();
         return _this;
     }
-    Grid.prototype.init = function () {
-        for (var i = 0; i < 9; i++) {
+    Grid.prototype.createGrid = function (column, row) {
+        this._gridContainer = new PIXI.Container();
+        this.addChild(this._gridContainer);
+        this._gridMask = new PIXI.Graphics()
+            .beginFill(0xcecece, 1)
+            .drawRect(40, 300, 680, 825)
+            .endFill();
+        this._gridContainer.mask = this._gridMask;
+        this.addChild(this._gridMask);
+        for (var i = 0; i < column; i++) {
             this._symbol[i] = [];
-            for (var j = 0; j < 9; j++) {
-                this._symbol[i][j] = new SimpleButton2D_1.SimpleButton2D(this.sequence[j][i], { x: 80 + i * 75, y: 360 + j * 90 }, this.onButtonClick.bind(this, [i, j]), "solid1");
+            for (var j = 0; j < row; j++) {
+                this._symbol[i][j] = new SimpleButton2D_1.SimpleButton2D(this.sequence[j][i], { x: 80 + i * 75, y: 360 + j * 90 }, this.onButtonClick.bind(this, [i, j]));
+                this._symbol[i][j].type = this.sequence[j][i];
                 this._symbol[i][j].anchor.set(0.5, 0.5);
                 this._symbol[i][j].scale.set(0.75, 0.75);
-                this.addChild(this._symbol[i][j]);
+                this._gridContainer.addChild(this._symbol[i][j]);
             }
         }
     };
     Grid.prototype.onButtonClick = function (index, button) {
-        var _this = this;
-        var matches = this.findCluster();
-        matches.forEach(function (match) {
-            console.log(match, index);
-            if (match.column == index[1] && match.row == index[0]) {
-                for (var i = 0; i < match.length; i++) {
-                    if (match.horizontal) {
-                        _this._symbol[index[0]][index[1] + i].destroy();
-                    }
-                    else {
-                        _this._symbol[index[0] + i][index[1]].destroy();
-                    }
-                }
-            }
-            else {
-                if (button)
-                    _this.rotateAnimation(button);
-                return;
-            }
-        });
+        this.emit("animationstatus", index, button);
     };
     Grid.prototype.rotateAnimation = function (target) {
         if (this._rotateAnimation)
@@ -13132,75 +15563,56 @@ var Grid = (function (_super) {
             yoyo: true,
         });
     };
-    Grid.prototype.findCluster = function () {
-        var clusters = [];
-        for (var j = 0; j < 9; j++) {
-            var matchlength = 1;
-            for (var i = 0; i < 9; i++) {
-                var checkcluster = false;
-                if (i == 9 - 1) {
-                    checkcluster = true;
-                }
-                else {
-                    if (this.sequence[i][j] == this.sequence[i + 1][j] &&
-                        this.sequence[i][j] != "") {
-                        matchlength += 1;
-                    }
-                    else {
-                        checkcluster = true;
-                    }
-                }
-                if (checkcluster) {
-                    if (matchlength >= 2) {
-                        clusters.push({
-                            column: i + 1 - matchlength,
-                            row: j,
-                            length: matchlength,
-                            horizontal: true,
-                        });
-                    }
-                    matchlength = 1;
-                }
-            }
+    Grid.prototype.matchAnimation = function (column, row) {
+        if (this._rotateAnimation) {
+            this._rotateAnimation.kill();
+            this._rotateAnimation.seek(this._rotateAnimation.duration, false);
         }
-        for (var i = 0; i < 9; i++) {
-            var matchlength = 1;
-            for (var j = 0; j < 9; j++) {
-                var checkcluster = false;
-                if (j == 9 - 1) {
-                    checkcluster = true;
-                }
-                else {
-                    if (this.sequence[i][j] == this.sequence[i][j + 1] &&
-                        this.sequence[i][j] != "") {
-                        matchlength += 1;
-                    }
-                    else {
-                        checkcluster = true;
-                    }
-                }
-                if (checkcluster) {
-                    if (matchlength >= 2) {
-                        clusters.push({
-                            column: i,
-                            row: j + 1 - matchlength,
-                            length: matchlength,
-                            horizontal: false,
-                        });
-                    }
-                    matchlength = 1;
-                }
-            }
+        if (this._scaleAnimation) {
+            this._scaleAnimation.kill();
+            this._scaleAnimation.seek(this._scaleAnimation.duration, false);
         }
-        return clusters;
+        this._symbol[column][row].scale.set(0.1, 0.1);
+        this.createSymbol(column, row, "solid1");
+        for (var i = 0; i < row; i++) {
+            var posY = this._symbol[column][i].position.y;
+            gsap_1.TweenLite.to(this._symbol[column][i].position, 1, {
+                y: posY + 90,
+            });
+        }
+        this._symbol[column][row].emit("matchcompleted");
     };
+    Grid.prototype.createSymbol = function (column, row, symbolName) {
+        this._symbol.sort(function (x, y) {
+            console.log(x, y);
+            return -1;
+        });
+        this._symbol[column][row].type = symbolName;
+        var name = symbolName + "_normal";
+        this._symbol[column][row].texture = PIXI.Texture.from(name);
+        this._symbol[column][row].scale.set(0.75, 0.75);
+        this._symbol[column][row].position.set(80 + column * 75, 250);
+        this.fallNewSymbol(column, row);
+    };
+    Grid.prototype.fallNewSymbol = function (column, row) {
+        gsap_1.TweenLite.to(this._symbol[column][row].position, 1, {
+            y: 360,
+        });
+    };
+    Object.defineProperty(Grid.prototype, "symbol", {
+        get: function () {
+            return this._symbol;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Grid;
 }(PIXI.Container));
 exports.Grid = Grid;
 
 
 /***/ }),
-/* 32 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13348,7 +15760,7 @@ exports.SimpleButton2D = SimpleButton2D;
 
 
 /***/ }),
-/* 33 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -21354,2563 +23766,7 @@ if (_gsScope._gsDefine) { _gsScope._gsQueue.pop()(); } //necessary in case Tween
 		_tickerActive = false; //ensures that the first official animation forces a ticker.tick() to update the time when it is instantiated
 
 })((typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : this || window, "TweenMax");
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var LocalStorage = (function (_super) {
-    __extends(LocalStorage, _super);
-    function LocalStorage() {
-        var _this = _super.call(this) || this;
-        _this._localStorage = window.localStorage;
-        return _this;
-    }
-    LocalStorage.prototype.setItem = function (key, value) {
-        if (this.getItem(key) == null)
-            this.emit("insert", key, value);
-        else
-            this.emit("update", key, value);
-        this._localStorage.setItem(key, value);
-    };
-    LocalStorage.prototype.getItem = function (key) {
-        if (localStorage.getItem(key))
-            return this._localStorage.getItem(key);
-    };
-    LocalStorage.prototype.removeAll = function () {
-        this._localStorage.clear();
-    };
-    LocalStorage.prototype.removeItem = function (key) {
-        this._localStorage.removeItem(key);
-    };
-    return LocalStorage;
-}(PIXI.utils.EventEmitter));
-exports.LocalStorage = LocalStorage;
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var pixi_app_wrapper_1 = __webpack_require__(3);
-var DisplayManager = (function (_super) {
-    __extends(DisplayManager, _super);
-    function DisplayManager(rootContainer) {
-        var _this = _super.call(this) || this;
-        _this._rootContainer = rootContainer;
-        return _this;
-    }
-    DisplayManager.prototype.create = function () {
-        var canvas = pixi_app_wrapper_1.Dom.getElementOrCreateNew("app-canvas", "canvas", document.getElementById("app-root"));
-        var appOptions = {
-            width: 750,
-            height: 1334,
-            scale: "full-size",
-            align: "top-center",
-            resolution: window.devicePixelRatio || 1,
-            antialias: true,
-            roundPixels: true,
-            transparent: false,
-            backgroundColor: 0x000000,
-            view: canvas,
-            showFPS: false,
-            showMediaInfo: false,
-            changeOrientation: false,
-        };
-        this._app = new pixi_app_wrapper_1.PixiAppWrapper(appOptions);
-        this._app.on(pixi_app_wrapper_1.pixiAppWrapperEvent.RESIZE_END, this.onResizeEnd.bind(this));
-        this._rootContainer.name = "RootContainer";
-        this._app.stage.addChild(this._rootContainer);
-    };
-    DisplayManager.prototype.onResizeEnd = function (args) {
-        this.emit("resize", args.stage.size.width, args.stage.size.height);
-        if (args.stage.orientation.changed) {
-            this.emit("orientationchange", args.stage.orientation.landscape);
-        }
-    };
-    return DisplayManager;
-}(PIXI.utils.EventEmitter));
-exports.DisplayManager = DisplayManager;
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var EventEmitter = __webpack_require__(4);
-__webpack_require__(37);
-var pixi_app_wrapper_1 = __webpack_require__(3);
-__webpack_require__(38);
-var PIXI = __webpack_require__(39);
-var screenfull = __webpack_require__(40);
-var media_info_viewer_1 = __webpack_require__(41);
-var align_bottom_center_1 = __webpack_require__(43);
-var align_bottom_left_1 = __webpack_require__(44);
-var align_bottom_right_1 = __webpack_require__(45);
-var align_middle_1 = __webpack_require__(46);
-var align_middle_left_1 = __webpack_require__(47);
-var align_middle_right_1 = __webpack_require__(48);
-var align_top_center_1 = __webpack_require__(49);
-var align_top_left_1 = __webpack_require__(50);
-var align_top_right_1 = __webpack_require__(51);
-var scale_full_size_1 = __webpack_require__(52);
-var scale_keep_aspect_ratio_1 = __webpack_require__(53);
-var scale_none_1 = __webpack_require__(54);
-var PixiAppWrapper = (function (_super) {
-    __extends(PixiAppWrapper, _super);
-    function PixiAppWrapper(options) {
-        var _this = _super.call(this) || this;
-        _this.defaultScaleMethod = "none";
-        _this.defaultAlignMethod = "top-left";
-        _this.defaultOptions = {
-            width: 1280,
-            height: 720,
-            scale: _this.defaultScaleMethod,
-            align: _this.defaultAlignMethod,
-            showFPS: false,
-            showMediaInfo: false,
-        };
-        _this.fpsmeterOptions = {
-            theme: "transparent",
-            heat: 1,
-            graph: 1,
-            history: 20,
-            zIndex: 100,
-        };
-        if (!options) {
-            options = _this.defaultOptions;
-        }
-        _this.resizing = false;
-        _this.mediaInfoViewer = new media_info_viewer_1.MediaInfoViewer();
-        _this.app = new PIXI.Application(options);
-        _this.app.stage = new PIXI.display.Stage();
-        _this.configure(options);
-        _this.appOptions = options;
-        _this.resize.bind(_this);
-        _this.ticker.add(_this.resize.bind(_this));
-        return _this;
-    }
-    PixiAppWrapper.toggleFulscreen = function (element) {
-        var target = element ? element : document.documentElement;
-        if (screenfull.enabled) {
-            screenfull.toggle(target);
-        }
-    };
-    Object.defineProperty(PixiAppWrapper.prototype, "initialHeight", {
-        get: function () {
-            return this.height;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PixiAppWrapper.prototype, "initialWidth", {
-        get: function () {
-            return this.width;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PixiAppWrapper.prototype, "stage", {
-        get: function () {
-            return this.app.stage;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PixiAppWrapper.prototype, "ticker", {
-        get: function () {
-            return this.app.ticker;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PixiAppWrapper.prototype, "renderer", {
-        get: function () {
-            return this.app.renderer;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PixiAppWrapper.prototype, "screen", {
-        get: function () {
-            return this.app.screen;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PixiAppWrapper.prototype, "view", {
-        get: function () {
-            return this.app.view;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    PixiAppWrapper.prototype.getMediaInfo = function () {
-        return {
-            display: {
-                screen: {
-                    width: this.screen.width,
-                    height: this.screen.height,
-                },
-                view: {
-                    width: this.view.clientWidth,
-                    height: this.view.clientHeight,
-                },
-                stage: {
-                    x: this.stage.x,
-                    y: this.stage.y,
-                    initialWidth: this.initialWidth,
-                    initialHeight: this.initialHeight,
-                    currentWidth: Math.ceil(this.initialWidth * this.stage.scale.x),
-                    currentHeight: Math.ceil(this.initialHeight * this.stage.scale.y),
-                    scaleX: this.stage.scale.x.toFixed(2),
-                    scaleY: this.stage.scale.y.toFixed(2),
-                    scaling: this.appOptions.scale ? this.appOptions.scale.valueOf() : this.defaultScaleMethod,
-                    alignment: this.appOptions.align ? this.appOptions.align.valueOf() : this.defaultAlignMethod,
-                    orientation: this.landscape ? "landscape" : "portrait",
-                },
-            },
-        };
-    };
-    PixiAppWrapper.prototype.configure = function (options) {
-        this.width = options.width;
-        this.height = options.height;
-        this.landscape = (this.width >= this.height);
-        switch (options.align) {
-            case "top-center":
-                this.alignStrategy = new align_top_center_1.AlignTopCenter();
-                break;
-            case "top-right":
-                this.alignStrategy = new align_top_right_1.AlignTopRight();
-                break;
-            case "middle-left":
-                this.alignStrategy = new align_middle_left_1.AlignMiddleLeft();
-                break;
-            case "middle":
-                this.alignStrategy = new align_middle_1.AlignMiddle();
-                break;
-            case "middle-right":
-                this.alignStrategy = new align_middle_right_1.AlignMiddleRight();
-                break;
-            case "bottom-left":
-                this.alignStrategy = new align_bottom_left_1.AlignBottomLeft();
-                break;
-            case "bottom-center":
-                this.alignStrategy = new align_bottom_center_1.AlignBottomCenter();
-                break;
-            case "bottom-right":
-                this.alignStrategy = new align_bottom_right_1.AlignBottomRight();
-                break;
-            default:
-                this.alignStrategy = new align_top_left_1.AlignTopLeft();
-                break;
-        }
-        switch (options.scale) {
-            case "keep-aspect-ratio":
-                this.scaleStrategy = new scale_keep_aspect_ratio_1.ScaleKeepAspectRatio();
-                break;
-            case "full-size":
-                this.scaleStrategy = new scale_full_size_1.ScaleFullSize();
-                break;
-            default:
-                this.scaleStrategy = new scale_none_1.ScaleNone();
-                break;
-        }
-        if (options.showFPS) {
-            this.createFPSmeter();
-        }
-        if (!options.showMediaInfo) {
-            this.mediaInfoViewer.hide();
-        }
-        if (!options.view) {
-            document.body.appendChild(this.app.view);
-        }
-    };
-    PixiAppWrapper.prototype.createFPSmeter = function () {
-        this.fpsmeter = new FPSMeter(pixi_app_wrapper_1.Dom.getElementOrBody("fps-meter"), this.fpsmeterOptions);
-        this.ticker.add(this.fpsmeter.tick);
-        this.fpsmeter.show();
-    };
-    PixiAppWrapper.prototype.resize = function () {
-        var multiplier = this.renderer.options.resolution || 1;
-        var width = Math.floor(this.view.clientWidth * multiplier);
-        var height = Math.floor(this.view.clientHeight * multiplier);
-        if (!this.resizing && (this.view.width !== width || this.view.height !== height)) {
-            this.resizing = true;
-            this.emit(pixi_app_wrapper_1.pixiAppWrapperEvent.RESIZE_START);
-            this.renderer.resize(this.view.clientWidth, this.view.clientHeight);
-            var orientationChanged = this.orientate();
-            this.scale();
-            this.align();
-            this.mediaInfoViewer.update(this.getMediaInfo());
-            this.resizing = false;
-            this.emit(pixi_app_wrapper_1.pixiAppWrapperEvent.RESIZE_END, {
-                stage: {
-                    position: {
-                        x: this.stage.position.x,
-                        y: this.stage.position.y,
-                    },
-                    scale: {
-                        x: this.stage.scale.x,
-                        y: this.stage.scale.y,
-                    },
-                    size: {
-                        width: this.initialWidth * this.stage.scale.x,
-                        height: this.initialHeight * this.stage.scale.y,
-                    },
-                    orientation: {
-                        landscape: this.landscape,
-                        changed: orientationChanged,
-                    },
-                },
-                view: {
-                    width: this.view.width,
-                    height: this.view.height,
-                },
-            });
-        }
-    };
-    PixiAppWrapper.prototype.orientate = function () {
-        var changed = false;
-        if (this.appOptions.changeOrientation) {
-            if (this.landscape && this.view.clientHeight > this.view.clientWidth) {
-                changed = true;
-                this.landscape = false;
-            }
-            else if (!this.landscape && this.view.clientWidth > this.view.clientHeight) {
-                changed = true;
-                this.landscape = true;
-            }
-        }
-        return changed;
-    };
-    PixiAppWrapper.prototype.swapSize = function () {
-        var tempW = this.width;
-        this.width = this.height;
-        this.height = tempW;
-    };
-    PixiAppWrapper.prototype.scale = function () {
-        var _a = this.scaleStrategy.scale(this.initialWidth, this.initialHeight, this.view.clientWidth, this.view.clientHeight), scaleX = _a.scaleX, scaleY = _a.scaleY;
-        this.stage.scale.set(scaleX, scaleY);
-    };
-    PixiAppWrapper.prototype.align = function () {
-        var _a = this.alignStrategy.align(this.initialWidth * this.stage.scale.x, this.initialHeight * this.stage.scale.y, this.view.clientWidth, this.view.clientHeight), x = _a.x, y = _a.y;
-        this.stage.position.set(x, y);
-    };
-    return PixiAppWrapper;
-}(EventEmitter));
-exports.PixiAppWrapper = PixiAppWrapper;
-
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports) {
-
-/*!
- * FPSMeter 0.3.1 - 9th May 2013
- * https://github.com/Darsain/fpsmeter
- *
- * Licensed under the MIT license.
- * http://opensource.org/licenses/MIT
- */
-;(function (w, undefined) {
-	'use strict';
-
-	/**
-	 * Create a new element.
-	 *
-	 * @param  {String} name Element type name.
-	 *
-	 * @return {Element}
-	 */
-	function newEl(name) {
-		return document.createElement(name);
-	}
-
-	/**
-	 * Apply theme CSS properties to element.
-	 *
-	 * @param  {Element} element DOM element.
-	 * @param  {Object}  theme   Theme object.
-	 *
-	 * @return {Element}
-	 */
-	function applyTheme(element, theme) {
-		for (var name in theme) {
-			try {
-				element.style[name] = theme[name];
-			} catch (e) {}
-		}
-		return element;
-	}
-
-	/**
-	 * Return type of the value.
-	 *
-	 * @param  {Mixed} value
-	 *
-	 * @return {String}
-	 */
-	function type(value) {
-		if (value == null) {
-			return String(value);
-		}
-
-		if (typeof value === 'object' || typeof value === 'function') {
-			return Object.prototype.toString.call(value).match(/\s([a-z]+)/i)[1].toLowerCase() || 'object';
-		}
-
-		return typeof value;
-	}
-
-	/**
-	 * Check whether the value is in an array.
-	 *
-	 * @param  {Mixed} value
-	 * @param  {Array} array
-	 *
-	 * @return {Integer} Array index or -1 when not found.
-	 */
-	function inArray(value, array) {
-		if (type(array) !== 'array') {
-			return -1;
-		}
-		if (array.indexOf) {
-			return array.indexOf(value);
-		}
-		for (var i = 0, l = array.length; i < l; i++) {
-			if (array[i] === value) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	/**
-	 * Poor man's deep object extend.
-	 *
-	 * Example:
-	 *   extend({}, defaults, options);
-	 *
-	 * @return {Void}
-	 */
-	function extend() {
-		var args = arguments;
-		for (var key in args[1]) {
-			if (args[1].hasOwnProperty(key)) {
-				switch (type(args[1][key])) {
-					case 'object':
-						args[0][key] = extend({}, args[0][key], args[1][key]);
-						break;
-
-					case 'array':
-						args[0][key] = args[1][key].slice(0);
-						break;
-
-					default:
-						args[0][key] = args[1][key];
-				}
-			}
-		}
-		return args.length > 2 ?
-			extend.apply(null, [args[0]].concat(Array.prototype.slice.call(args, 2))) :
-			args[0];
-	}
-
-	/**
-	 * Convert HSL color to HEX string.
-	 *
-	 * @param  {Array} hsl Array with [hue, saturation, lightness].
-	 *
-	 * @return {Array} Array with [red, green, blue].
-	 */
-	function hslToHex(h, s, l) {
-		var r, g, b;
-		var v, min, sv, sextant, fract, vsf;
-
-		if (l <= 0.5) {
-			v = l * (1 + s);
-		} else {
-			v = l + s - l * s;
-		}
-
-		if (v === 0) {
-			return '#000';
-		} else {
-			min = 2 * l - v;
-			sv = (v - min) / v;
-			h = 6 * h;
-			sextant = Math.floor(h);
-			fract = h - sextant;
-			vsf = v * sv * fract;
-			if (sextant === 0 || sextant === 6) {
-				r = v;
-				g = min + vsf;
-				b = min;
-			} else if (sextant === 1) {
-				r = v - vsf;
-				g = v;
-				b = min;
-			} else if (sextant === 2) {
-				r = min;
-				g = v;
-				b = min + vsf;
-			} else if (sextant === 3) {
-				r = min;
-				g = v - vsf;
-				b = v;
-			} else if (sextant === 4) {
-				r = min + vsf;
-				g = min;
-				b = v;
-			} else {
-				r = v;
-				g = min;
-				b = v - vsf;
-			}
-			return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
-		}
-	}
-
-	/**
-	 * Helper function for hslToHex.
-	 */
-	function componentToHex(c) {
-		c = Math.round(c * 255).toString(16);
-		return c.length === 1 ? '0' + c : c;
-	}
-
-	/**
-	 * Manage element event listeners.
-	 *
-	 * @param  {Node}     element
-	 * @param  {Event}    eventName
-	 * @param  {Function} handler
-	 * @param  {Bool}     remove
-	 *
-	 * @return {Void}
-	 */
-	function listener(element, eventName, handler, remove) {
-		if (element.addEventListener) {
-			element[remove ? 'removeEventListener' : 'addEventListener'](eventName, handler, false);
-		} else if (element.attachEvent) {
-			element[remove ? 'detachEvent' : 'attachEvent']('on' + eventName, handler);
-		}
-	}
-
-	// Preferred timing funtion
-	var getTime;
-	(function () {
-		var perf = w.performance;
-		if (perf && (perf.now || perf.webkitNow)) {
-			var perfNow = perf.now ? 'now' : 'webkitNow';
-			getTime = perf[perfNow].bind(perf);
-		} else {
-			getTime = function () {
-				return +new Date();
-			};
-		}
-	}());
-
-	// Local WindowAnimationTiming interface polyfill
-	var cAF = w.cancelAnimationFrame || w.cancelRequestAnimationFrame;
-	var rAF = w.requestAnimationFrame;
-	(function () {
-		var vendors = ['moz', 'webkit', 'o'];
-		var lastTime = 0;
-
-		// For a more accurate WindowAnimationTiming interface implementation, ditch the native
-		// requestAnimationFrame when cancelAnimationFrame is not present (older versions of Firefox)
-		for (var i = 0, l = vendors.length; i < l && !cAF; ++i) {
-			cAF = w[vendors[i]+'CancelAnimationFrame'] || w[vendors[i]+'CancelRequestAnimationFrame'];
-			rAF = cAF && w[vendors[i]+'RequestAnimationFrame'];
-		}
-
-		if (!cAF) {
-			rAF = function (callback) {
-				var currTime = getTime();
-				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-				lastTime = currTime + timeToCall;
-				return w.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall);
-			};
-
-			cAF = function (id) {
-				clearTimeout(id);
-			};
-		}
-	}());
-
-	// Property name for assigning element text content
-	var textProp = type(document.createElement('div').textContent) === 'string' ? 'textContent' : 'innerText';
-
-	/**
-	 * FPSMeter class.
-	 *
-	 * @param {Element} anchor  Element to append the meter to. Default is document.body.
-	 * @param {Object}  options Object with options.
-	 */
-	function FPSMeter(anchor, options) {
-		// Optional arguments
-		if (type(anchor) === 'object' && anchor.nodeType === undefined) {
-			options = anchor;
-			anchor = document.body;
-		}
-		if (!anchor) {
-			anchor = document.body;
-		}
-
-		// Private properties
-		var self = this;
-		var o = extend({}, FPSMeter.defaults, options || {});
-
-		var el = {};
-		var cols = [];
-		var theme, heatmaps;
-		var heatDepth = 100;
-		var heating = [];
-
-		var thisFrameTime = 0;
-		var frameTime = o.threshold;
-		var frameStart = 0;
-		var lastLoop = getTime() - frameTime;
-		var time;
-
-		var fpsHistory = [];
-		var durationHistory = [];
-
-		var frameID, renderID;
-		var showFps = o.show === 'fps';
-		var graphHeight, count, i, j;
-
-		// Exposed properties
-		self.options = o;
-		self.fps = 0;
-		self.duration = 0;
-		self.isPaused = 0;
-
-		/**
-		 * Tick start for measuring the actual rendering duration.
-		 *
-		 * @return {Void}
-		 */
-		self.tickStart = function () {
-			frameStart = getTime();
-		};
-
-		/**
-		 * FPS tick.
-		 *
-		 * @return {Void}
-		 */
-		self.tick = function () {
-			time = getTime();
-			thisFrameTime = time - lastLoop;
-			frameTime += (thisFrameTime - frameTime) / o.smoothing;
-			self.fps = 1000 / frameTime;
-			self.duration = frameStart < lastLoop ? frameTime : time - frameStart;
-			lastLoop = time;
-		};
-
-		/**
-		 * Pause display rendering.
-		 *
-		 * @return {Object} FPSMeter instance.
-		 */
-		self.pause = function () {
-			if (frameID) {
-				self.isPaused = 1;
-				clearTimeout(frameID);
-				cAF(frameID);
-				cAF(renderID);
-				frameID = renderID = 0;
-			}
-			return self;
-		};
-
-		/**
-		 * Resume display rendering.
-		 *
-		 * @return {Object} FPSMeter instance.
-		 */
-		self.resume = function () {
-			if (!frameID) {
-				self.isPaused = 0;
-				requestRender();
-			}
-			return self;
-		};
-
-		/**
-		 * Update options.
-		 *
-		 * @param {String} name  Option name.
-		 * @param {Mixed}  value New value.
-		 *
-		 * @return {Object} FPSMeter instance.
-		 */
-		self.set = function (name, value) {
-			o[name] = value;
-			showFps = o.show === 'fps';
-
-			// Rebuild or reposition elements when specific option has been updated
-			if (inArray(name, rebuilders) !== -1) {
-				createMeter();
-			}
-			if (inArray(name, repositioners) !== -1) {
-				positionMeter();
-			}
-			return self;
-		};
-
-		/**
-		 * Change meter into rendering duration mode.
-		 *
-		 * @return {Object} FPSMeter instance.
-		 */
-		self.showDuration = function () {
-			self.set('show', 'ms');
-			return self;
-		};
-
-		/**
-		 * Change meter into FPS mode.
-		 *
-		 * @return {Object} FPSMeter instance.
-		 */
-		self.showFps = function () {
-			self.set('show', 'fps');
-			return self;
-		};
-
-		/**
-		 * Toggles between show: 'fps' and show: 'duration'.
-		 *
-		 * @return {Object} FPSMeter instance.
-		 */
-		self.toggle = function () {
-			self.set('show', showFps ? 'ms' : 'fps');
-			return self;
-		};
-
-		/**
-		 * Hide the FPSMeter. Also pauses the rendering.
-		 *
-		 * @return {Object} FPSMeter instance.
-		 */
-		self.hide = function () {
-			self.pause();
-			el.container.style.display = 'none';
-			return self;
-		};
-
-		/**
-		 * Show the FPSMeter. Also resumes the rendering.
-		 *
-		 * @return {Object} FPSMeter instance.
-		 */
-		self.show = function () {
-			self.resume();
-			el.container.style.display = 'block';
-			return self;
-		};
-
-		/**
-		 * Check the current FPS and save it in history.
-		 *
-		 * @return {Void}
-		 */
-		function historyTick() {
-			for (i = o.history; i--;) {
-				fpsHistory[i] = i === 0 ? self.fps : fpsHistory[i-1];
-				durationHistory[i] = i === 0 ? self.duration : durationHistory[i-1];
-			}
-		}
-
-		/**
-		 * Returns heat hex color based on values passed.
-		 *
-		 * @param  {Integer} heatmap
-		 * @param  {Integer} value
-		 * @param  {Integer} min
-		 * @param  {Integer} max
-		 *
-		 * @return {Integer}
-		 */
-		function getHeat(heatmap, value, min, max) {
-			return heatmaps[0|heatmap][Math.round(Math.min((value - min) / (max - min) * heatDepth, heatDepth))];
-		}
-
-		/**
-		 * Update counter number and legend.
-		 *
-		 * @return {Void}
-		 */
-		function updateCounter() {
-			// Update legend only when changed
-			if (el.legend.fps !== showFps) {
-				el.legend.fps = showFps;
-				el.legend[textProp] = showFps ? 'FPS' : 'ms';
-			}
-			// Update counter with a nicely formated & readable number
-			count = showFps ? self.fps : self.duration;
-			el.count[textProp] = count > 999 ? '999+' : count.toFixed(count > 99 ? 0 : o.decimals);
-		}
-
-		/**
-		 * Render current FPS state.
-		 *
-		 * @return {Void}
-		 */
-		function render() {
-			time = getTime();
-			// If renderer stopped reporting, do a simulated drop to 0 fps
-			if (lastLoop < time - o.threshold) {
-				self.fps -= self.fps / Math.max(1, o.smoothing * 60 / o.interval);
-				self.duration = 1000 / self.fps;
-			}
-
-			historyTick();
-			updateCounter();
-
-			// Apply heat to elements
-			if (o.heat) {
-				if (heating.length) {
-					for (i = heating.length; i--;) {
-						heating[i].el.style[theme[heating[i].name].heatOn] = showFps ?
-							getHeat(theme[heating[i].name].heatmap, self.fps, 0, o.maxFps) :
-							getHeat(theme[heating[i].name].heatmap, self.duration, o.threshold, 0);
-					}
-				}
-
-				if (el.graph && theme.column.heatOn) {
-					for (i = cols.length; i--;) {
-						cols[i].style[theme.column.heatOn] = showFps ?
-							getHeat(theme.column.heatmap, fpsHistory[i], 0, o.maxFps) :
-							getHeat(theme.column.heatmap, durationHistory[i], o.threshold, 0);
-					}
-				}
-			}
-
-			// Update graph columns height
-			if (el.graph) {
-				for (j = 0; j < o.history; j++) {
-					cols[j].style.height = (showFps ?
-						(fpsHistory[j] ? Math.round(graphHeight / o.maxFps * Math.min(fpsHistory[j], o.maxFps)) : 0) :
-						(durationHistory[j] ? Math.round(graphHeight / o.threshold * Math.min(durationHistory[j], o.threshold)) : 0)
-					) + 'px';
-				}
-			}
-		}
-
-		/**
-		 * Request rendering loop.
-		 *
-		 * @return {Int} Animation frame index.
-		 */
-		function requestRender() {
-			if (o.interval < 20) {
-				frameID = rAF(requestRender);
-				render();
-			} else {
-				frameID = setTimeout(requestRender, o.interval);
-				renderID = rAF(render);
-			}
-		}
-
-		/**
-		 * Meter events handler.
-		 *
-		 * @return {Void}
-		 */
-		function eventHandler(event) {
-			event = event || window.event;
-			if (event.preventDefault) {
-				event.preventDefault();
-				event.stopPropagation();
-			} else {
-				event.returnValue = false;
-				event.cancelBubble = true;
-			}
-			self.toggle();
-		}
-
-		/**
-		 * Destroys the current FPSMeter instance.
-		 *
-		 * @return {Void}
-		 */
-		self.destroy = function () {
-			// Stop rendering
-			self.pause();
-			// Remove elements
-			removeMeter();
-			// Stop listening
-			self.tick = self.tickStart = function () {};
-		};
-
-		/**
-		 * Remove meter element.
-		 *
-		 * @return {Void}
-		 */
-		function removeMeter() {
-			// Unbind listeners
-			if (o.toggleOn) {
-				listener(el.container, o.toggleOn, eventHandler, 1);
-			}
-			// Detach element
-			anchor.removeChild(el.container);
-		}
-
-		/**
-		 * Sets the theme, and generates heatmaps when needed.
-		 */
-		function setTheme() {
-			theme = FPSMeter.theme[o.theme];
-
-			// Generate heatmaps
-			heatmaps = theme.compiledHeatmaps || [];
-			if (!heatmaps.length && theme.heatmaps.length) {
-				for (j = 0; j < theme.heatmaps.length; j++) {
-					heatmaps[j] = [];
-					for (i = 0; i <= heatDepth; i++) {
-						heatmaps[j][i] = hslToHex(0.33 / heatDepth * i, theme.heatmaps[j].saturation, theme.heatmaps[j].lightness);
-					}
-				}
-				theme.compiledHeatmaps = heatmaps;
-			}
-		}
-
-		/**
-		 * Creates and attaches the meter element.
-		 *
-		 * @return {Void}
-		 */
-		function createMeter() {
-			// Remove old meter if present
-			if (el.container) {
-				removeMeter();
-			}
-
-			// Set theme
-			setTheme();
-
-			// Create elements
-			el.container = applyTheme(newEl('div'), theme.container);
-			el.count = el.container.appendChild(applyTheme(newEl('div'), theme.count));
-			el.legend = el.container.appendChild(applyTheme(newEl('div'), theme.legend));
-			el.graph = o.graph ? el.container.appendChild(applyTheme(newEl('div'), theme.graph)) : 0;
-
-			// Add elements to heating array
-			heating.length = 0;
-			for (var key in el) {
-				if (el[key] && theme[key].heatOn) {
-					heating.push({
-						name: key,
-						el: el[key]
-					});
-				}
-			}
-
-			// Graph
-			cols.length = 0;
-			if (el.graph) {
-				// Create graph
-				el.graph.style.width = (o.history * theme.column.width + (o.history - 1) * theme.column.spacing) + 'px';
-
-				// Add columns
-				for (i = 0; i < o.history; i++) {
-					cols[i] = el.graph.appendChild(applyTheme(newEl('div'), theme.column));
-					cols[i].style.position = 'absolute';
-					cols[i].style.bottom = 0;
-					cols[i].style.right = (i * theme.column.width + i * theme.column.spacing) + 'px';
-					cols[i].style.width = theme.column.width + 'px';
-					cols[i].style.height = '0px';
-				}
-			}
-
-			// Set the initial state
-			positionMeter();
-			updateCounter();
-
-			// Append container to anchor
-			anchor.appendChild(el.container);
-
-			// Retrieve graph height after it was appended to DOM
-			if (el.graph) {
-				graphHeight = el.graph.clientHeight;
-			}
-
-			// Add event listeners
-			if (o.toggleOn) {
-				if (o.toggleOn === 'click') {
-					el.container.style.cursor = 'pointer';
-				}
-				listener(el.container, o.toggleOn, eventHandler);
-			}
-		}
-
-		/**
-		 * Positions the meter based on options.
-		 *
-		 * @return {Void}
-		 */
-		function positionMeter() {
-			applyTheme(el.container, o);
-		}
-
-		/**
-		 * Construct.
-		 */
-		(function () {
-			// Create meter element
-			createMeter();
-			// Start rendering
-			requestRender();
-		}());
-	}
-
-	// Expose the extend function
-	FPSMeter.extend = extend;
-
-	// Expose the FPSMeter class
-	window.FPSMeter = FPSMeter;
-
-	// Default options
-	FPSMeter.defaults = {
-		interval:  100,     // Update interval in milliseconds.
-		smoothing: 10,      // Spike smoothing strength. 1 means no smoothing.
-		show:      'fps',   // Whether to show 'fps', or 'ms' = frame duration in milliseconds.
-		toggleOn:  'click', // Toggle between show 'fps' and 'ms' on this event.
-		decimals:  1,       // Number of decimals in FPS number. 1 = 59.9, 2 = 59.94, ...
-		maxFps:    60,      // Max expected FPS value.
-		threshold: 100,     // Minimal tick reporting interval in milliseconds.
-
-		// Meter position
-		position: 'absolute', // Meter position.
-		zIndex:   10,         // Meter Z index.
-		left:     '5px',      // Meter left offset.
-		top:      '5px',      // Meter top offset.
-		right:    'auto',     // Meter right offset.
-		bottom:   'auto',     // Meter bottom offset.
-		margin:   '0 0 0 0',  // Meter margin. Helps with centering the counter when left: 50%;
-
-		// Theme
-		theme: 'dark', // Meter theme. Build in: 'dark', 'light', 'transparent', 'colorful'.
-		heat:  0,      // Allow themes to use coloring by FPS heat. 0 FPS = red, maxFps = green.
-
-		// Graph
-		graph:   0, // Whether to show history graph.
-		history: 20 // How many history states to show in a graph.
-	};
-
-	// Option names that trigger FPSMeter rebuild or reposition when modified
-	var rebuilders = [
-		'toggleOn',
-		'theme',
-		'heat',
-		'graph',
-		'history'
-	];
-	var repositioners = [
-		'position',
-		'zIndex',
-		'left',
-		'top',
-		'right',
-		'bottom',
-		'margin'
-	];
-}(window));
-;(function (w, FPSMeter, undefined) {
-	'use strict';
-
-	// Themes object
-	FPSMeter.theme = {};
-
-	// Base theme with layout, no colors
-	var base = FPSMeter.theme.base = {
-		heatmaps: [],
-		container: {
-			// Settings
-			heatOn: null,
-			heatmap: null,
-
-			// Styles
-			padding: '5px',
-			minWidth: '95px',
-			height: '30px',
-			lineHeight: '30px',
-			textAlign: 'right',
-			textShadow: 'none'
-		},
-		count: {
-			// Settings
-			heatOn: null,
-			heatmap: null,
-
-			// Styles
-			position: 'absolute',
-			top: 0,
-			right: 0,
-			padding: '5px 10px',
-			height: '30px',
-			fontSize: '24px',
-			fontFamily: 'Consolas, Andale Mono, monospace',
-			zIndex: 2
-		},
-		legend: {
-			// Settings
-			heatOn: null,
-			heatmap: null,
-
-			// Styles
-			position: 'absolute',
-			top: 0,
-			left: 0,
-			padding: '5px 10px',
-			height: '30px',
-			fontSize: '12px',
-			lineHeight: '32px',
-			fontFamily: 'sans-serif',
-			textAlign: 'left',
-			zIndex: 2
-		},
-		graph: {
-			// Settings
-			heatOn: null,
-			heatmap: null,
-
-			// Styles
-			position: 'relative',
-			boxSizing: 'padding-box',
-			MozBoxSizing: 'padding-box',
-			height: '100%',
-			zIndex: 1
-		},
-		column: {
-			// Settings
-			width: 4,
-			spacing: 1,
-			heatOn: null,
-			heatmap: null
-		}
-	};
-
-	// Dark theme
-	FPSMeter.theme.dark = FPSMeter.extend({}, base, {
-		heatmaps: [{
-			saturation: 0.8,
-			lightness: 0.8
-		}],
-		container: {
-			background: '#222',
-			color: '#fff',
-			border: '1px solid #1a1a1a',
-			textShadow: '1px 1px 0 #222'
-		},
-		count: {
-			heatOn: 'color'
-		},
-		column: {
-			background: '#3f3f3f'
-		}
-	});
-
-	// Light theme
-	FPSMeter.theme.light = FPSMeter.extend({}, base, {
-		heatmaps: [{
-			saturation: 0.5,
-			lightness: 0.5
-		}],
-		container: {
-			color: '#666',
-			background: '#fff',
-			textShadow: '1px 1px 0 rgba(255,255,255,.5), -1px -1px 0 rgba(255,255,255,.5)',
-			boxShadow: '0 0 0 1px rgba(0,0,0,.1)'
-		},
-		count: {
-			heatOn: 'color'
-		},
-		column: {
-			background: '#eaeaea'
-		}
-	});
-
-	// Colorful theme
-	FPSMeter.theme.colorful = FPSMeter.extend({}, base, {
-		heatmaps: [{
-			saturation: 0.5,
-			lightness: 0.6
-		}],
-		container: {
-			heatOn: 'backgroundColor',
-			background: '#888',
-			color: '#fff',
-			textShadow: '1px 1px 0 rgba(0,0,0,.2)',
-			boxShadow: '0 0 0 1px rgba(0,0,0,.1)'
-		},
-		column: {
-			background: '#777',
-			backgroundColor: 'rgba(0,0,0,.2)'
-		}
-	});
-
-	// Transparent theme
-	FPSMeter.theme.transparent = FPSMeter.extend({}, base, {
-		heatmaps: [{
-			saturation: 0.8,
-			lightness: 0.5
-		}],
-		container: {
-			padding: 0,
-			color: '#fff',
-			textShadow: '1px 1px 0 rgba(0,0,0,.5)'
-		},
-		count: {
-			padding: '0 5px',
-			height: '40px',
-			lineHeight: '40px'
-		},
-		legend: {
-			padding: '0 5px',
-			height: '40px',
-			lineHeight: '42px'
-		},
-		graph: {
-			height: '40px'
-		},
-		column: {
-			width: 5,
-			background: '#999',
-			heatOn: 'backgroundColor',
-			opacity: 0.5
-		}
-	});
-}(window, FPSMeter));
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports) {
-
-var pixi_display;
-(function (pixi_display) {
-    Object.assign(PIXI.Container.prototype, {
-        renderWebGL: function (renderer) {
-            if (this._activeParentLayer && this._activeParentLayer != renderer._activeLayer) {
-                return;
-            }
-            if (!this.visible) {
-                this.displayOrder = 0;
-                return;
-            }
-            this.displayOrder = renderer.incDisplayOrder();
-            if (this.worldAlpha <= 0 || !this.renderable) {
-                return;
-            }
-            this.containerRenderWebGL(renderer);
-        },
-        renderCanvas: function (renderer) {
-            if (this._activeParentLayer && this._activeParentLayer != renderer._activeLayer) {
-                return;
-            }
-            if (!this.visible) {
-                this.displayOrder = 0;
-                return;
-            }
-            this.displayOrder = renderer.incDisplayOrder();
-            if (this.worldAlpha <= 0 || !this.renderable) {
-                return;
-            }
-            this.containerRenderCanvas(renderer);
-        },
-        containerRenderWebGL: PIXI.Container.prototype.renderWebGL,
-        containerRenderCanvas: PIXI.Container.prototype.renderCanvas
-    });
-})(pixi_display || (pixi_display = {}));
-Object.assign(PIXI.DisplayObject.prototype, {
-    parentLayer: null,
-    _activeParentLayer: null,
-    parentGroup: null,
-    zOrder: 0,
-    zIndex: 0,
-    updateOrder: 0,
-    displayOrder: 0,
-    layerableChildren: true
-});
-if (PIXI.particles && PIXI.particles.ParticleContainer) {
-    PIXI.particles.ParticleContainer.prototype.layerableChildren = false;
-}
-else if (PIXI.ParticleContainer) {
-    PIXI.ParticleContainer.prototype.layerableChildren = false;
-}
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var pixi_display;
-(function (pixi_display) {
-    var utils = PIXI.utils;
-    var Group = (function (_super) {
-        __extends(Group, _super);
-        function Group(zIndex, sorting) {
-            var _this = _super.call(this) || this;
-            _this._activeLayer = null;
-            _this._activeStage = null;
-            _this._activeChildren = [];
-            _this._lastUpdateId = -1;
-            _this.useRenderTexture = false;
-            _this.useDoubleBuffer = false;
-            _this.sortPriority = 0;
-            _this.clearColor = new Float32Array([0, 0, 0, 0]);
-            _this.canDrawWithoutLayer = false;
-            _this.canDrawInParentStage = true;
-            _this.zIndex = 0;
-            _this.enableSort = false;
-            _this._tempResult = [];
-            _this._tempZero = [];
-            _this.useZeroOptimization = false;
-            _this.zIndex = zIndex;
-            _this.enableSort = !!sorting;
-            if (typeof sorting === 'function') {
-                _this.on('sort', sorting);
-            }
-            return _this;
-        }
-        Group.prototype.doSort = function (layer, sorted) {
-            if (this.listeners('sort', true)) {
-                for (var i = 0; i < sorted.length; i++) {
-                    this.emit('sort', sorted[i]);
-                }
-            }
-            if (this.useZeroOptimization) {
-                this.doSortWithZeroOptimization(layer, sorted);
-            }
-            else {
-                sorted.sort(Group.compareZIndex);
-            }
-        };
-        Group.compareZIndex = function (a, b) {
-            if (a.zIndex !== b.zIndex) {
-                return a.zIndex - b.zIndex;
-            }
-            if (a.zOrder > b.zOrder) {
-                return -1;
-            }
-            if (a.zOrder < b.zOrder) {
-                return 1;
-            }
-            return a.updateOrder - b.updateOrder;
-        };
-        Group.prototype.doSortWithZeroOptimization = function (layer, sorted) {
-            throw new Error("not implemented yet");
-        };
-        Group.prototype.clear = function () {
-            this._activeLayer = null;
-            this._activeStage = null;
-            this._activeChildren.length = 0;
-        };
-        Group.prototype.addDisplayObject = function (stage, displayObject) {
-            this.check(stage);
-            displayObject._activeParentLayer = this._activeLayer;
-            if (this._activeLayer) {
-                this._activeLayer._activeChildren.push(displayObject);
-            }
-            else {
-                this._activeChildren.push(displayObject);
-            }
-        };
-        Group.prototype.foundLayer = function (stage, layer) {
-            this.check(stage);
-            if (this._activeLayer != null) {
-                Group.conflict();
-            }
-            this._activeLayer = layer;
-            this._activeStage = stage;
-        };
-        Group.prototype.foundStage = function (stage) {
-            if (!this._activeLayer && !this.canDrawInParentStage) {
-                this.clear();
-            }
-        };
-        Group.prototype.check = function (stage) {
-            if (this._lastUpdateId < Group._layerUpdateId) {
-                this._lastUpdateId = Group._layerUpdateId;
-                this.clear();
-                this._activeStage = stage;
-            }
-            else if (this.canDrawInParentStage) {
-                var current = this._activeStage;
-                while (current && current != stage) {
-                    current = current._activeParentStage;
-                }
-                this._activeStage = current;
-                if (current == null) {
-                    this.clear();
-                    return;
-                }
-            }
-        };
-        Group.conflict = function () {
-            if (Group._lastLayerConflict + 5000 < Date.now()) {
-                Group._lastLayerConflict = Date.now();
-                console.log("PIXI-display plugin found two layers with the same group in one stage - that's not healthy. Please place a breakpoint here and debug it");
-            }
-        };
-        Group._layerUpdateId = 0;
-        Group._lastLayerConflict = 0;
-        return Group;
-    }(utils.EventEmitter));
-    pixi_display.Group = Group;
-})(pixi_display || (pixi_display = {}));
-var pixi_display;
-(function (pixi_display) {
-    var InteractionManager = PIXI.interaction.InteractionManager;
-    Object.assign(InteractionManager.prototype, {
-        _queue: [[], []],
-        _displayProcessInteractive: function (point, displayObject, hitTestOrder, interactive, outOfMask) {
-            if (!displayObject || !displayObject.visible) {
-                return 0;
-            }
-            var hit = 0, interactiveParent = interactive = displayObject.interactive || interactive;
-            if (displayObject.hitArea) {
-                interactiveParent = false;
-            }
-            if (displayObject._activeParentLayer) {
-                outOfMask = false;
-            }
-            var mask = displayObject._mask;
-            if (hitTestOrder < Infinity && mask) {
-                if (!mask.containsPoint(point)) {
-                    outOfMask = true;
-                }
-            }
-            if (hitTestOrder < Infinity && displayObject.filterArea) {
-                if (!displayObject.filterArea.contains(point.x, point.y)) {
-                    outOfMask = true;
-                }
-            }
-            var children = displayObject.children;
-            if (displayObject.interactiveChildren && children) {
-                for (var i = children.length - 1; i >= 0; i--) {
-                    var child = children[i];
-                    var hitChild = this._displayProcessInteractive(point, child, hitTestOrder, interactiveParent, outOfMask);
-                    if (hitChild) {
-                        if (!child.parent) {
-                            continue;
-                        }
-                        hit = hitChild;
-                        hitTestOrder = hitChild;
-                    }
-                }
-            }
-            if (interactive) {
-                if (!outOfMask) {
-                    if (hitTestOrder < displayObject.displayOrder) {
-                        if (displayObject.hitArea) {
-                            displayObject.worldTransform.applyInverse(point, this._tempPoint);
-                            if (displayObject.hitArea.contains(this._tempPoint.x, this._tempPoint.y)) {
-                                hit = displayObject.displayOrder;
-                            }
-                        }
-                        else if (displayObject.containsPoint) {
-                            if (displayObject.containsPoint(point)) {
-                                hit = displayObject.displayOrder;
-                            }
-                        }
-                    }
-                    if (displayObject.interactive) {
-                        this._queueAdd(displayObject, hit === Infinity ? 0 : hit);
-                    }
-                }
-                else {
-                    if (displayObject.interactive) {
-                        this._queueAdd(displayObject, 0);
-                    }
-                }
-            }
-            return hit;
-        },
-        processInteractive: function (strangeStuff, displayObject, func, hitTest, interactive) {
-            var interactionEvent = null;
-            var point = null;
-            if (strangeStuff.data &&
-                strangeStuff.data.global) {
-                interactionEvent = strangeStuff;
-                point = interactionEvent.data.global;
-            }
-            else {
-                point = strangeStuff;
-            }
-            this._startInteractionProcess();
-            this._displayProcessInteractive(point, displayObject, hitTest ? 0 : Infinity, false);
-            this._finishInteractionProcess(interactionEvent, func);
-        },
-        _startInteractionProcess: function () {
-            this._eventDisplayOrder = 1;
-            if (!this._queue) {
-                this._queue = [[], []];
-            }
-            this._queue[0].length = 0;
-            this._queue[1].length = 0;
-        },
-        _queueAdd: function (displayObject, order) {
-            var queue = this._queue;
-            if (order < this._eventDisplayOrder) {
-                queue[0].push(displayObject);
-            }
-            else {
-                if (order > this._eventDisplayOrder) {
-                    this._eventDisplayOrder = order;
-                    var q = queue[1];
-                    for (var i = 0; i < q.length; i++) {
-                        queue[0].push(q[i]);
-                    }
-                    queue[1].length = 0;
-                }
-                queue[1].push(displayObject);
-            }
-        },
-        _finishInteractionProcess: function (event, func) {
-            var queue = this._queue;
-            var q = queue[0];
-            var i = 0;
-            for (; i < q.length; i++) {
-                if (event) {
-                    if (func) {
-                        func(event, q[i], false);
-                    }
-                }
-                else {
-                    func(q[i], false);
-                }
-            }
-            q = queue[1];
-            for (i = 0; i < q.length; i++) {
-                if (event) {
-                    if (!event.target) {
-                        event.target = q[i];
-                    }
-                    if (func) {
-                        func(event, q[i], true);
-                    }
-                }
-                else {
-                    func(q[i], true);
-                }
-            }
-        }
-    });
-})(pixi_display || (pixi_display = {}));
-var pixi_display;
-(function (pixi_display) {
-    var LayerTextureCache = (function () {
-        function LayerTextureCache(layer) {
-            this.layer = layer;
-            this.renderTexture = null;
-            this.doubleBuffer = null;
-            this.currentBufferIndex = 0;
-            this._tempRenderTarget = null;
-        }
-        LayerTextureCache.prototype.initRenderTexture = function (renderer) {
-            var width = renderer ? renderer.screen.width : 100;
-            var height = renderer ? renderer.screen.height : 100;
-            var resolution = renderer ? renderer.resolution : PIXI.settings.RESOLUTION;
-            this.renderTexture = PIXI.RenderTexture.create(width, height, resolution);
-            if (this.layer.group.useDoubleBuffer) {
-                this.doubleBuffer = [
-                    PIXI.RenderTexture.create(width, height, resolution),
-                    PIXI.RenderTexture.create(width, height, resolution)
-                ];
-            }
-        };
-        LayerTextureCache.prototype.getRenderTexture = function () {
-            if (!this.renderTexture) {
-                this.initRenderTexture();
-            }
-            return this.renderTexture;
-        };
-        LayerTextureCache.prototype.pushTexture = function (renderer) {
-            var screen = renderer.screen;
-            if (!this.renderTexture) {
-                this.initRenderTexture(renderer);
-            }
-            var rt = this.renderTexture;
-            var group = this.layer.group;
-            var db = this.doubleBuffer;
-            if (rt.width !== screen.width ||
-                rt.height !== screen.height ||
-                rt.baseTexture.resolution !== renderer.resolution) {
-                rt.baseTexture.resolution = renderer.resolution;
-                rt.resize(screen.width, screen.height);
-                if (db) {
-                    db[0].baseTexture.resolution = renderer.resolution;
-                    db[0].resize(screen.width, screen.height);
-                    db[1].baseTexture.resolution = renderer.resolution;
-                    db[1].resize(screen.width, screen.height);
-                }
-            }
-            this._tempRenderTarget = renderer._activeRenderTarget;
-            renderer.currentRenderer.flush();
-            if (group.useDoubleBuffer) {
-                var buffer = db[this.currentBufferIndex];
-                if (!buffer.baseTexture._glTextures[renderer.CONTEXT_UID]) {
-                    renderer.bindRenderTexture(buffer, null);
-                    if (group.clearColor) {
-                        renderer.clear(group.clearColor);
-                    }
-                }
-                renderer.unbindTexture(rt);
-                rt.baseTexture._glTextures = buffer.baseTexture._glTextures;
-                rt.baseTexture._glRenderTargets = buffer.baseTexture._glRenderTargets;
-                this.currentBufferIndex = 1 - this.currentBufferIndex;
-                buffer = db[this.currentBufferIndex];
-                renderer.bindRenderTexture(buffer, null);
-            }
-            else {
-                renderer.bindRenderTexture(rt, undefined);
-            }
-            if (group.clearColor) {
-                renderer.clear(group.clearColor);
-            }
-        };
-        LayerTextureCache.prototype.popTexture = function (renderer) {
-            renderer.currentRenderer.flush();
-            renderer.bindRenderTarget(this._tempRenderTarget);
-            this._tempRenderTarget = null;
-        };
-        LayerTextureCache.prototype.destroy = function () {
-            if (this.renderTexture) {
-                this.renderTexture.destroy();
-                if (this.doubleBuffer) {
-                    this.doubleBuffer[0].destroy(true);
-                    this.doubleBuffer[1].destroy(true);
-                }
-            }
-        };
-        return LayerTextureCache;
-    }());
-    pixi_display.LayerTextureCache = LayerTextureCache;
-    var Layer = (function (_super) {
-        __extends(Layer, _super);
-        function Layer(group) {
-            if (group === void 0) { group = null; }
-            var _this = _super.call(this) || this;
-            _this.isLayer = true;
-            _this.group = null;
-            _this._activeChildren = [];
-            _this._tempChildren = null;
-            _this._activeStageParent = null;
-            _this._sortedChildren = [];
-            _this._tempLayerParent = null;
-            _this.insertChildrenBeforeActive = true;
-            _this.insertChildrenAfterActive = true;
-            if (group != null) {
-                _this.group = group;
-                _this.zIndex = group.zIndex;
-            }
-            else {
-                _this.group = new pixi_display.Group(0, false);
-            }
-            _this._tempChildren = _this.children;
-            return _this;
-        }
-        Layer.prototype.beginWork = function (stage) {
-            var active = this._activeChildren;
-            this._activeStageParent = stage;
-            this.group.foundLayer(stage, this);
-            var groupChildren = this.group._activeChildren;
-            active.length = 0;
-            for (var i = 0; i < groupChildren.length; i++) {
-                groupChildren[i]._activeParentLayer = this;
-                active.push(groupChildren[i]);
-            }
-            groupChildren.length = 0;
-        };
-        Layer.prototype.endWork = function () {
-            var children = this.children;
-            var active = this._activeChildren;
-            var sorted = this._sortedChildren;
-            for (var i = 0; i < active.length; i++) {
-                this.emit("display", active[i]);
-            }
-            sorted.length = 0;
-            if (this.insertChildrenBeforeActive) {
-                for (var i = 0; i < children.length; i++) {
-                    sorted.push(children[i]);
-                }
-            }
-            for (var i = 0; i < active.length; i++) {
-                sorted.push(active[i]);
-            }
-            if (!this.insertChildrenBeforeActive &&
-                this.insertChildrenAfterActive) {
-                for (var i = 0; i < children.length; i++) {
-                    sorted.push(children[i]);
-                }
-            }
-            if (this.group.enableSort) {
-                this.doSort();
-            }
-        };
-        Object.defineProperty(Layer.prototype, "useRenderTexture", {
-            get: function () {
-                return this.group.useRenderTexture;
-            },
-            set: function (value) {
-                this.group.useRenderTexture = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Layer.prototype, "useDoubleBuffer", {
-            get: function () {
-                return this.group.useDoubleBuffer;
-            },
-            set: function (value) {
-                this.group.useDoubleBuffer = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Layer.prototype, "clearColor", {
-            get: function () {
-                return this.group.clearColor;
-            },
-            set: function (value) {
-                this.group.clearColor = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Layer.prototype, "sortPriority", {
-            get: function () {
-                return this.group.sortPriority;
-            },
-            set: function (value) {
-                this.group.sortPriority = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Layer.prototype.getRenderTexture = function () {
-            if (!this.textureCache) {
-                this.textureCache = new LayerTextureCache(this);
-            }
-            return this.textureCache.getRenderTexture();
-        };
-        Layer.prototype.updateDisplayLayers = function () {
-        };
-        Layer.prototype.doSort = function () {
-            this.group.doSort(this, this._sortedChildren);
-        };
-        Layer.prototype._preRender = function (renderer) {
-            if (this._activeParentLayer && this._activeParentLayer != renderer._activeLayer) {
-                return false;
-            }
-            if (!this.visible) {
-                this.displayOrder = 0;
-                return false;
-            }
-            this.displayOrder = renderer.incDisplayOrder();
-            if (this.worldAlpha <= 0 || !this.renderable) {
-                return false;
-            }
-            if (this.children !== this._sortedChildren &&
-                this._tempChildren != this.children) {
-                this._tempChildren = this.children;
-            }
-            this._boundsID++;
-            this.children = this._sortedChildren;
-            this._tempLayerParent = renderer._activeLayer;
-            renderer._activeLayer = this;
-            return true;
-        };
-        Layer.prototype._postRender = function (renderer) {
-            this.children = this._tempChildren;
-            renderer._activeLayer = this._tempLayerParent;
-            this._tempLayerParent = null;
-        };
-        Layer.prototype.renderWebGL = function (renderer) {
-            if (!this._preRender(renderer)) {
-                return;
-            }
-            if (this.group.useRenderTexture) {
-                if (!this.textureCache) {
-                    this.textureCache = new LayerTextureCache(this);
-                }
-                this.textureCache.pushTexture(renderer);
-            }
-            this.containerRenderWebGL(renderer);
-            this._postRender(renderer);
-            if (this.group.useRenderTexture) {
-                this.textureCache.popTexture(renderer);
-            }
-        };
-        Layer.prototype.renderCanvas = function (renderer) {
-            if (this._preRender(renderer)) {
-                this.containerRenderCanvas(renderer);
-                this._postRender(renderer);
-            }
-        };
-        Layer.prototype.destroy = function (options) {
-            if (this.textureCache) {
-                this.textureCache.destroy();
-                this.textureCache = null;
-            }
-            _super.prototype.destroy.call(this, options);
-        };
-        return Layer;
-    }(PIXI.Container));
-    pixi_display.Layer = Layer;
-})(pixi_display || (pixi_display = {}));
-var pixi_display;
-(function (pixi_display) {
-    var Stage = (function (_super) {
-        __extends(Stage, _super);
-        function Stage() {
-            var _this = _super.call(this) || this;
-            _this.isStage = true;
-            _this._tempGroups = [];
-            _this._activeLayers = [];
-            _this._activeParentStage = null;
-            return _this;
-        }
-        Stage.prototype.clear = function () {
-            this._activeLayers.length = 0;
-            this._tempGroups.length = 0;
-        };
-        Stage.prototype.destroy = function (options) {
-            this.clear();
-            _super.prototype.destroy.call(this, options);
-        };
-        Stage.prototype._addRecursive = function (displayObject) {
-            if (!displayObject.visible) {
-                return;
-            }
-            if (displayObject.isLayer) {
-                var layer_1 = displayObject;
-                this._activeLayers.push(layer_1);
-                layer_1.beginWork(this);
-            }
-            if (displayObject != this && displayObject.isStage) {
-                var stage = displayObject;
-                stage.updateAsChildStage(this);
-                return;
-            }
-            var group = displayObject.parentGroup;
-            if (group !== null) {
-                group.addDisplayObject(this, displayObject);
-            }
-            var layer = displayObject.parentLayer;
-            if (layer !== null) {
-                group = layer.group;
-                group.addDisplayObject(this, displayObject);
-            }
-            displayObject.updateOrder = ++Stage._updateOrderCounter;
-            if (displayObject.alpha <= 0 || !displayObject.renderable
-                || !displayObject.layerableChildren
-                || group && group.sortPriority) {
-                return;
-            }
-            var children = displayObject.children;
-            if (children && children.length) {
-                for (var i = 0; i < children.length; i++) {
-                    this._addRecursive(children[i]);
-                }
-            }
-        };
-        Stage.prototype._addRecursiveChildren = function (displayObject) {
-            if (displayObject.alpha <= 0 || !displayObject.renderable
-                || !displayObject.layerableChildren) {
-                return;
-            }
-            var children = displayObject.children;
-            if (children && children.length) {
-                for (var i = 0; i < children.length; i++) {
-                    this._addRecursive(children[i]);
-                }
-            }
-        };
-        Stage.prototype._updateStageInner = function () {
-            this.clear();
-            this._addRecursive(this);
-            var layers = this._activeLayers;
-            for (var i = 0; i < layers.length; i++) {
-                var layer = layers[i];
-                if (layer.group.sortPriority) {
-                    layer.endWork();
-                    var sorted = layer._sortedChildren;
-                    for (var j = 0; j < sorted.length; j++) {
-                        this._addRecursiveChildren(sorted[j]);
-                    }
-                }
-            }
-            for (var i = 0; i < layers.length; i++) {
-                var layer = layers[i];
-                if (!layer.group.sortPriority) {
-                    layer.endWork();
-                }
-            }
-        };
-        Stage.prototype.updateAsChildStage = function (stage) {
-            this._activeParentStage = stage;
-            Stage._updateOrderCounter = 0;
-            this._updateStageInner();
-        };
-        Stage.prototype.updateStage = function () {
-            this._activeParentStage = null;
-            pixi_display.Group._layerUpdateId++;
-            this._updateStageInner();
-        };
-        ;
-        Stage._updateOrderCounter = 0;
-        return Stage;
-    }(pixi_display.Layer));
-    pixi_display.Stage = Stage;
-})(pixi_display || (pixi_display = {}));
-var pixi_display;
-(function (pixi_display) {
-    Object.assign(PIXI.WebGLRenderer.prototype, {
-        _lastDisplayOrder: 0,
-        _activeLayer: null,
-        incDisplayOrder: function () {
-            return ++this._lastDisplayOrder;
-        },
-        _oldRender: PIXI.WebGLRenderer.prototype.render,
-        render: function (displayObject, renderTexture, clear, transform, skipUpdateTransform) {
-            if (!renderTexture) {
-                this._lastDisplayOrder = 0;
-            }
-            this._activeLayer = null;
-            if (displayObject.isStage) {
-                displayObject.updateStage();
-            }
-            this._oldRender(displayObject, renderTexture, clear, transform, skipUpdateTransform);
-        }
-    });
-    Object.assign(PIXI.CanvasRenderer.prototype, {
-        _lastDisplayOrder: 0,
-        _activeLayer: null,
-        incDisplayOrder: function () {
-            return ++this._lastDisplayOrder;
-        },
-        _oldRender: PIXI.CanvasRenderer.prototype.render,
-        render: function (displayObject, renderTexture, clear, transform, skipUpdateTransform) {
-            if (!renderTexture) {
-                this._lastDisplayOrder = 0;
-            }
-            this._activeLayer = null;
-            if (displayObject.isStage) {
-                displayObject.updateStage();
-            }
-            this._oldRender(displayObject, renderTexture, clear, transform, skipUpdateTransform);
-        }
-    });
-})(pixi_display || (pixi_display = {}));
-var pixi_display;
-(function (pixi_display) {
-    PIXI.display = pixi_display;
-})(pixi_display || (pixi_display = {}));
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports) {
-
-module.exports = PIXI;
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports) {
-
-/*!
-* screenfull
-* v3.3.2 - 2017-10-27
-* (c) Sindre Sorhus; MIT License
-*/
-(function () {
-	'use strict';
-
-	var document = typeof window !== 'undefined' && typeof window.document !== 'undefined' ? window.document : {};
-	var isCommonjs = typeof module !== 'undefined' && module.exports;
-	var keyboardAllowed = typeof Element !== 'undefined' && 'ALLOW_KEYBOARD_INPUT' in Element;
-
-	var fn = (function () {
-		var val;
-
-		var fnMap = [
-			[
-				'requestFullscreen',
-				'exitFullscreen',
-				'fullscreenElement',
-				'fullscreenEnabled',
-				'fullscreenchange',
-				'fullscreenerror'
-			],
-			// New WebKit
-			[
-				'webkitRequestFullscreen',
-				'webkitExitFullscreen',
-				'webkitFullscreenElement',
-				'webkitFullscreenEnabled',
-				'webkitfullscreenchange',
-				'webkitfullscreenerror'
-
-			],
-			// Old WebKit (Safari 5.1)
-			[
-				'webkitRequestFullScreen',
-				'webkitCancelFullScreen',
-				'webkitCurrentFullScreenElement',
-				'webkitCancelFullScreen',
-				'webkitfullscreenchange',
-				'webkitfullscreenerror'
-
-			],
-			[
-				'mozRequestFullScreen',
-				'mozCancelFullScreen',
-				'mozFullScreenElement',
-				'mozFullScreenEnabled',
-				'mozfullscreenchange',
-				'mozfullscreenerror'
-			],
-			[
-				'msRequestFullscreen',
-				'msExitFullscreen',
-				'msFullscreenElement',
-				'msFullscreenEnabled',
-				'MSFullscreenChange',
-				'MSFullscreenError'
-			]
-		];
-
-		var i = 0;
-		var l = fnMap.length;
-		var ret = {};
-
-		for (; i < l; i++) {
-			val = fnMap[i];
-			if (val && val[1] in document) {
-				for (i = 0; i < val.length; i++) {
-					ret[fnMap[0][i]] = val[i];
-				}
-				return ret;
-			}
-		}
-
-		return false;
-	})();
-
-	var eventNameMap = {
-		change: fn.fullscreenchange,
-		error: fn.fullscreenerror
-	};
-
-	var screenfull = {
-		request: function (elem) {
-			var request = fn.requestFullscreen;
-
-			elem = elem || document.documentElement;
-
-			// Work around Safari 5.1 bug: reports support for
-			// keyboard in fullscreen even though it doesn't.
-			// Browser sniffing, since the alternative with
-			// setTimeout is even worse.
-			if (/ Version\/5\.1(?:\.\d+)? Safari\//.test(navigator.userAgent)) {
-				elem[request]();
-			} else {
-				elem[request](keyboardAllowed && Element.ALLOW_KEYBOARD_INPUT);
-			}
-		},
-		exit: function () {
-			document[fn.exitFullscreen]();
-		},
-		toggle: function (elem) {
-			if (this.isFullscreen) {
-				this.exit();
-			} else {
-				this.request(elem);
-			}
-		},
-		onchange: function (callback) {
-			this.on('change', callback);
-		},
-		onerror: function (callback) {
-			this.on('error', callback);
-		},
-		on: function (event, callback) {
-			var eventName = eventNameMap[event];
-			if (eventName) {
-				document.addEventListener(eventName, callback, false);
-			}
-		},
-		off: function (event, callback) {
-			var eventName = eventNameMap[event];
-			if (eventName) {
-				document.removeEventListener(eventName, callback, false);
-			}
-		},
-		raw: fn
-	};
-
-	if (!fn) {
-		if (isCommonjs) {
-			module.exports = false;
-		} else {
-			window.screenfull = false;
-		}
-
-		return;
-	}
-
-	Object.defineProperties(screenfull, {
-		isFullscreen: {
-			get: function () {
-				return Boolean(document[fn.fullscreenElement]);
-			}
-		},
-		element: {
-			enumerable: true,
-			get: function () {
-				return document[fn.fullscreenElement];
-			}
-		},
-		enabled: {
-			enumerable: true,
-			get: function () {
-				// Coerce to boolean in case of old WebKit
-				return Boolean(document[fn.fullscreenEnabled]);
-			}
-		}
-	});
-
-	if (isCommonjs) {
-		module.exports = screenfull;
-	} else {
-		window.screenfull = screenfull;
-	}
-})();
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var pixi_app_wrapper_1 = __webpack_require__(3);
-__webpack_require__(42);
-var MediaInfoViewer = (function () {
-    function MediaInfoViewer() {
-        this.createContainer();
-    }
-    MediaInfoViewer.prototype.update = function (newData) {
-        this.data = newData;
-        this.textContainer.innerHTML = this.getText();
-    };
-    MediaInfoViewer.prototype.show = function () {
-        this.rootContainer.className = this.rootContainer.className.replace("hidden", "").trim();
-    };
-    MediaInfoViewer.prototype.hide = function () {
-        this.show();
-        this.rootContainer.className += " hidden";
-    };
-    MediaInfoViewer.prototype.createContainer = function () {
-        this.rootContainer = pixi_app_wrapper_1.Dom.getElementOrCreateNew("media-info", "div");
-        this.rootContainer.className = "media-info";
-        var closeBtn = document.createElement("button");
-        closeBtn.innerHTML = "[x]";
-        closeBtn.className = "media-info-close-button button";
-        closeBtn.title = "close";
-        closeBtn.onclick = this.hide.bind(this);
-        this.rootContainer.appendChild(closeBtn);
-        this.textContainer = document.createElement("div");
-        this.rootContainer.appendChild(this.textContainer);
-    };
-    MediaInfoViewer.prototype.getText = function () {
-        var stageInitialGCD = Math.gcd(this.data.display.stage.initialWidth, this.data.display.stage.initialHeight);
-        return "" +
-            "<div>[devicePixelRatio]</div>" +
-            ("<div>" + window.devicePixelRatio + "</div>") +
-            "<div>[window.inner]</div>" +
-            ("<div>" + window.innerWidth + "x" + window.innerHeight + "</div>") +
-            "<div>[app.screen]</div>" +
-            ("<div>" + this.data.display.screen.width + "x" + this.data.display.screen.height + "</div>") +
-            "<div>[app.view]</div>" +
-            ("<div>" + this.data.display.view.width + "x" + this.data.display.view.height + "</div>") +
-            "<div>[app.stage]</div>" +
-            ("<div>position (" + this.data.display.stage.x + ", " + this.data.display.stage.y + ")</div>") +
-            ("<div>initial " + this.data.display.stage.initialWidth + "x" + this.data.display.stage.initialHeight + " " + this.data.display.stage.initialWidth / stageInitialGCD + ":" + this.data.display.stage.initialHeight / stageInitialGCD + "</div>") +
-            ("<div>current " + this.data.display.stage.currentWidth + "x" + this.data.display.stage.currentHeight + "</div>") +
-            ("<div>scale (" + this.data.display.stage.scaleX + ", " + this.data.display.stage.scaleY + ")</div>") +
-            ("<div>scaling " + this.data.display.stage.scaling + "</div>") +
-            ("<div>alignment " + this.data.display.stage.alignment + "</div>") +
-            ("<div>orientation " + this.data.display.stage.orientation + "</div>");
-    };
-    return MediaInfoViewer;
-}());
-exports.MediaInfoViewer = MediaInfoViewer;
-
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-if (!Math.gcd) {
-    Math.gcd = function (n, m) {
-        var r = 0;
-        while (n !== 0) {
-            r = m % n;
-            m = n;
-            n = r;
-        }
-        return m;
-    };
-}
-
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var AlignBottomCenter = (function () {
-    function AlignBottomCenter() {
-    }
-    AlignBottomCenter.prototype.align = function (width, height, containerWidth, containerHeight) {
-        return {
-            x: Math.round(containerWidth / 2 - width / 2),
-            y: Math.round(containerHeight - height),
-        };
-    };
-    return AlignBottomCenter;
-}());
-exports.AlignBottomCenter = AlignBottomCenter;
-
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var AlignBottomLeft = (function () {
-    function AlignBottomLeft() {
-    }
-    AlignBottomLeft.prototype.align = function (width, height, containerWidth, containerHeight) {
-        return {
-            x: 0,
-            y: Math.round(containerHeight - height),
-        };
-    };
-    return AlignBottomLeft;
-}());
-exports.AlignBottomLeft = AlignBottomLeft;
-
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var AlignBottomRight = (function () {
-    function AlignBottomRight() {
-    }
-    AlignBottomRight.prototype.align = function (width, height, containerWidth, containerHeight) {
-        return {
-            x: Math.round(containerWidth - width),
-            y: Math.round(containerHeight - height),
-        };
-    };
-    return AlignBottomRight;
-}());
-exports.AlignBottomRight = AlignBottomRight;
-
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var AlignMiddle = (function () {
-    function AlignMiddle() {
-    }
-    AlignMiddle.prototype.align = function (width, height, containerWidth, containerHeight) {
-        return {
-            x: Math.round(containerWidth / 2 - width / 2),
-            y: Math.round(containerHeight / 2 - height / 2),
-        };
-    };
-    return AlignMiddle;
-}());
-exports.AlignMiddle = AlignMiddle;
-
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var AlignMiddleLeft = (function () {
-    function AlignMiddleLeft() {
-    }
-    AlignMiddleLeft.prototype.align = function (width, height, containerWidth, containerHeight) {
-        return {
-            x: 0,
-            y: Math.round(containerHeight / 2 - height / 2),
-        };
-    };
-    return AlignMiddleLeft;
-}());
-exports.AlignMiddleLeft = AlignMiddleLeft;
-
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var AlignMiddleRight = (function () {
-    function AlignMiddleRight() {
-    }
-    AlignMiddleRight.prototype.align = function (width, height, containerWidth, containerHeight) {
-        return {
-            x: Math.round(containerWidth - width),
-            y: Math.round(containerHeight / 2 - height / 2),
-        };
-    };
-    return AlignMiddleRight;
-}());
-exports.AlignMiddleRight = AlignMiddleRight;
-
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var AlignTopCenter = (function () {
-    function AlignTopCenter() {
-    }
-    AlignTopCenter.prototype.align = function (width, height, containerWidth, containerHeight) {
-        return {
-            x: Math.round(containerWidth / 2 - width / 2),
-            y: 0,
-        };
-    };
-    return AlignTopCenter;
-}());
-exports.AlignTopCenter = AlignTopCenter;
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var AlignTopLeft = (function () {
-    function AlignTopLeft() {
-    }
-    AlignTopLeft.prototype.align = function (width, height, containerWidth, containerHeight) {
-        return { x: 0, y: 0 };
-    };
-    return AlignTopLeft;
-}());
-exports.AlignTopLeft = AlignTopLeft;
-
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var AlignTopRight = (function () {
-    function AlignTopRight() {
-    }
-    AlignTopRight.prototype.align = function (width, height, containerWidth, containerHeight) {
-        return {
-            x: Math.round(containerWidth - width),
-            y: 0,
-        };
-    };
-    return AlignTopRight;
-}());
-exports.AlignTopRight = AlignTopRight;
-
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ScaleFullSize = (function () {
-    function ScaleFullSize() {
-    }
-    ScaleFullSize.prototype.scale = function (initialWidth, initialHeight, finalWidth, finalHeight) {
-        return {
-            scaleX: finalWidth / initialWidth,
-            scaleY: finalHeight / initialHeight,
-        };
-    };
-    return ScaleFullSize;
-}());
-exports.ScaleFullSize = ScaleFullSize;
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ScaleKeepAspectRatio = (function () {
-    function ScaleKeepAspectRatio() {
-    }
-    ScaleKeepAspectRatio.prototype.scale = function (initialWidth, initialHeight, finalWidth, finalHeight) {
-        var scale = Math.min(finalWidth / initialWidth, finalHeight / initialHeight);
-        return { scaleX: scale, scaleY: scale };
-    };
-    return ScaleKeepAspectRatio;
-}());
-exports.ScaleKeepAspectRatio = ScaleKeepAspectRatio;
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ScaleNone = (function () {
-    function ScaleNone() {
-    }
-    ScaleNone.prototype.scale = function (initialWidth, initialHeight, finalWidth, finalHeight) {
-        return {
-            scaleX: 1,
-            scaleY: 1,
-        };
-    };
-    return ScaleNone;
-}());
-exports.ScaleNone = ScaleNone;
-
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.pixiAppWrapperEvent = {
-    RESIZE_START: "PixiAppWrapperEvent.RESIZE_START",
-    RESIZE_END: "PixiAppWrapperEvent.RESIZE_END",
-};
-
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dom = (function () {
-    function Dom() {
-    }
-    Dom.getElementOrBody = function (elementId) {
-        var element = document.getElementById(elementId);
-        if (element !== null) {
-            return element;
-        }
-        else {
-            return document.body;
-        }
-    };
-    Dom.getElementOrCreateNew = function (elementId, tagName, container) {
-        var element = document.getElementById(elementId);
-        if (element === null) {
-            element = document.createElement(tagName);
-            element.id = elementId;
-            container = container ? container : document.body;
-            container.appendChild(element);
-        }
-        return element;
-    };
-    return Dom;
-}());
-exports.Dom = Dom;
-
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ })
 /******/ ]);

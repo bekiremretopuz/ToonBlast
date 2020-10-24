@@ -5,9 +5,9 @@ import {
   PixiAssetsLoader,
   SoundAsset,
 } from "pixi-assets-loader";
-import SoundManager from "./SoundManager";
-import { EmreBase } from "app/EntryPoint";
-export class AssetsLoader extends PIXI.utils.EventEmitter {
+import SoundManager from "./SoundController";
+import { EmreBase } from "src/scripts/game/EntryPoint";
+export class ResourceController extends PIXI.utils.EventEmitter {
   private _loader: PixiAssetsLoader;
   private _assetsCount: {
     [key: number]: { total: number; progress: number };

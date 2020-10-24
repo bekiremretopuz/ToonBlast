@@ -1,5 +1,4 @@
-import { SimpleButton2D } from "app/Display/SimpleButton2D";
-import { GameProperty } from "app/Helper/GameSettings";
+import { SimpleButton2D } from "src/scripts/core/Parts/SimpleButton2D";
 import { TweenLite, TweenMax } from "gsap";
 export class Grid extends PIXI.Container {
   private _gridContainer: PIXI.Container;
@@ -69,7 +68,7 @@ export class Grid extends PIXI.Container {
     }
     this._symbol[column][row].scale.set(0.1, 0.1); //match animation olucak
     this.createSymbol(column, row, "solid1"); // random yada belli bir oranda gelicek
-    for (let i = 0; i < row; i++) { 
+    for (let i = 0; i < row; i++) {
       const posY = this._symbol[column][i].position.y;
       TweenLite.to(this._symbol[column][i].position, 1, {
         y: posY + 90,
@@ -78,7 +77,12 @@ export class Grid extends PIXI.Container {
     this._symbol[column][row].emit("matchcompleted");
   }
 
-  private createSymbol(column: number, row: number, symbolName: string): void { //bunun yerine shifting yapicam.
+  private createSymbol(column: number, row: number, symbolName: string): void {
+    this._symbol.sort((x: any, y: any) => {
+      console.log(x, y);
+      return -1;
+      //return x == first ? -1 : y == first ? 1 : 0;
+    });
     this._symbol[column][row].type = symbolName;
     const name = symbolName + "_normal";
     this._symbol[column][row].texture = PIXI.Texture.from(name);

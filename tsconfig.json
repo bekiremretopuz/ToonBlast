@@ -12,25 +12,57 @@
     "removeComments": true,
     "typeRoots": [
       "node_modules/@types",
-      "src/types"
+      "src/scripts/lib/types"
     ],
     "paths": {
-      "app/*": ["src/scripts/app/*"],
-      "vendor/*": ["src/scripts/vendor/*"],
-      "pixi-app-wrapper": ["src/scripts/vendor/dacaher/pixi-app-wrapper"],
-      "pixi-assets-loader": ["src/scripts/vendor/dacaher/pixi-assets-loader"],
-      "fpsmeter": ["src/scripts/vendor/darsain/fpsmeter/fpsmeter"],
-      "screenfull": ["src/scripts/vendor/sindresorhus/screenfull/screenfull"],
-      "eventemitter3": ["src/scripts/vendor/primus/eventemitter3"],
-      "gsap": ["src/scripts/vendor/greensock/greensock-js"],
-      "pixi-layers": ["src/scripts/vendor/pixijs/pixi-layers/pixi-layers"],
-      "pixi-particles": ["src/scripts/vendor/pixijs/pixi-particles/pixi-particles"],
-      "pixi-spine": ["src/scripts/vendor/pixijs/pixi-spine/pixi-spine"], 
-      "webfont": ["src/scripts/vendor/pixijs/webfont-loader/webfont-loader"], 
-      "pixi-filters": ["src/scripts/vendor/pixijs/pixi-filters"],
-      "@pixi/filter-*": ["src/scripts/vendor/pixijs/pixi-filters/filters/filter-*"],
-      "howler": ["src/scripts/vendor/goldfire/howler.js"], 
-      "typescript-collections/*": ["src/scripts/vendor/basarat/typescript-collections/*"]
+      "app/*": [
+        "src/scripts/game/*"
+      ],
+      "vendor/*": [
+        "src/scripts/lib/js/*"
+      ],
+      "pixi-app-wrapper": [
+        "src/scripts/lib/js/dacaher/pixi-app-wrapper"
+      ],
+      "pixi-assets-loader": [
+        "src/scripts/lib/js/dacaher/pixi-assets-loader"
+      ],
+      "fpsmeter": [
+        "src/scripts/lib/js/darsain/fpsmeter/fpsmeter"
+      ],
+      "screenfull": [
+        "src/scripts/lib/js/sindresorhus/screenfull/screenfull"
+      ],
+      "eventemitter3": [
+        "src/scripts/lib/js/primus/eventemitter3"
+      ],
+      "gsap": [
+        "src/scripts/lib/js/greensock/greensock-js"
+      ],
+      "pixi-layers": [
+        "src/scripts/lib/js/pixijs/pixi-layers/pixi-layers"
+      ],
+      "pixi-particles": [
+        "src/scripts/lib/js/pixijs/pixi-particles/pixi-particles"
+      ],
+      "pixi-spine": [
+        "src/scripts/lib/js/pixijs/pixi-spine/pixi-spine"
+      ],
+      "webfont": [
+        "src/scripts/lib/js/pixijs/webfont-loader/webfont-loader"
+      ],
+      "pixi-filters": [
+        "src/scripts/lib/js/pixijs/pixi-filters"
+      ],
+      "@pixi/filter-*": [
+        "src/scripts/lib/js/pixijs/pixi-filters/filters/filter-*"
+      ],
+      "howler": [
+        "src/scripts/lib/js/goldfire/howler.js"
+      ],
+      "typescript-collections/*": [
+        "src/scripts/lib/js/basarat/typescript-collections/*"
+      ]
     }
   },
   "include": [
@@ -42,6 +74,6 @@
 	],
   "exclude": [
     "node_modules",
-    "**/vendor"
+    "**/lib"
   ]
 }

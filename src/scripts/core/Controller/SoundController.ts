@@ -1,4 +1,4 @@
-export default class SoundManager extends PIXI.utils.EventEmitter {
+export default class SoundController extends PIXI.utils.EventEmitter {
   private _sounds: { [key: string]: any } = {};
   private _loadedSoundCount: number = 0;
   constructor() {

@@ -1,4 +1,4 @@
-import { Animations } from "app/Components/Animations";
+import { Animations } from "src/scripts/game/Components/Animations";
 export class AnimationsController extends PIXI.Container {
   private _animatios: Animations;
   constructor() {

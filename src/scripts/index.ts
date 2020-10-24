@@ -1,5 +1,5 @@
-import "styles/style.css";   
-import {EmreBase} from "app/EntryPoint"; 
+import "../html/styles/style.css";
+import { EmreBase } from "src/scripts/game/EntryPoint"; 
 new EmreBase.EntryPoint();
 declare global {
     interface Window { Game: any; }
