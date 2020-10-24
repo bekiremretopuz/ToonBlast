@@ -1,0 +1,116 @@
+{
+  "Levels": [
+    {
+      "column": 9,
+      "row": 9,
+      "moves": 10,
+      "goal": [
+        { "symbol": "solid1", "count": 5 },
+        { "symbol": "solid2", "count": 8 },
+        { "symbol": "solid3", "count": 10 }
+      ],
+      "initialSeqeunce": [
+        [
+          "solid1",
+          "solid1",
+          "solid3",
+          "solid1",
+          "solid4",
+          "solid3",
+          "solid2",
+          "solid1",
+          "solid4"
+        ],
+        [
+          "solid2",
+          "solid3",
+          "solid2",
+          "solid4",
+          "solid2",
+          "solid1",
+          "solid4",
+          "solid2",
+          "solid2"
+        ],
+        [
+          "solid3",
+          "solid2",
+          "solid1",
+          "solid3",
+          "solid3",
+          "solid2",
+          "solid1",
+          "solid4",
+          "solid3"
+        ],
+        [
+          "solid1",
+          "solid4",
+          "solid4",
+          "solid2",
+          "solid4",
+          "solid4",
+          "solid2",
+          "solid1",
+          "solid4"
+        ],
+        [
+          "solid4",
+          "solid1",
+          "solid1",
+          "solid4",
+          "solid3",
+          "solid1",
+          "solid2",
+          "solid2",
+          "solid1"
+        ],
+        [
+          "solid3",
+          "solid3",
+          "solid2",
+          "solid2",
+          "solid1",
+          "solid3",
+          "solid3",
+          "solid3",
+          "solid2"
+        ],
+        [
+          "solid2",
+          "solid2",
+          "solid3",
+          "solid1",
+          "solid2",
+          "solid3",
+          "solid4",
+          "solid3",
+          "solid2"
+        ],
+        [
+          "solid4",
+          "solid1",
+          "solid3",
+          "solid4",
+          "solid1",
+          "solid4",
+          "solid1",
+          "solid1",
+          "solid3"
+        ],
+        [
+          "solid1",
+          "solid4",
+          "solid4",
+          "solid3",
+          "solid2",
+          "solid1",
+          "solid2",
+          "solid2",
+          "solid4"
+        ]
+      ]
+    },
+    { "2. level  details..": "undefined" }
+  ]
+}

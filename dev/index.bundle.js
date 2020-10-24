@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,11 +70,11 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DisplayController_1 = __webpack_require__(16);
-var StorageController_1 = __webpack_require__(37);
+var DisplayController_1 = __webpack_require__(18);
+var StorageController_1 = __webpack_require__(39);
 var StageController_1 = __webpack_require__(3);
-var LoaderStage_1 = __webpack_require__(38);
-var ResourceController_1 = __webpack_require__(55);
+var LoaderStage_1 = __webpack_require__(40);
+var ResourceController_1 = __webpack_require__(56);
 var EmreBase;
 (function (EmreBase) {
     var EntryPoint = (function () {
@@ -158,6 +158,116 @@ var EmreBase;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var pixi_assets_loader_1 = __webpack_require__(9);
+exports.GameProperty = {
+    colums: 9,
+    row: 9,
+};
+exports.GoalRules = [
+    { count: 5, symbol: "solid1" },
+    { count: 8, symbol: "solid2" },
+    { count: 10, symbol: "solid3" },
+];
+exports.InitialSequence = [
+    [
+        "solid1",
+        "solid1",
+        "solid3",
+        "solid1",
+        "solid4",
+        "solid3",
+        "solid2",
+        "solid1",
+        "solid4",
+    ],
+    [
+        "solid2",
+        "solid3",
+        "solid2",
+        "solid4",
+        "solid2",
+        "solid1",
+        "solid4",
+        "solid2",
+        "solid2",
+    ],
+    [
+        "solid3",
+        "solid2",
+        "solid1",
+        "solid3",
+        "solid3",
+        "solid2",
+        "solid1",
+        "solid4",
+        "solid3",
+    ],
+    [
+        "solid1",
+        "solid4",
+        "solid4",
+        "solid2",
+        "solid4",
+        "solid4",
+        "solid2",
+        "solid1",
+        "solid4",
+    ],
+    [
+        "solid4",
+        "solid1",
+        "solid1",
+        "solid4",
+        "solid3",
+        "solid1",
+        "solid2",
+        "solid2",
+        "solid1",
+    ],
+    [
+        "solid3",
+        "solid3",
+        "solid2",
+        "solid2",
+        "solid1",
+        "solid3",
+        "solid3",
+        "solid3",
+        "solid2",
+    ],
+    [
+        "solid2",
+        "solid2",
+        "solid3",
+        "solid1",
+        "solid2",
+        "solid3",
+        "solid4",
+        "solid3",
+        "solid2",
+    ],
+    [
+        "solid4",
+        "solid1",
+        "solid3",
+        "solid4",
+        "solid1",
+        "solid4",
+        "solid1",
+        "solid1",
+        "solid3",
+    ],
+    [
+        "solid1",
+        "solid4",
+        "solid4",
+        "solid3",
+        "solid2",
+        "solid1",
+        "solid2",
+        "solid2",
+        "solid4",
+    ],
+];
 exports.DefaultTextStyle = {
     fontFamily: "Topaz-8-remake",
     fontSize: 42,
@@ -166,11 +276,35 @@ exports.DefaultTextStyle = {
     stroke: "#cecece",
     strokeThickness: 3,
 };
-exports.assets = [
+exports.AssetsList = [
     {
         id: "loading",
         url: "assets/gfx/ui/loading.png",
         priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+        type: "texture",
+    },
+    {
+        id: "restart_normal",
+        url: "assets/gfx/ui/reset.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "restart_over",
+        url: "assets/gfx/ui/reset.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "restart_down",
+        url: "assets/gfx/ui/reset.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "restart_disabled",
+        url: "assets/gfx/ui/reset.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
         type: "texture",
     },
     {
@@ -324,111 +458,6 @@ exports.assets = [
         type: "sound",
     },
 ];
-exports.INITIAL_SEQ = [
-    [
-        "solid1",
-        "solid1",
-        "solid3",
-        "solid1",
-        "solid4",
-        "solid3",
-        "solid2",
-        "solid1",
-        "solid4",
-    ],
-    [
-        "solid2",
-        "solid3",
-        "solid2",
-        "solid4",
-        "solid2",
-        "solid1",
-        "solid4",
-        "solid2",
-        "solid2",
-    ],
-    [
-        "solid3",
-        "solid2",
-        "solid1",
-        "solid3",
-        "solid3",
-        "solid2",
-        "solid1",
-        "solid4",
-        "solid3",
-    ],
-    [
-        "solid1",
-        "solid4",
-        "solid4",
-        "solid2",
-        "solid4",
-        "solid4",
-        "solid2",
-        "solid1",
-        "solid4",
-    ],
-    [
-        "solid4",
-        "solid1",
-        "solid1",
-        "solid4",
-        "solid3",
-        "solid1",
-        "solid2",
-        "solid2",
-        "solid1",
-    ],
-    [
-        "solid3",
-        "solid3",
-        "solid2",
-        "solid2",
-        "solid1",
-        "solid3",
-        "solid3",
-        "solid3",
-        "solid2",
-    ],
-    [
-        "solid2",
-        "solid2",
-        "solid3",
-        "solid1",
-        "solid2",
-        "solid3",
-        "solid4",
-        "solid3",
-        "solid2",
-    ],
-    [
-        "solid4",
-        "solid1",
-        "solid3",
-        "solid4",
-        "solid1",
-        "solid4",
-        "solid1",
-        "solid1",
-        "solid3",
-    ],
-    [
-        "solid1",
-        "solid4",
-        "solid4",
-        "solid3",
-        "solid2",
-        "solid1",
-        "solid2",
-        "solid2",
-        "solid4",
-    ],
-];
-exports.GameProperty = {
-    colums: 9,
-    row: 9,
-};
 
 
 /***/ }),
@@ -441,9 +470,9 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(17));
-__export(__webpack_require__(35));
-__export(__webpack_require__(36));
+__export(__webpack_require__(19));
+__export(__webpack_require__(37));
+__export(__webpack_require__(38));
 
 
 /***/ }),
@@ -535,482 +564,6 @@ exports.StageController = StageController;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var _hasOwnProperty = Object.prototype.hasOwnProperty;
-exports.has = function (obj, prop) {
-    return _hasOwnProperty.call(obj, prop);
-};
-function defaultCompare(a, b) {
-    if (a < b) {
-        return -1;
-    }
-    else if (a === b) {
-        return 0;
-    }
-    else {
-        return 1;
-    }
-}
-exports.defaultCompare = defaultCompare;
-function defaultEquals(a, b) {
-    return a === b;
-}
-exports.defaultEquals = defaultEquals;
-function defaultToString(item) {
-    if (item === null) {
-        return 'COLLECTION_NULL';
-    }
-    else if (isUndefined(item)) {
-        return 'COLLECTION_UNDEFINED';
-    }
-    else if (isString(item)) {
-        return '$s' + item;
-    }
-    else {
-        return '$o' + item.toString();
-    }
-}
-exports.defaultToString = defaultToString;
-function makeString(item, join) {
-    if (join === void 0) { join = ','; }
-    if (item === null) {
-        return 'COLLECTION_NULL';
-    }
-    else if (isUndefined(item)) {
-        return 'COLLECTION_UNDEFINED';
-    }
-    else {
-        var toret = '{';
-        var first = true;
-        for (var prop in item) {
-            if (exports.has(item, prop)) {
-                if (first) {
-                    first = false;
-                }
-                else {
-                    toret = toret + join;
-                }
-                toret = toret + prop + ':' + item[prop];
-            }
-        }
-        return toret + '}';
-    }
-}
-exports.makeString = makeString;
-function isFunction(func) {
-    return (typeof func) === 'function';
-}
-exports.isFunction = isFunction;
-function isUndefined(obj) {
-    return (typeof obj) === 'undefined';
-}
-exports.isUndefined = isUndefined;
-function isString(obj) {
-    return Object.prototype.toString.call(obj) === '[object String]';
-}
-exports.isString = isString;
-function reverseCompareFunction(compareFunction) {
-    if (isUndefined(compareFunction) || !isFunction(compareFunction)) {
-        return function (a, b) {
-            if (a < b) {
-                return 1;
-            }
-            else if (a === b) {
-                return 0;
-            }
-            else {
-                return -1;
-            }
-        };
-    }
-    else {
-        return function (d, v) {
-            return compareFunction(d, v) * -1;
-        };
-    }
-}
-exports.reverseCompareFunction = reverseCompareFunction;
-function compareToEquals(compareFunction) {
-    return function (a, b) {
-        return compareFunction(a, b) === 0;
-    };
-}
-exports.compareToEquals = compareToEquals;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var has = Object.prototype.hasOwnProperty
-  , prefix = '~';
-
-/**
- * Constructor to create a storage for our `EE` objects.
- * An `Events` instance is a plain object whose properties are event names.
- *
- * @constructor
- * @private
- */
-function Events() {}
-
-//
-// We try to not inherit from `Object.prototype`. In some engines creating an
-// instance in this way is faster than calling `Object.create(null)` directly.
-// If `Object.create(null)` is not supported we prefix the event names with a
-// character to make sure that the built-in object properties are not
-// overridden or used as an attack vector.
-//
-if (Object.create) {
-  Events.prototype = Object.create(null);
-
-  //
-  // This hack is needed because the `__proto__` property is still inherited in
-  // some old browsers like Android 4, iPhone 5.1, Opera 11 and Safari 5.
-  //
-  if (!new Events().__proto__) prefix = false;
-}
-
-/**
- * Representation of a single event listener.
- *
- * @param {Function} fn The listener function.
- * @param {*} context The context to invoke the listener with.
- * @param {Boolean} [once=false] Specify if the listener is a one-time listener.
- * @constructor
- * @private
- */
-function EE(fn, context, once) {
-  this.fn = fn;
-  this.context = context;
-  this.once = once || false;
-}
-
-/**
- * Add a listener for a given event.
- *
- * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
- * @param {(String|Symbol)} event The event name.
- * @param {Function} fn The listener function.
- * @param {*} context The context to invoke the listener with.
- * @param {Boolean} once Specify if the listener is a one-time listener.
- * @returns {EventEmitter}
- * @private
- */
-function addListener(emitter, event, fn, context, once) {
-  if (typeof fn !== 'function') {
-    throw new TypeError('The listener must be a function');
-  }
-
-  var listener = new EE(fn, context || emitter, once)
-    , evt = prefix ? prefix + event : event;
-
-  if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;
-  else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);
-  else emitter._events[evt] = [emitter._events[evt], listener];
-
-  return emitter;
-}
-
-/**
- * Clear event by name.
- *
- * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
- * @param {(String|Symbol)} evt The Event name.
- * @private
- */
-function clearEvent(emitter, evt) {
-  if (--emitter._eventsCount === 0) emitter._events = new Events();
-  else delete emitter._events[evt];
-}
-
-/**
- * Minimal `EventEmitter` interface that is molded against the Node.js
- * `EventEmitter` interface.
- *
- * @constructor
- * @public
- */
-function EventEmitter() {
-  this._events = new Events();
-  this._eventsCount = 0;
-}
-
-/**
- * Return an array listing the events for which the emitter has registered
- * listeners.
- *
- * @returns {Array}
- * @public
- */
-EventEmitter.prototype.eventNames = function eventNames() {
-  var names = []
-    , events
-    , name;
-
-  if (this._eventsCount === 0) return names;
-
-  for (name in (events = this._events)) {
-    if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
-  }
-
-  if (Object.getOwnPropertySymbols) {
-    return names.concat(Object.getOwnPropertySymbols(events));
-  }
-
-  return names;
-};
-
-/**
- * Return the listeners registered for a given event.
- *
- * @param {(String|Symbol)} event The event name.
- * @returns {Array} The registered listeners.
- * @public
- */
-EventEmitter.prototype.listeners = function listeners(event) {
-  var evt = prefix ? prefix + event : event
-    , handlers = this._events[evt];
-
-  if (!handlers) return [];
-  if (handlers.fn) return [handlers.fn];
-
-  for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {
-    ee[i] = handlers[i].fn;
-  }
-
-  return ee;
-};
-
-/**
- * Return the number of listeners listening to a given event.
- *
- * @param {(String|Symbol)} event The event name.
- * @returns {Number} The number of listeners.
- * @public
- */
-EventEmitter.prototype.listenerCount = function listenerCount(event) {
-  var evt = prefix ? prefix + event : event
-    , listeners = this._events[evt];
-
-  if (!listeners) return 0;
-  if (listeners.fn) return 1;
-  return listeners.length;
-};
-
-/**
- * Calls each of the listeners registered for a given event.
- *
- * @param {(String|Symbol)} event The event name.
- * @returns {Boolean} `true` if the event had listeners, else `false`.
- * @public
- */
-EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
-  var evt = prefix ? prefix + event : event;
-
-  if (!this._events[evt]) return false;
-
-  var listeners = this._events[evt]
-    , len = arguments.length
-    , args
-    , i;
-
-  if (listeners.fn) {
-    if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);
-
-    switch (len) {
-      case 1: return listeners.fn.call(listeners.context), true;
-      case 2: return listeners.fn.call(listeners.context, a1), true;
-      case 3: return listeners.fn.call(listeners.context, a1, a2), true;
-      case 4: return listeners.fn.call(listeners.context, a1, a2, a3), true;
-      case 5: return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
-      case 6: return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
-    }
-
-    for (i = 1, args = new Array(len -1); i < len; i++) {
-      args[i - 1] = arguments[i];
-    }
-
-    listeners.fn.apply(listeners.context, args);
-  } else {
-    var length = listeners.length
-      , j;
-
-    for (i = 0; i < length; i++) {
-      if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);
-
-      switch (len) {
-        case 1: listeners[i].fn.call(listeners[i].context); break;
-        case 2: listeners[i].fn.call(listeners[i].context, a1); break;
-        case 3: listeners[i].fn.call(listeners[i].context, a1, a2); break;
-        case 4: listeners[i].fn.call(listeners[i].context, a1, a2, a3); break;
-        default:
-          if (!args) for (j = 1, args = new Array(len -1); j < len; j++) {
-            args[j - 1] = arguments[j];
-          }
-
-          listeners[i].fn.apply(listeners[i].context, args);
-      }
-    }
-  }
-
-  return true;
-};
-
-/**
- * Add a listener for a given event.
- *
- * @param {(String|Symbol)} event The event name.
- * @param {Function} fn The listener function.
- * @param {*} [context=this] The context to invoke the listener with.
- * @returns {EventEmitter} `this`.
- * @public
- */
-EventEmitter.prototype.on = function on(event, fn, context) {
-  return addListener(this, event, fn, context, false);
-};
-
-/**
- * Add a one-time listener for a given event.
- *
- * @param {(String|Symbol)} event The event name.
- * @param {Function} fn The listener function.
- * @param {*} [context=this] The context to invoke the listener with.
- * @returns {EventEmitter} `this`.
- * @public
- */
-EventEmitter.prototype.once = function once(event, fn, context) {
-  return addListener(this, event, fn, context, true);
-};
-
-/**
- * Remove the listeners of a given event.
- *
- * @param {(String|Symbol)} event The event name.
- * @param {Function} fn Only remove the listeners that match this function.
- * @param {*} context Only remove the listeners that have this context.
- * @param {Boolean} once Only remove one-time listeners.
- * @returns {EventEmitter} `this`.
- * @public
- */
-EventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {
-  var evt = prefix ? prefix + event : event;
-
-  if (!this._events[evt]) return this;
-  if (!fn) {
-    clearEvent(this, evt);
-    return this;
-  }
-
-  var listeners = this._events[evt];
-
-  if (listeners.fn) {
-    if (
-      listeners.fn === fn &&
-      (!once || listeners.once) &&
-      (!context || listeners.context === context)
-    ) {
-      clearEvent(this, evt);
-    }
-  } else {
-    for (var i = 0, events = [], length = listeners.length; i < length; i++) {
-      if (
-        listeners[i].fn !== fn ||
-        (once && !listeners[i].once) ||
-        (context && listeners[i].context !== context)
-      ) {
-        events.push(listeners[i]);
-      }
-    }
-
-    //
-    // Reset the array, or remove it completely if we have no more listeners.
-    //
-    if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;
-    else clearEvent(this, evt);
-  }
-
-  return this;
-};
-
-/**
- * Remove all listeners, or those of the specified event.
- *
- * @param {(String|Symbol)} [event] The event name.
- * @returns {EventEmitter} `this`.
- * @public
- */
-EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
-  var evt;
-
-  if (event) {
-    evt = prefix ? prefix + event : event;
-    if (this._events[evt]) clearEvent(this, evt);
-  } else {
-    this._events = new Events();
-    this._eventsCount = 0;
-  }
-
-  return this;
-};
-
-//
-// Alias methods names because people roll like that.
-//
-EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
-EventEmitter.prototype.addListener = EventEmitter.prototype.on;
-
-//
-// Expose the prefix.
-//
-EventEmitter.prefixed = prefix;
-
-//
-// Allow `EventEmitter` to be imported as module namespace.
-//
-EventEmitter.EventEmitter = EventEmitter;
-
-//
-// Expose the module.
-//
-if (true) {
-  module.exports = EventEmitter;
-}
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Maths = (function () {
-    function Maths() {
-    }
-    Maths.gcd = function (n, m) {
-        var r = 0;
-        while (n !== 0) {
-            r = m % n;
-            m = n;
-            n = r;
-        }
-        return m;
-    };
-    return Maths;
-}());
-exports.Maths = Maths;
-
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -9019,6 +8572,482 @@ if (_gsScope._gsDefine) { _gsScope._gsQueue.pop()(); } //necessary in case Tween
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var _hasOwnProperty = Object.prototype.hasOwnProperty;
+exports.has = function (obj, prop) {
+    return _hasOwnProperty.call(obj, prop);
+};
+function defaultCompare(a, b) {
+    if (a < b) {
+        return -1;
+    }
+    else if (a === b) {
+        return 0;
+    }
+    else {
+        return 1;
+    }
+}
+exports.defaultCompare = defaultCompare;
+function defaultEquals(a, b) {
+    return a === b;
+}
+exports.defaultEquals = defaultEquals;
+function defaultToString(item) {
+    if (item === null) {
+        return 'COLLECTION_NULL';
+    }
+    else if (isUndefined(item)) {
+        return 'COLLECTION_UNDEFINED';
+    }
+    else if (isString(item)) {
+        return '$s' + item;
+    }
+    else {
+        return '$o' + item.toString();
+    }
+}
+exports.defaultToString = defaultToString;
+function makeString(item, join) {
+    if (join === void 0) { join = ','; }
+    if (item === null) {
+        return 'COLLECTION_NULL';
+    }
+    else if (isUndefined(item)) {
+        return 'COLLECTION_UNDEFINED';
+    }
+    else {
+        var toret = '{';
+        var first = true;
+        for (var prop in item) {
+            if (exports.has(item, prop)) {
+                if (first) {
+                    first = false;
+                }
+                else {
+                    toret = toret + join;
+                }
+                toret = toret + prop + ':' + item[prop];
+            }
+        }
+        return toret + '}';
+    }
+}
+exports.makeString = makeString;
+function isFunction(func) {
+    return (typeof func) === 'function';
+}
+exports.isFunction = isFunction;
+function isUndefined(obj) {
+    return (typeof obj) === 'undefined';
+}
+exports.isUndefined = isUndefined;
+function isString(obj) {
+    return Object.prototype.toString.call(obj) === '[object String]';
+}
+exports.isString = isString;
+function reverseCompareFunction(compareFunction) {
+    if (isUndefined(compareFunction) || !isFunction(compareFunction)) {
+        return function (a, b) {
+            if (a < b) {
+                return 1;
+            }
+            else if (a === b) {
+                return 0;
+            }
+            else {
+                return -1;
+            }
+        };
+    }
+    else {
+        return function (d, v) {
+            return compareFunction(d, v) * -1;
+        };
+    }
+}
+exports.reverseCompareFunction = reverseCompareFunction;
+function compareToEquals(compareFunction) {
+    return function (a, b) {
+        return compareFunction(a, b) === 0;
+    };
+}
+exports.compareToEquals = compareToEquals;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var has = Object.prototype.hasOwnProperty
+  , prefix = '~';
+
+/**
+ * Constructor to create a storage for our `EE` objects.
+ * An `Events` instance is a plain object whose properties are event names.
+ *
+ * @constructor
+ * @private
+ */
+function Events() {}
+
+//
+// We try to not inherit from `Object.prototype`. In some engines creating an
+// instance in this way is faster than calling `Object.create(null)` directly.
+// If `Object.create(null)` is not supported we prefix the event names with a
+// character to make sure that the built-in object properties are not
+// overridden or used as an attack vector.
+//
+if (Object.create) {
+  Events.prototype = Object.create(null);
+
+  //
+  // This hack is needed because the `__proto__` property is still inherited in
+  // some old browsers like Android 4, iPhone 5.1, Opera 11 and Safari 5.
+  //
+  if (!new Events().__proto__) prefix = false;
+}
+
+/**
+ * Representation of a single event listener.
+ *
+ * @param {Function} fn The listener function.
+ * @param {*} context The context to invoke the listener with.
+ * @param {Boolean} [once=false] Specify if the listener is a one-time listener.
+ * @constructor
+ * @private
+ */
+function EE(fn, context, once) {
+  this.fn = fn;
+  this.context = context;
+  this.once = once || false;
+}
+
+/**
+ * Add a listener for a given event.
+ *
+ * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
+ * @param {(String|Symbol)} event The event name.
+ * @param {Function} fn The listener function.
+ * @param {*} context The context to invoke the listener with.
+ * @param {Boolean} once Specify if the listener is a one-time listener.
+ * @returns {EventEmitter}
+ * @private
+ */
+function addListener(emitter, event, fn, context, once) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('The listener must be a function');
+  }
+
+  var listener = new EE(fn, context || emitter, once)
+    , evt = prefix ? prefix + event : event;
+
+  if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;
+  else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);
+  else emitter._events[evt] = [emitter._events[evt], listener];
+
+  return emitter;
+}
+
+/**
+ * Clear event by name.
+ *
+ * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
+ * @param {(String|Symbol)} evt The Event name.
+ * @private
+ */
+function clearEvent(emitter, evt) {
+  if (--emitter._eventsCount === 0) emitter._events = new Events();
+  else delete emitter._events[evt];
+}
+
+/**
+ * Minimal `EventEmitter` interface that is molded against the Node.js
+ * `EventEmitter` interface.
+ *
+ * @constructor
+ * @public
+ */
+function EventEmitter() {
+  this._events = new Events();
+  this._eventsCount = 0;
+}
+
+/**
+ * Return an array listing the events for which the emitter has registered
+ * listeners.
+ *
+ * @returns {Array}
+ * @public
+ */
+EventEmitter.prototype.eventNames = function eventNames() {
+  var names = []
+    , events
+    , name;
+
+  if (this._eventsCount === 0) return names;
+
+  for (name in (events = this._events)) {
+    if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
+  }
+
+  if (Object.getOwnPropertySymbols) {
+    return names.concat(Object.getOwnPropertySymbols(events));
+  }
+
+  return names;
+};
+
+/**
+ * Return the listeners registered for a given event.
+ *
+ * @param {(String|Symbol)} event The event name.
+ * @returns {Array} The registered listeners.
+ * @public
+ */
+EventEmitter.prototype.listeners = function listeners(event) {
+  var evt = prefix ? prefix + event : event
+    , handlers = this._events[evt];
+
+  if (!handlers) return [];
+  if (handlers.fn) return [handlers.fn];
+
+  for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {
+    ee[i] = handlers[i].fn;
+  }
+
+  return ee;
+};
+
+/**
+ * Return the number of listeners listening to a given event.
+ *
+ * @param {(String|Symbol)} event The event name.
+ * @returns {Number} The number of listeners.
+ * @public
+ */
+EventEmitter.prototype.listenerCount = function listenerCount(event) {
+  var evt = prefix ? prefix + event : event
+    , listeners = this._events[evt];
+
+  if (!listeners) return 0;
+  if (listeners.fn) return 1;
+  return listeners.length;
+};
+
+/**
+ * Calls each of the listeners registered for a given event.
+ *
+ * @param {(String|Symbol)} event The event name.
+ * @returns {Boolean} `true` if the event had listeners, else `false`.
+ * @public
+ */
+EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
+  var evt = prefix ? prefix + event : event;
+
+  if (!this._events[evt]) return false;
+
+  var listeners = this._events[evt]
+    , len = arguments.length
+    , args
+    , i;
+
+  if (listeners.fn) {
+    if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);
+
+    switch (len) {
+      case 1: return listeners.fn.call(listeners.context), true;
+      case 2: return listeners.fn.call(listeners.context, a1), true;
+      case 3: return listeners.fn.call(listeners.context, a1, a2), true;
+      case 4: return listeners.fn.call(listeners.context, a1, a2, a3), true;
+      case 5: return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
+      case 6: return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
+    }
+
+    for (i = 1, args = new Array(len -1); i < len; i++) {
+      args[i - 1] = arguments[i];
+    }
+
+    listeners.fn.apply(listeners.context, args);
+  } else {
+    var length = listeners.length
+      , j;
+
+    for (i = 0; i < length; i++) {
+      if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);
+
+      switch (len) {
+        case 1: listeners[i].fn.call(listeners[i].context); break;
+        case 2: listeners[i].fn.call(listeners[i].context, a1); break;
+        case 3: listeners[i].fn.call(listeners[i].context, a1, a2); break;
+        case 4: listeners[i].fn.call(listeners[i].context, a1, a2, a3); break;
+        default:
+          if (!args) for (j = 1, args = new Array(len -1); j < len; j++) {
+            args[j - 1] = arguments[j];
+          }
+
+          listeners[i].fn.apply(listeners[i].context, args);
+      }
+    }
+  }
+
+  return true;
+};
+
+/**
+ * Add a listener for a given event.
+ *
+ * @param {(String|Symbol)} event The event name.
+ * @param {Function} fn The listener function.
+ * @param {*} [context=this] The context to invoke the listener with.
+ * @returns {EventEmitter} `this`.
+ * @public
+ */
+EventEmitter.prototype.on = function on(event, fn, context) {
+  return addListener(this, event, fn, context, false);
+};
+
+/**
+ * Add a one-time listener for a given event.
+ *
+ * @param {(String|Symbol)} event The event name.
+ * @param {Function} fn The listener function.
+ * @param {*} [context=this] The context to invoke the listener with.
+ * @returns {EventEmitter} `this`.
+ * @public
+ */
+EventEmitter.prototype.once = function once(event, fn, context) {
+  return addListener(this, event, fn, context, true);
+};
+
+/**
+ * Remove the listeners of a given event.
+ *
+ * @param {(String|Symbol)} event The event name.
+ * @param {Function} fn Only remove the listeners that match this function.
+ * @param {*} context Only remove the listeners that have this context.
+ * @param {Boolean} once Only remove one-time listeners.
+ * @returns {EventEmitter} `this`.
+ * @public
+ */
+EventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {
+  var evt = prefix ? prefix + event : event;
+
+  if (!this._events[evt]) return this;
+  if (!fn) {
+    clearEvent(this, evt);
+    return this;
+  }
+
+  var listeners = this._events[evt];
+
+  if (listeners.fn) {
+    if (
+      listeners.fn === fn &&
+      (!once || listeners.once) &&
+      (!context || listeners.context === context)
+    ) {
+      clearEvent(this, evt);
+    }
+  } else {
+    for (var i = 0, events = [], length = listeners.length; i < length; i++) {
+      if (
+        listeners[i].fn !== fn ||
+        (once && !listeners[i].once) ||
+        (context && listeners[i].context !== context)
+      ) {
+        events.push(listeners[i]);
+      }
+    }
+
+    //
+    // Reset the array, or remove it completely if we have no more listeners.
+    //
+    if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;
+    else clearEvent(this, evt);
+  }
+
+  return this;
+};
+
+/**
+ * Remove all listeners, or those of the specified event.
+ *
+ * @param {(String|Symbol)} [event] The event name.
+ * @returns {EventEmitter} `this`.
+ * @public
+ */
+EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
+  var evt;
+
+  if (event) {
+    evt = prefix ? prefix + event : event;
+    if (this._events[evt]) clearEvent(this, evt);
+  } else {
+    this._events = new Events();
+    this._eventsCount = 0;
+  }
+
+  return this;
+};
+
+//
+// Alias methods names because people roll like that.
+//
+EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+EventEmitter.prototype.addListener = EventEmitter.prototype.on;
+
+//
+// Expose the prefix.
+//
+EventEmitter.prefixed = prefix;
+
+//
+// Allow `EventEmitter` to be imported as module namespace.
+//
+EventEmitter.EventEmitter = EventEmitter;
+
+//
+// Expose the module.
+//
+if (true) {
+  module.exports = EventEmitter;
+}
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Maths = (function () {
+    function Maths() {
+    }
+    Maths.gcd = function (n, m) {
+        var r = 0;
+        while (n !== 0) {
+            r = m % n;
+            m = n;
+            n = r;
+        }
+        return m;
+    };
+    return Maths;
+}());
+exports.Maths = Maths;
+
+
+/***/ }),
 /* 8 */
 /***/ (function(module, exports) {
 
@@ -9055,8 +9084,8 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(39));
-__export(__webpack_require__(44));
+__export(__webpack_require__(41));
+__export(__webpack_require__(46));
 
 
 /***/ }),
@@ -9065,21 +9094,235 @@ __export(__webpack_require__(44));
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(11);
+__webpack_require__(49);
 var EntryPoint_1 = __webpack_require__(0);
-new EntryPoint_1.EmreBase.EntryPoint();
-window.Game = EntryPoint_1.EmreBase;
+var BoyAnimations;
+(function (BoyAnimations) {
+    BoyAnimations["Walk"] = "walk";
+    BoyAnimations["Jump"] = "jump";
+})(BoyAnimations = exports.BoyAnimations || (exports.BoyAnimations = {}));
+var Animations = (function (_super) {
+    __extends(Animations, _super);
+    function Animations() {
+        var _this = _super.call(this) || this;
+        _this._game = EntryPoint_1.EmreBase.EntryPoint.instance;
+        _this.awake();
+        _this.initSpineEvents();
+        _this._spineBoyAnim.state.setAnimation(0, BoyAnimations.Walk, true);
+        return _this;
+    }
+    Animations.prototype.awake = function () {
+        this._spineBoyAnim = new PIXI.spine.Spine(this._game.resource.loader.resources.spine.spineData);
+        this._spineBoyAnim.scale.set(0.5, 0.5);
+        this._spineBoyAnim.position.set(137, 215);
+        this.addChild(this._spineBoyAnim);
+    };
+    Animations.prototype.initSpineEvents = function () {
+        var _this = this;
+        this._spineBoyAnim.stateData.setMix(BoyAnimations.Walk, BoyAnimations.Jump, 0.1);
+        this._spineBoyAnim.stateData.setMix(BoyAnimations.Walk, BoyAnimations.Walk, 0.01);
+        this._spineBoyAnim.stateData.setMix(BoyAnimations.Jump, BoyAnimations.Walk, 0.1);
+        this._spineBoyAnim.stateData.setMix(BoyAnimations.Jump, BoyAnimations.Jump, 0.01);
+        this._spineBoyAnim.state.addListener({
+            complete: function (event) {
+                if (event.animation.name == BoyAnimations.Jump) {
+                    _this._spineBoyAnim.state.setAnimation(0, BoyAnimations.Walk, true);
+                }
+            },
+        });
+    };
+    Object.defineProperty(Animations.prototype, "boyAnimation", {
+        get: function () {
+            return this._spineBoyAnim;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Animations;
+}(PIXI.Container));
+exports.Animations = Animations;
 
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var SimpleButton2D = (function (_super) {
+    __extends(SimpleButton2D, _super);
+    function SimpleButton2D(frame, position, callback, name) {
+        var _this = _super.call(this, PIXI.Texture.from(frame + "_normal")) || this;
+        _this._isDown = false;
+        _this._isOver = false;
+        _this._isEnabled = true;
+        _this._normalFrame = frame + "_normal";
+        _this._overFrame = frame + "_over";
+        _this._downFrame = frame + "_down";
+        _this._disabledFrame = frame + "_disabled";
+        _this._callback = callback;
+        _this.position.set(position.x, position.y);
+        _this.interactive = true;
+        _this.buttonMode = true;
+        _this.name = name || "";
+        _this.on("pointerdown", _this.onPointerDown, _this);
+        _this.on("pointerover", _this.onPointerOver, _this);
+        _this.on("pointerout", _this.onPointerOut, _this);
+        _this.on("pointerup", _this.onPointerUp, _this);
+        return _this;
+    }
+    SimpleButton2D.prototype.onPointerDown = function (e) {
+        this.isDown = true;
+        this.texture = PIXI.Texture.from(this._downFrame);
+        this._callback(this);
+    };
+    SimpleButton2D.prototype.onPointerUp = function (e) {
+        this.isDown = false;
+        if (this.isOver) {
+            this.texture = PIXI.Texture.from(this._overFrame);
+        }
+        else {
+            this.texture = PIXI.Texture.from(this._normalFrame);
+        }
+    };
+    SimpleButton2D.prototype.onPointerOver = function (e) {
+        this.isOver = true;
+        if (this.isDown) {
+            return;
+        }
+        this.texture = PIXI.Texture.from(this._overFrame);
+    };
+    SimpleButton2D.prototype.onPointerOut = function (e) {
+        this.isOver = false;
+        if (this.isDown) {
+            return;
+        }
+        this.texture = PIXI.Texture.from(this._normalFrame);
+    };
+    SimpleButton2D.prototype.setDisabled = function () {
+        this.buttonMode = false;
+        this.interactive = false;
+        this.texture = PIXI.Texture.from(this._disabledFrame);
+    };
+    SimpleButton2D.prototype.setTexture = function (frame, currentFrame, name) {
+        this._normalFrame = frame + "_normal";
+        this._overFrame = frame + "_over";
+        this._downFrame = frame + "_down";
+        this._disabledFrame = frame + "_disabled";
+        this.name = name;
+        if (currentFrame != null || currentFrame != "")
+            this._texture = PIXI.Texture.from(currentFrame);
+    };
+    SimpleButton2D.prototype.setEnabled = function () {
+        this.buttonMode = true;
+        this.interactive = true;
+    };
+    Object.defineProperty(SimpleButton2D.prototype, "isDown", {
+        get: function () {
+            return this._isDown;
+        },
+        set: function (value) {
+            if (value != this._isDown)
+                this._isDown = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SimpleButton2D.prototype, "isOver", {
+        get: function () {
+            return this._isOver;
+        },
+        set: function (value) {
+            if (value != this._isOver)
+                this._isOver = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SimpleButton2D.prototype, "Interactive", {
+        get: function () {
+            return this.interactive;
+        },
+        set: function (value) {
+            this.interactive = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SimpleButton2D.prototype, "isEnabled", {
+        get: function () {
+            return this._isEnabled;
+        },
+        set: function (value) {
+            if (!value) {
+                this.setDisabled();
+            }
+            else {
+                this.setEnabled();
+            }
+            this._isEnabled = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SimpleButton2D.prototype, "ButtonMode", {
+        get: function () {
+            return this.buttonMode;
+        },
+        set: function (value) {
+            this.buttonMode = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return SimpleButton2D;
+}(PIXI.Sprite));
+exports.SimpleButton2D = SimpleButton2D;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+__webpack_require__(13);
+var EntryPoint_1 = __webpack_require__(0);
+new EntryPoint_1.EmreBase.EntryPoint();
+window.Game = EntryPoint_1.EmreBase;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(12);
+var content = __webpack_require__(14);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -9087,7 +9330,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(14)(content, options);
+var update = __webpack_require__(16)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -9104,10 +9347,10 @@ if(false) {
 }
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(13)(false);
+exports = module.exports = __webpack_require__(15)(false);
 // imports
 
 
@@ -9118,7 +9361,7 @@ exports.push([module.i, "* {\n    padding: 0;\n    margin: 0;\n}\n\nhtml {\n    
 
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports) {
 
 /*
@@ -9200,7 +9443,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -9256,7 +9499,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(15);
+var	fixUrls = __webpack_require__(17);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -9572,7 +9815,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports) {
 
 
@@ -9667,7 +9910,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9725,7 +9968,7 @@ exports.DisplayController = DisplayController;
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9741,25 +9984,25 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var EventEmitter = __webpack_require__(5);
-__webpack_require__(18);
+var EventEmitter = __webpack_require__(6);
+__webpack_require__(20);
 var pixi_app_wrapper_1 = __webpack_require__(2);
-__webpack_require__(19);
-var PIXI = __webpack_require__(20);
-var screenfull = __webpack_require__(21);
-var media_info_viewer_1 = __webpack_require__(22);
-var align_bottom_center_1 = __webpack_require__(23);
-var align_bottom_left_1 = __webpack_require__(24);
-var align_bottom_right_1 = __webpack_require__(25);
-var align_middle_1 = __webpack_require__(26);
-var align_middle_left_1 = __webpack_require__(27);
-var align_middle_right_1 = __webpack_require__(28);
-var align_top_center_1 = __webpack_require__(29);
-var align_top_left_1 = __webpack_require__(30);
-var align_top_right_1 = __webpack_require__(31);
-var scale_full_size_1 = __webpack_require__(32);
-var scale_keep_aspect_ratio_1 = __webpack_require__(33);
-var scale_none_1 = __webpack_require__(34);
+__webpack_require__(21);
+var PIXI = __webpack_require__(22);
+var screenfull = __webpack_require__(23);
+var media_info_viewer_1 = __webpack_require__(24);
+var align_bottom_center_1 = __webpack_require__(25);
+var align_bottom_left_1 = __webpack_require__(26);
+var align_bottom_right_1 = __webpack_require__(27);
+var align_middle_1 = __webpack_require__(28);
+var align_middle_left_1 = __webpack_require__(29);
+var align_middle_right_1 = __webpack_require__(30);
+var align_top_center_1 = __webpack_require__(31);
+var align_top_left_1 = __webpack_require__(32);
+var align_top_right_1 = __webpack_require__(33);
+var scale_full_size_1 = __webpack_require__(34);
+var scale_keep_aspect_ratio_1 = __webpack_require__(35);
+var scale_none_1 = __webpack_require__(36);
 var PixiAppWrapper = (function (_super) {
     __extends(PixiAppWrapper, _super);
     function PixiAppWrapper(options) {
@@ -10007,7 +10250,7 @@ exports.PixiAppWrapper = PixiAppWrapper;
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports) {
 
 /*!
@@ -10894,7 +11137,7 @@ exports.PixiAppWrapper = PixiAppWrapper;
 }(window, FPSMeter));
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports) {
 
 var pixi_display;
@@ -11625,13 +11868,13 @@ var pixi_display;
 
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = PIXI;
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports) {
 
 /*!
@@ -11805,15 +12048,15 @@ module.exports = PIXI;
 
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var pixi_app_wrapper_1 = __webpack_require__(2);
-__webpack_require__(6);
-var math_1 = __webpack_require__(6);
+__webpack_require__(7);
+var math_1 = __webpack_require__(7);
 var MediaInfoViewer = (function () {
     function MediaInfoViewer() {
         this.createContainer();
@@ -11869,7 +12112,7 @@ exports.MediaInfoViewer = MediaInfoViewer;
 
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11890,7 +12133,7 @@ exports.AlignBottomCenter = AlignBottomCenter;
 
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11911,7 +12154,7 @@ exports.AlignBottomLeft = AlignBottomLeft;
 
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11932,7 +12175,7 @@ exports.AlignBottomRight = AlignBottomRight;
 
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11953,7 +12196,7 @@ exports.AlignMiddle = AlignMiddle;
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11974,7 +12217,7 @@ exports.AlignMiddleLeft = AlignMiddleLeft;
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11995,7 +12238,7 @@ exports.AlignMiddleRight = AlignMiddleRight;
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12016,7 +12259,7 @@ exports.AlignTopCenter = AlignTopCenter;
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12034,7 +12277,7 @@ exports.AlignTopLeft = AlignTopLeft;
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12055,7 +12298,7 @@ exports.AlignTopRight = AlignTopRight;
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12076,7 +12319,7 @@ exports.ScaleFullSize = ScaleFullSize;
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12095,7 +12338,7 @@ exports.ScaleKeepAspectRatio = ScaleKeepAspectRatio;
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12116,7 +12359,7 @@ exports.ScaleNone = ScaleNone;
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12129,7 +12372,7 @@ exports.pixiAppWrapperEvent = {
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12163,7 +12406,7 @@ exports.Dom = Dom;
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12209,7 +12452,7 @@ exports.StorageController = StorageController;
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12225,11 +12468,11 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var gsap_1 = __webpack_require__(7);
+var gsap_1 = __webpack_require__(4);
 var StageController_1 = __webpack_require__(3);
 var GameSettings_1 = __webpack_require__(1);
 var EntryPoint_1 = __webpack_require__(0);
-var BaseGame_1 = __webpack_require__(45);
+var BaseGame_1 = __webpack_require__(47);
 var LoaderStage = (function (_super) {
     __extends(LoaderStage, _super);
     function LoaderStage() {
@@ -12255,10 +12498,13 @@ var LoaderStage = (function (_super) {
         this._loadingSprite.anchor.set(0.5, 0.5);
         this._loadingSprite.name = "LoadingSprite";
         this.addChild(this._loadingSprite);
-        this._loadingProgressText = new PIXI.Text("", {});
+        this._loadingText = new PIXI.Text("Loader Scene", {});
+        this._loadingText.anchor.set(0.5, 0.5);
+        this._loadingText.position.set(390, 640);
+        this.addChild(this._loadingText);
+        this._loadingProgressText = new PIXI.Text("", GameSettings_1.DefaultTextStyle);
         this._loadingProgressText.anchor.set(0.5, 0.5);
-        this._loadingProgressText.position.set(390, 640);
-        this._loadingProgressText.visible = true;
+        this._loadingProgressText.position.set(385, 700);
         this.addChild(this._loadingProgressText);
         this.loadingAnimation();
     };
@@ -12273,10 +12519,11 @@ var LoaderStage = (function (_super) {
     };
     LoaderStage.prototype.clickAndStartGame = function () {
         var _this = this;
-        this._startGameText = new PIXI.Text("TAP ANYWHERE TO START", GameSettings_1.DefaultTextStyle);
+        var text = "TAP ANYWHERE TO START";
+        this._startGameText = new PIXI.Text(text, GameSettings_1.DefaultTextStyle);
         this._startGameText.anchor.set(0.5, 0.5);
         this._startGameText.scale.set(0.9, 0.9);
-        this._startGameText.position.set(390, 1150);
+        this._startGameText.position.set(374, 1150);
         this.addChild(this._startGameText);
         this._backgroundImageDefault.buttonMode = true;
         this._backgroundImageDefault.interactive = true;
@@ -12286,8 +12533,7 @@ var LoaderStage = (function (_super) {
         });
     };
     LoaderStage.prototype.progressUpdate = function (value) {
-        this._loadingProgressText.text =
-            "Loader Stage\n    Loading\n       " + value.toFixed(0);
+        this._loadingProgressText.text = value.toFixed(0);
     };
     LoaderStage.prototype.killScene = function () { };
     return LoaderStage;
@@ -12296,7 +12542,7 @@ exports.LoaderStage = LoaderStage;
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12312,9 +12558,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var eventemitter3_1 = __webpack_require__(5);
-var PriorityQueue_1 = __webpack_require__(40);
-__webpack_require__(43);
+var eventemitter3_1 = __webpack_require__(6);
+var PriorityQueue_1 = __webpack_require__(42);
+__webpack_require__(45);
 var PixiAssetsLoader = (function (_super) {
     __extends(PixiAssetsLoader, _super);
     function PixiAssetsLoader(pixiLoader) {
@@ -12514,14 +12760,14 @@ exports.PixiAssetsLoader = PixiAssetsLoader;
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var util = __webpack_require__(4);
-var Heap_1 = __webpack_require__(41);
+var util = __webpack_require__(5);
+var Heap_1 = __webpack_require__(43);
 var PriorityQueue = (function () {
     function PriorityQueue(compareFunction) {
         this.heap = new Heap_1.default(util.reverseCompareFunction(compareFunction));
@@ -12564,14 +12810,14 @@ exports.default = PriorityQueue;
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var collections = __webpack_require__(4);
-var arrays = __webpack_require__(42);
+var collections = __webpack_require__(5);
+var arrays = __webpack_require__(44);
 var Heap = (function () {
     function Heap(compareFunction) {
         this.data = [];
@@ -12670,13 +12916,13 @@ exports.default = Heap;
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var util = __webpack_require__(4);
+var util = __webpack_require__(5);
 function indexOf(array, item, equalsFunction) {
     var equals = equalsFunction || util.defaultEquals;
     var length = array.length;
@@ -12768,7 +13014,7 @@ exports.forEach = forEach;
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -15727,7 +15973,7 @@ exports.forEach = forEach;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15764,99 +16010,6 @@ exports.AssetPriority = AssetPriority;
 
 
 /***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var AnimationsController_1 = __webpack_require__(46);
-var UserInterfaceController_1 = __webpack_require__(49);
-var EntryPoint_1 = __webpack_require__(0);
-var GridController_1 = __webpack_require__(52);
-var StageController_1 = __webpack_require__(3);
-var BaseGame = (function (_super) {
-    __extends(BaseGame, _super);
-    function BaseGame() {
-        var _this = _super.call(this) || this;
-        _this._game = EntryPoint_1.EmreBase.EntryPoint.instance;
-        return _this;
-    }
-    BaseGame.prototype.awake = function () {
-        this._userInterfaceController = new UserInterfaceController_1.UserInterfaceController();
-        this.addChild(this._userInterfaceController);
-        this._animationController = new AnimationsController_1.AnimationsController();
-        this.addChild(this._animationController);
-        this._gridController = new GridController_1.GridController();
-        this.addChild(this._gridController);
-        this._game.sound.play("theme", 1, true);
-        this.eventListener();
-    };
-    BaseGame.prototype.eventListener = function () {
-        this._userInterfaceController.on("actiontaken", this.onControlEventHandler, this);
-    };
-    BaseGame.prototype.onControlEventHandler = function (action, value) {
-        switch (action) {
-            case "UI1":
-                this._game.sound.play("click", 1, false);
-                break;
-            case "UI2":
-                this._game.sound.play("click", 1, false);
-                break;
-        }
-    };
-    BaseGame.prototype.killScene = function () {
-    };
-    return BaseGame;
-}(StageController_1.Scene));
-exports.BaseGame = BaseGame;
-
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Animations_1 = __webpack_require__(47);
-var AnimationsController = (function (_super) {
-    __extends(AnimationsController, _super);
-    function AnimationsController() {
-        var _this = _super.call(this) || this;
-        _this.awake();
-        return _this;
-    }
-    AnimationsController.prototype.awake = function () {
-        this._animatios = new Animations_1.Animations();
-        this.addChild(this._animatios);
-    };
-    return AnimationsController;
-}(PIXI.Container));
-exports.AnimationsController = AnimationsController;
-
-
-/***/ }),
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15873,39 +16026,108 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(48);
+var AnimationsController_1 = __webpack_require__(48);
+var UserInterfaceController_1 = __webpack_require__(50);
 var EntryPoint_1 = __webpack_require__(0);
-var BoyAnimations;
-(function (BoyAnimations) {
-    BoyAnimations["Walk"] = "walk";
-    BoyAnimations["Jump"] = "jump";
-})(BoyAnimations || (BoyAnimations = {}));
-var Animations = (function (_super) {
-    __extends(Animations, _super);
-    function Animations() {
+var GridController_1 = __webpack_require__(53);
+var StageController_1 = __webpack_require__(3);
+var Animations_1 = __webpack_require__(10);
+var GameResultPopup_1 = __webpack_require__(55);
+var BaseGame = (function (_super) {
+    __extends(BaseGame, _super);
+    function BaseGame() {
         var _this = _super.call(this) || this;
         _this._game = EntryPoint_1.EmreBase.EntryPoint.instance;
-        _this.awake();
         return _this;
     }
-    Animations.prototype.awake = function () {
-        this._spineBoyAnim = new PIXI.spine.Spine(this._game.resource.loader.resources.spine.spineData);
-        this._spineBoyAnim.scale.set(0.5, 0.5);
-        this._spineBoyAnim.state.timeScale = 1;
-        this._spineBoyAnim.position.set(137, 215);
-        this._spineBoyAnim.stateData.setMix(BoyAnimations.Walk, BoyAnimations.Walk, 0.01);
-        this._spineBoyAnim.stateData.setMix(BoyAnimations.Walk, BoyAnimations.Jump, 0.1);
-        this._spineBoyAnim.stateData.setMix(BoyAnimations.Jump, BoyAnimations.Walk, 0.1);
-        this._spineBoyAnim.state.setAnimation(0, BoyAnimations.Walk, true);
-        this.addChild(this._spineBoyAnim);
+    BaseGame.prototype.awake = function () {
+        this._uiController = new UserInterfaceController_1.UserInterfaceController();
+        this.addChild(this._uiController);
+        this._animationController = new AnimationsController_1.AnimationsController();
+        this.addChild(this._animationController);
+        this._gridController = new GridController_1.GridController();
+        this.addChild(this._gridController);
+        this._gameResult = new GameResultPopup_1.GameResultPopup();
+        this.addChild(this._gameResult);
+        this._game.sound.play("theme", 1, true);
+        this.eventListener();
     };
-    return Animations;
-}(PIXI.Container));
-exports.Animations = Animations;
+    BaseGame.prototype.eventListener = function () {
+        this._uiController.on("actiontaken", this.onControlEventHandler, this);
+        this._gridController.on("animationstatus", this.onGridEventHandler, this);
+        this._gameResult.on("actiontaken", this.onGameResultEventHandler, this);
+    };
+    BaseGame.prototype.onControlEventHandler = function (action, value) {
+        switch (action) {
+            case "bla":
+                this._game.sound.play("collect", 1, false);
+                break;
+            case "bla":
+                this._game.sound.play("collect", 1, false);
+                break;
+        }
+    };
+    BaseGame.prototype.onGameResultEventHandler = function (action, value) {
+        switch (action) {
+            case "restartGame":
+                break;
+        }
+    };
+    BaseGame.prototype.onGridEventHandler = function (action) {
+        switch (action) {
+            case "match":
+                this._animationController.setCharacterAnimation(Animations_1.BoyAnimations.Jump);
+                this._game.sound.play("explode", 1, true);
+                break;
+        }
+    };
+    BaseGame.prototype.killScene = function () {
+    };
+    return BaseGame;
+}(StageController_1.Scene));
+exports.BaseGame = BaseGame;
 
 
 /***/ }),
 /* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Animations_1 = __webpack_require__(10);
+var AnimationsController = (function (_super) {
+    __extends(AnimationsController, _super);
+    function AnimationsController() {
+        var _this = _super.call(this) || this;
+        _this.awake();
+        return _this;
+    }
+    AnimationsController.prototype.awake = function () {
+        this._animatios = new Animations_1.Animations();
+        this.addChild(this._animatios);
+    };
+    AnimationsController.prototype.setCharacterAnimation = function (anim, loop) {
+        if (loop === void 0) { loop = false; }
+        this._animatios.boyAnimation.state.setAnimation(0, anim, loop);
+    };
+    return AnimationsController;
+}(PIXI.Container));
+exports.AnimationsController = AnimationsController;
+
+
+/***/ }),
+/* 49 */
 /***/ (function(module, exports) {
 
 var __extends = (this && this.__extends) || (function () {
@@ -23131,44 +23353,6 @@ var pixi_spine;
 
 
 /***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var UserInterface_1 = __webpack_require__(50);
-var UserInterfaceController = (function (_super) {
-    __extends(UserInterfaceController, _super);
-    function UserInterfaceController() {
-        var _this = _super.call(this) || this;
-        _this.awake();
-        return _this;
-    }
-    UserInterfaceController.prototype.awake = function () {
-        this._userInterface = new UserInterface_1.UserInterface();
-        this._userInterface.on("actiontaken", this.onInterfaceHandler, this);
-        this.addChild(this._userInterface);
-    };
-    UserInterfaceController.prototype.onInterfaceHandler = function (action, type) {
-        this.emit("actiontaken", action);
-    };
-    return UserInterfaceController;
-}(PIXI.Container));
-exports.UserInterfaceController = UserInterfaceController;
-
-
-/***/ }),
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23185,7 +23369,70 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SimpleSprite2D_1 = __webpack_require__(51);
+var GameSettings_1 = __webpack_require__(1);
+var UserInterface_1 = __webpack_require__(51);
+var UserInterfaceController = (function (_super) {
+    __extends(UserInterfaceController, _super);
+    function UserInterfaceController() {
+        var _this = _super.call(this) || this;
+        _this._goal = [];
+        _this.awake();
+        return _this;
+    }
+    UserInterfaceController.prototype.awake = function () {
+        var _this = this;
+        this.setGoals(GameSettings_1.GoalRules);
+        this._userInterface = new UserInterface_1.UserInterface();
+        this._userInterface.on("actiontaken", this.onInterfaceHandler, this);
+        this.addChild(this._userInterface);
+        setTimeout(function () {
+            _this.updateGoals("solid1", 3);
+        }, 500);
+    };
+    UserInterfaceController.prototype.onInterfaceHandler = function (action) {
+        this.emit("actiontaken", action);
+    };
+    UserInterfaceController.prototype.setMoves = function (value) {
+        this._moves = value;
+    };
+    UserInterfaceController.prototype.decreaseMoves = function () {
+        this._moves--;
+        this._userInterface.setMoves(this._moves);
+    };
+    UserInterfaceController.prototype.setGoals = function (value) {
+        this._goal = value;
+    };
+    UserInterfaceController.prototype.updateGoals = function (symbol, count) {
+        console.log("Goal", this._goal);
+        var result = this._goal.filter(function (elem) {
+            return elem.symbol === symbol;
+        });
+        console.log(result);
+        console.log("new Goals", this._goal);
+    };
+    return UserInterfaceController;
+}(PIXI.Container));
+exports.UserInterfaceController = UserInterfaceController;
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var SimpleSprite2D_1 = __webpack_require__(52);
 var GameSettings_1 = __webpack_require__(1);
 var UserInterface = (function (_super) {
     __extends(UserInterface, _super);
@@ -23224,6 +23471,9 @@ var UserInterface = (function (_super) {
             this._goalDesc[i].text = count[i].toString();
         }
     };
+    UserInterface.prototype.setMoves = function (value) {
+        this._moveText.text = value.toString();
+    };
     UserInterface.prototype.clearGoalProp = function () {
         for (var i = 0; i < this._goalImage.length; i++) {
             this._goalImage[i].texture = PIXI.Texture.WHITE;
@@ -23245,7 +23495,7 @@ exports.UserInterface = UserInterface;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23289,59 +23539,6 @@ exports.SimpleSprite2D = SimpleSprite2D;
 
 
 /***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Grid_1 = __webpack_require__(53);
-var GameSettings_1 = __webpack_require__(1);
-var GridController = (function (_super) {
-    __extends(GridController, _super);
-    function GridController() {
-        var _this = _super.call(this) || this;
-        _this._clusters = [];
-        _this._currentSequence = [];
-        _this.awake();
-        return _this;
-    }
-    GridController.prototype.awake = function () {
-        this._currentSequence = GameSettings_1.INITIAL_SEQ;
-        this._grid = new Grid_1.Grid(GameSettings_1.INITIAL_SEQ);
-        this.addChild(this._grid);
-        this._grid.on("animationstatus", this.onGridHandler, this);
-        this._grid.createGrid(GameSettings_1.GameProperty.colums, GameSettings_1.GameProperty.row);
-        this.updateCurrentSequence();
-    };
-    GridController.prototype.onGridHandler = function (index, button) {
-        console.log("ongrid");
-        this.getMatches();
-    };
-    GridController.prototype.updateCurrentSequence = function () {
-        for (var i = 0; i < 9; i++) {
-            for (var j = 0; j < 9; j++) {
-                this._currentSequence[i][j] = this._grid.symbol[j][i].type;
-            }
-        }
-    };
-    GridController.prototype.getMatches = function () { };
-    return GridController;
-}(PIXI.Container));
-exports.GridController = GridController;
-
-
-/***/ }),
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23358,8 +23555,121 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SimpleButton2D_1 = __webpack_require__(54);
-var gsap_1 = __webpack_require__(7);
+var Grid_1 = __webpack_require__(54);
+var GameSettings_1 = __webpack_require__(1);
+var GridController = (function (_super) {
+    __extends(GridController, _super);
+    function GridController() {
+        var _this = _super.call(this) || this;
+        _this._clusters = [];
+        _this._currentSequence = [];
+        _this.awake();
+        return _this;
+    }
+    GridController.prototype.awake = function () {
+        this._currentSequence = GameSettings_1.InitialSequence;
+        this._grid = new Grid_1.Grid(GameSettings_1.InitialSequence);
+        this.addChild(this._grid);
+        this._grid.on("animationstatus", this.onGridHandler, this);
+        this._grid.createGrid(GameSettings_1.GameProperty.colums, GameSettings_1.GameProperty.row);
+        this.updateCurrentSequence();
+    };
+    GridController.prototype.onGridHandler = function (index, button) {
+        this.getMatches();
+    };
+    GridController.prototype.updateCurrentSequence = function () {
+        for (var i = 0; i < 9; i++) {
+            for (var j = 0; j < 9; j++) {
+                this._currentSequence[i][j] = this._grid.symbol[j][i].type;
+            }
+        }
+    };
+    GridController.prototype.getMatches = function () {
+        this._clusters = [];
+        for (var j = 0; j < 9; j++) {
+            var matchlength = 1;
+            for (var i = 0; i < 9; i++) {
+                var checkcluster = false;
+                if (i == 9 - 1) {
+                    checkcluster = true;
+                }
+                else {
+                    if (this._currentSequence[i][j] == this._currentSequence[i + 1][j] &&
+                        this._currentSequence[i][j] != "") {
+                        matchlength += 1;
+                    }
+                    else {
+                        checkcluster = true;
+                    }
+                }
+                if (checkcluster) {
+                    if (matchlength >= 2) {
+                        this._clusters.push({
+                            column: i + 1 - matchlength,
+                            row: j,
+                            length: matchlength,
+                            horizontal: true,
+                        });
+                    }
+                    matchlength = 1;
+                }
+            }
+        }
+        for (var i = 0; i < 9; i++) {
+            var matchlength = 1;
+            for (var j = 0; j < 9; j++) {
+                var checkcluster = false;
+                if (j == 9 - 1) {
+                    checkcluster = true;
+                }
+                else {
+                    if (this._currentSequence[i][j] == this._currentSequence[i][j + 1] &&
+                        this._currentSequence[i][j] != "") {
+                        matchlength += 1;
+                    }
+                    else {
+                        checkcluster = true;
+                    }
+                }
+                if (checkcluster) {
+                    if (matchlength >= 2) {
+                        this._clusters.push({
+                            column: i,
+                            row: j + 1 - matchlength,
+                            length: matchlength,
+                            horizontal: false,
+                        });
+                    }
+                    matchlength = 1;
+                }
+            }
+        }
+        console.log("sonuc", this._clusters);
+    };
+    return GridController;
+}(PIXI.Container));
+exports.GridController = GridController;
+
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var SimpleButton2D_1 = __webpack_require__(11);
+var gsap_1 = __webpack_require__(4);
 var Grid = (function (_super) {
     __extends(Grid, _super);
     function Grid(sequence) {
@@ -23382,6 +23692,7 @@ var Grid = (function (_super) {
             for (var j = 0; j < row; j++) {
                 this._symbol[i][j] = new SimpleButton2D_1.SimpleButton2D(this.sequence[j][i], { x: 80 + i * 75, y: 360 + j * 90 }, this.onButtonClick.bind(this, [i, j]));
                 this._symbol[i][j].type = this.sequence[j][i];
+                this._symbol[i][j].shift = 0;
                 this._symbol[i][j].anchor.set(0.5, 0.5);
                 this._symbol[i][j].scale.set(0.75, 0.75);
                 this._gridContainer.addChild(this._symbol[i][j]);
@@ -23459,154 +23770,6 @@ exports.Grid = Grid;
 
 
 /***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var SimpleButton2D = (function (_super) {
-    __extends(SimpleButton2D, _super);
-    function SimpleButton2D(frame, position, callback, name) {
-        var _this = _super.call(this, PIXI.Texture.from(frame + "_normal")) || this;
-        _this._isDown = false;
-        _this._isOver = false;
-        _this._isEnabled = true;
-        _this._normalFrame = frame + "_normal";
-        _this._overFrame = frame + "_over";
-        _this._downFrame = frame + "_down";
-        _this._disabledFrame = frame + "_disabled";
-        _this._callback = callback;
-        _this.position.set(position.x, position.y);
-        _this.interactive = true;
-        _this.buttonMode = true;
-        _this.name = name || "";
-        _this.on("pointerdown", _this.onPointerDown, _this);
-        _this.on("pointerover", _this.onPointerOver, _this);
-        _this.on("pointerout", _this.onPointerOut, _this);
-        _this.on("pointerup", _this.onPointerUp, _this);
-        return _this;
-    }
-    SimpleButton2D.prototype.onPointerDown = function (e) {
-        this.isDown = true;
-        this.texture = PIXI.Texture.from(this._downFrame);
-        this._callback(this);
-    };
-    SimpleButton2D.prototype.onPointerUp = function (e) {
-        this.isDown = false;
-        if (this.isOver) {
-            this.texture = PIXI.Texture.from(this._overFrame);
-        }
-        else {
-            this.texture = PIXI.Texture.from(this._normalFrame);
-        }
-    };
-    SimpleButton2D.prototype.onPointerOver = function (e) {
-        this.isOver = true;
-        if (this.isDown) {
-            return;
-        }
-        this.texture = PIXI.Texture.from(this._overFrame);
-    };
-    SimpleButton2D.prototype.onPointerOut = function (e) {
-        this.isOver = false;
-        if (this.isDown) {
-            return;
-        }
-        this.texture = PIXI.Texture.from(this._normalFrame);
-    };
-    SimpleButton2D.prototype.setDisabled = function () {
-        this.buttonMode = false;
-        this.interactive = false;
-        this.texture = PIXI.Texture.from(this._disabledFrame);
-    };
-    SimpleButton2D.prototype.setTexture = function (frame, currentFrame, name) {
-        this._normalFrame = frame + "_normal";
-        this._overFrame = frame + "_over";
-        this._downFrame = frame + "_down";
-        this._disabledFrame = frame + "_disabled";
-        this.name = name;
-        if (currentFrame != null || currentFrame != "")
-            this._texture = PIXI.Texture.from(currentFrame);
-    };
-    SimpleButton2D.prototype.setEnabled = function () {
-        this.buttonMode = true;
-        this.interactive = true;
-    };
-    Object.defineProperty(SimpleButton2D.prototype, "isDown", {
-        get: function () {
-            return this._isDown;
-        },
-        set: function (value) {
-            if (value != this._isDown)
-                this._isDown = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SimpleButton2D.prototype, "isOver", {
-        get: function () {
-            return this._isOver;
-        },
-        set: function (value) {
-            if (value != this._isOver)
-                this._isOver = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SimpleButton2D.prototype, "Interactive", {
-        get: function () {
-            return this.interactive;
-        },
-        set: function (value) {
-            this.interactive = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SimpleButton2D.prototype, "isEnabled", {
-        get: function () {
-            return this._isEnabled;
-        },
-        set: function (value) {
-            if (!value) {
-                this.setDisabled();
-            }
-            else {
-                this.setEnabled();
-            }
-            this._isEnabled = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SimpleButton2D.prototype, "ButtonMode", {
-        get: function () {
-            return this.buttonMode;
-        },
-        set: function (value) {
-            this.buttonMode = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return SimpleButton2D;
-}(PIXI.Sprite));
-exports.SimpleButton2D = SimpleButton2D;
-
-
-/***/ }),
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23623,8 +23786,98 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var gsap_1 = __webpack_require__(4);
+var SimpleButton2D_1 = __webpack_require__(11);
+var GameResultPopup = (function (_super) {
+    __extends(GameResultPopup, _super);
+    function GameResultPopup() {
+        var _this = _super.call(this) || this;
+        _this.interactive = true;
+        _this.awake();
+        return _this;
+    }
+    GameResultPopup.prototype.awake = function () {
+        var _this = this;
+        this._popupContainer = new PIXI.Container();
+        this._popupContainer.visible = false;
+        this.addChild(this._popupContainer);
+        var popup = new PIXI.Graphics()
+            .beginFill(0xcecece, 0.9)
+            .drawRect(375, 683, 650, 500)
+            .endFill();
+        popup.pivot.set(popup.width / 2, popup.height / 2);
+        this._popupContainer.addChild(popup);
+        this._resultText = new PIXI.Text("", {
+            fontFamily: "Topaz-8-remake",
+            fontSize: 50,
+            fill: "#1f140a",
+            align: "center",
+            stroke: "#cecece",
+            strokeThickness: 3,
+        });
+        this._resultText.position.set(550, 745);
+        popup.addChild(this._resultText);
+        this._restartButton = new SimpleButton2D_1.SimpleButton2D("restart", { x: 605, y: 860 }, function () {
+            _this.emit("actiontaken", "restartGame");
+        });
+        this._restartButton.scale.set(0.4);
+        this._restartButton.setDisabled();
+        popup.addChild(this._restartButton);
+    };
+    GameResultPopup.prototype.showResult = function (isWin) {
+        var _this = this;
+        this._popupContainer.position.y = -960;
+        this._popupContainer.visible = true;
+        switch (isWin) {
+            case true:
+                this._resultText.text = "You Win";
+                break;
+            case false:
+                this._resultText.text = "You Lose";
+                break;
+        }
+        gsap_1.TweenLite.to(this._popupContainer.position, 1.5, {
+            y: 0,
+            ease: gsap_1.Bounce.easeOut,
+            onComplete: function () {
+                _this._restartButton.setEnabled();
+            },
+        });
+    };
+    GameResultPopup.prototype.hideResult = function () {
+        var _this = this;
+        gsap_1.TweenLite.to(this._popupContainer.position, 0.75, {
+            y: -960,
+            ease: gsap_1.Sine.easeOut,
+            onComplete: function () {
+                _this._restartButton.setDisabled();
+            },
+        });
+    };
+    return GameResultPopup;
+}(PIXI.Container));
+exports.GameResultPopup = GameResultPopup;
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var pixi_assets_loader_1 = __webpack_require__(9);
-var SoundController_1 = __webpack_require__(56);
+var SoundController_1 = __webpack_require__(57);
 var EntryPoint_1 = __webpack_require__(0);
 var GameSettings_1 = __webpack_require__(1);
 var ResourceController = (function (_super) {
@@ -23654,7 +23907,7 @@ var ResourceController = (function (_super) {
     };
     ResourceController.prototype.loadAssets = function () {
         var _this = this;
-        GameSettings_1.assets.forEach(function (asset) {
+        GameSettings_1.AssetsList.forEach(function (asset) {
             if (!_this._assetsCount[asset.priority]) {
                 _this._assetsCount[asset.priority] = { total: 1, progress: 0 };
             }
@@ -23663,12 +23916,12 @@ var ResourceController = (function (_super) {
             }
         });
         this._loadingProgress = 0;
-        this._totalAssets = GameSettings_1.assets.length;
+        this._totalAssets = GameSettings_1.AssetsList.length;
         this._loader = new pixi_assets_loader_1.PixiAssetsLoader();
         this._loader.on(pixi_assets_loader_1.PixiAssetsLoader.PRIORITY_GROUP_LOADED, this.onAssetsLoaded.bind(this));
         this._loader.on(pixi_assets_loader_1.PixiAssetsLoader.PRIORITY_GROUP_PROGRESS, this.onAssetsProgress.bind(this));
         this._loader.on(pixi_assets_loader_1.PixiAssetsLoader.ASSET_ERROR, this.onAssetsError.bind(this));
-        this._loader.addAssets(GameSettings_1.assets).load();
+        this._loader.addAssets(GameSettings_1.AssetsList).load();
     };
     ResourceController.prototype.onAssetsProgress = function (args) {
         var percentFactor = this._assetsCount[args.priority].total / this._totalAssets;
@@ -23740,7 +23993,7 @@ exports.ResourceController = ResourceController;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

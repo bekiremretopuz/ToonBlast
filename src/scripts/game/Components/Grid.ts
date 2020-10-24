@@ -79,11 +79,6 @@ export class Grid extends PIXI.Container {
   }
 
   private createSymbol(column: number, row: number, symbolName: string): void {
-    this._symbol.sort((x: any, y: any) => {
-      console.log(x, y);
-      return -1;
-      //return x == first ? -1 : y == first ? 1 : 0;
-    });
     this._symbol[column][row].type = symbolName;
     const name = symbolName + "_normal";
     this._symbol[column][row].texture = PIXI.Texture.from(name);

@@ -70,8 +70,12 @@ export class LoaderStage extends Scene {
     this._backgroundImageDefault.buttonMode = true;
     this._backgroundImageDefault.interactive = true;
     this._backgroundImageDefault.once("pointerdown", () => {
-      this._game.stageManager.createScene("BaseGame", new BaseGame());
-      this._game.stageManager.goToScene("BaseGame", true);
+      fetch("assets/config/config.json")
+        .then((res) => res.json())
+        .then((out) => {
+          this._game.stageManager.createScene("BaseGame", new BaseGame(out));
+          this._game.stageManager.goToScene("BaseGame", true);
+        });
     });
   }
 

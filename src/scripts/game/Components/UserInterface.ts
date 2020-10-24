@@ -6,8 +6,7 @@ export class UserInterface extends PIXI.Container {
   private _backgroundImage: SimpleSprite2D;
   private _moveText: Text;
   private _goalDesc: Text[] = [];
-  private _goalImage: SimpleSprite2D[] = [];
-  private _btn: SimpleButton2D;
+  private _goalImage: SimpleSprite2D[] = []; 
   constructor() {
     super();
     this.awake();
@@ -18,10 +17,6 @@ export class UserInterface extends PIXI.Container {
     this._backgroundImage = new SimpleSprite2D("background", { x: 0, y: 0 });
     this._backgroundImage.name = "BackgroundImage";
     this.addChild(this._backgroundImage);
-    //Hud Control
-    // this._btn = new SimpleButton2D("solid1", { x: 90, y: 650 }, this.onButtonUp.bind(this), "UI1");
-    // this._btn.anchor.set(0.5, 0.5);
-    // this.addChild(this._btn);
     //Move Text
     this._moveText = new PIXI.Text("27", DefaultTextStyle);
     this._moveText.position.set(620, 80);
@@ -40,18 +35,18 @@ export class UserInterface extends PIXI.Container {
       this._goalDesc[i].scale.set(0.9);
       this._goalImage[i].addChild(this._goalDesc[i]);
     }
-    this.setGoal(
-      ["solid1_normal", "solid2_normal", "solid3_normal"],
-      [5, 10, 16]
-    );
   }
 
-  public setGoal(solid: string[], count: number[]): void {
-    this.clearGoalProp();
-    for (let i = 0; i < solid.length; i++) {
-      this._goalImage[i].texture = PIXI.Texture.from(solid[i]);
-      this._goalDesc[i].text = count[i].toString();
+  public setGoal(value:{ symbol: string; count: number }[]): void {
+    //this.clearGoalProp();
+    for (let i = 0; i < value.length; i++) {
+      this._goalImage[i].texture = PIXI.Texture.from(value[i].symbol + "_normal");
+      this._goalDesc[i].text = value[i].count.toString();
     }
+  }
+
+  public setMoves(value: number): void {
+    this._moveText.text = value.toString();
   }
 
   private clearGoalProp(): void {

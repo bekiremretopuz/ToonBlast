@@ -11,20 +11,20 @@ export class BaseGame extends Scene {
   private _uiController: UserInterfaceController;
   private _gridController: GridController;
   private _gameResult: GameResultPopup;
-  constructor() {
+  constructor(private readonly gameSettings: any) {
     super();
     this._game = EmreBase.EntryPoint.instance;
   }
 
   public awake(): void {
     //Interface control initiliaze
-    this._uiController = new UserInterfaceController();
+    this._uiController = new UserInterfaceController(this.gameSettings);
     this.addChild(this._uiController);
     //Animation control initiliaze
     this._animationController = new AnimationsController();
     this.addChild(this._animationController);
     //Grid initiliaze
-    this._gridController = new GridController();
+    this._gridController = new GridController(this.gameSettings);
     this.addChild(this._gridController);
     //Game result initiliaze
     this._gameResult = new GameResultPopup();

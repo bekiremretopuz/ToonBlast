@@ -1,6 +1,5 @@
 import { Grid } from "src/scripts/game/Components/Grid";
 import { SimpleButton2D } from "src/scripts/core/Parts/SimpleButton2D";
-import { GameProperty, InitialSequence } from "src/scripts/core/GameSettings";
 type clusterType = {
   column: number;
   row: number;
@@ -11,18 +10,30 @@ export class GridController extends PIXI.Container {
   private _grid: Grid;
   private _clusters: clusterType[] = [];
   private _currentSequence: string[][] = [];
-  constructor() {
+  constructor(private readonly gameSettings: any) {
     super();
     this.awake();
   }
 
   private awake(): void {
-    this._currentSequence = InitialSequence;
-    this._grid = new Grid(InitialSequence);
+    this._currentSequence = this.gameSettings.Levels[0].initialSeqeunce;
+    this._grid = new Grid(this._currentSequence);
     this.addChild(this._grid);
     this._grid.on("animationstatus", this.onGridHandler, this);
-    this._grid.createGrid(GameProperty.colums, GameProperty.row);
+    this._grid.createGrid(
+      this.gameSettings.Levels[0].column,
+      this.gameSettings.Levels[0].row
+    );
     this.updateCurrentSequence();
+  }
+
+  private updateCurrentSequence(): void {
+    for (let i = 0; i < 9; i++) {
+      this._currentSequence[i] = [];
+      for (let j = 0; j < 9; j++) {
+        this._currentSequence[i][j] = this._grid.symbol[j][i].type;
+      }
+    }
   }
 
   private onGridHandler(index: number[], button: SimpleButton2D): void {
@@ -45,14 +56,6 @@ export class GridController extends PIXI.Container {
     //  this._grid.rotateAnimation(button);
     //}
     // }
-  }
-
-  private updateCurrentSequence(): void {
-    for (let i = 0; i < 9; i++) {
-      for (let j = 0; j < 9; j++) {
-        this._currentSequence[i][j] = this._grid.symbol[j][i].type;
-      }
-    }
   }
 
   private getMatches() {
