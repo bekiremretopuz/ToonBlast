@@ -192,3 +192,52 @@ export const AssetsList = [
     type: "sound",
   } as Asset,
 ];
+
+export const particleConfig = {
+  alpha: {
+    start: 1,
+    end: 0.1,
+  },
+  scale: {
+    start: 0.25,
+    end: 0.1,
+    minimumScaleMultiplier: 1,
+  },
+  color: {
+    start: "#ffffff",
+    end: "#fffffff",
+  },
+  speed: {
+    start: 50,
+    end: 500,
+    minimumSpeedMultiplier: 1,
+  },
+  acceleration: {
+    x: 0,
+    y: 190,
+  },
+  maxSpeed: 0,
+  startRotation: {
+    min: 230,
+    max: 310,
+  },
+  noRotation: false,
+  rotationSpeed: {
+    min: 0,
+    max: 0,
+  },
+  lifetime: {
+    min: 1.5,
+    max: 1.5,
+  },
+  blendMode: "normal",
+  frequency: 0.01,
+  emitterLifetime: 1,
+  maxParticles: 5,
+  pos: {
+    x: 0,
+    y: 0,
+  },
+  addAtBack: false,
+  spawnType: "point",
+};

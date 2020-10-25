@@ -74,7 +74,7 @@ var DisplayController_1 = __webpack_require__(18);
 var StorageController_1 = __webpack_require__(39);
 var StageController_1 = __webpack_require__(2);
 var LoaderStage_1 = __webpack_require__(40);
-var ResourceController_1 = __webpack_require__(57);
+var ResourceController_1 = __webpack_require__(58);
 var EmreBase;
 (function (EmreBase) {
     var EntryPoint = (function () {
@@ -15926,8 +15926,8 @@ var EntryPoint_1 = __webpack_require__(0);
 var GridController_1 = __webpack_require__(53);
 var StageController_1 = __webpack_require__(2);
 var Animations_1 = __webpack_require__(10);
-var GameResultPopup_1 = __webpack_require__(55);
-var Data_1 = __webpack_require__(56);
+var GameResultPopup_1 = __webpack_require__(56);
+var Data_1 = __webpack_require__(57);
 var BaseGame = (function (_super) {
     __extends(BaseGame, _super);
     function BaseGame(gameSettings) {
@@ -23451,6 +23451,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Grid_1 = __webpack_require__(54);
+var FindMatch_1 = __webpack_require__(55);
 var GridController = (function (_super) {
     __extends(GridController, _super);
     function GridController(gameSettings, level) {
@@ -23478,70 +23479,30 @@ var GridController = (function (_super) {
             }
         }
     };
-    GridController.prototype.onGridHandler = function (index, button) {
-        this.getMatches();
+    GridController.prototype.isItemInArray = function (arr, val) {
+        var locations = [];
+        for (var i = 0; i < arr.length; i++) {
+            for (var j = 0; j < arr[i].length; j++) {
+                if (arr[i][j] == val) {
+                    locations.push([i, j]);
+                }
+            }
+        }
+        return locations;
     };
-    GridController.prototype.getMatches = function () {
+    GridController.prototype.onGridHandler = function (index, button) {
         this._clusters = [];
-        for (var j = 0; j < 9; j++) {
-            var matchlength = 1;
-            for (var i = 0; i < 9; i++) {
-                var checkcluster = false;
-                if (i == 9 - 1) {
-                    checkcluster = true;
-                }
-                else {
-                    if (this._currentSequence[i][j] == this._currentSequence[i + 1][j] &&
-                        this._currentSequence[i][j] != "") {
-                        matchlength += 1;
-                    }
-                    else {
-                        checkcluster = true;
-                    }
-                }
-                if (checkcluster) {
-                    if (matchlength >= 2) {
-                        this._clusters.push({
-                            column: i + 1 - matchlength,
-                            row: j,
-                            length: matchlength,
-                            horizontal: true,
-                        });
-                    }
-                    matchlength = 1;
-                }
+        this._clusters = new FindMatch_1.FindMatch().getResult(this._grid.symbol);
+        var explodeType = this._clusters[index[1]][index[0]];
+        var allSymbols = this.isItemInArray(this._clusters, explodeType);
+        if (allSymbols.length >= 2) {
+            for (var i = 0; i < allSymbols.length; i++) {
+                this._grid.matchAnimation(allSymbols[i][1], allSymbols[i][0]);
             }
         }
-        for (var i = 0; i < 9; i++) {
-            var matchlength = 1;
-            for (var j = 0; j < 9; j++) {
-                var checkcluster = false;
-                if (j == 9 - 1) {
-                    checkcluster = true;
-                }
-                else {
-                    if (this._currentSequence[i][j] == this._currentSequence[i][j + 1] &&
-                        this._currentSequence[i][j] != "") {
-                        matchlength += 1;
-                    }
-                    else {
-                        checkcluster = true;
-                    }
-                }
-                if (checkcluster) {
-                    if (matchlength >= 2) {
-                        this._clusters.push({
-                            column: i,
-                            row: j + 1 - matchlength,
-                            length: matchlength,
-                            horizontal: false,
-                        });
-                    }
-                    matchlength = 1;
-                }
-            }
+        else {
+            this._grid.rotateAnimation(button);
         }
-        console.log("RESULT:", this._clusters);
     };
     return GridController;
 }(PIXI.Container));
@@ -23588,7 +23549,18 @@ var Grid = (function (_super) {
             this._symbol[i] = [];
             for (var j = 0; j < row; j++) {
                 this._symbol[i][j] = new SimpleButton2D_1.SimpleButton2D(this.sequence[j][i], { x: 80 + i * 75, y: 360 + j * 90 }, this.onButtonClick.bind(this, [i, j]));
-                this._symbol[i][j].type = this.sequence[j][i];
+                if (this.sequence[i][j] == "solid1") {
+                    this._symbol[i][j].type = 1;
+                }
+                if (this.sequence[i][j] == "solid2") {
+                    this._symbol[i][j].type = 2;
+                }
+                if (this.sequence[i][j] == "solid3") {
+                    this._symbol[i][j].type = 3;
+                }
+                if (this.sequence[i][j] == "solid4") {
+                    this._symbol[i][j].type = 4;
+                }
                 this._symbol[i][j].shift = 0;
                 this._symbol[i][j].anchor.set(0.5, 0.5);
                 this._symbol[i][j].scale.set(0.75, 0.75);
@@ -23629,17 +23601,10 @@ var Grid = (function (_super) {
         }
         this._symbol[column][row].scale.set(0.1, 0.1);
         this.createSymbol(column, row, "solid1");
-        for (var i = 0; i < row; i++) {
-            var posY = this._symbol[column][i].position.y;
-            gsap_1.TweenLite.to(this._symbol[column][i].position, 1, {
-                y: posY + 90,
-            });
-        }
-        this._symbol[column][row].emit("matchcompleted");
     };
     Grid.prototype.createSymbol = function (column, row, symbolName) {
-        this._symbol[column][row].type = symbolName;
         var name = symbolName + "_normal";
+        this._symbol[column][row].type = symbolName;
         this._symbol[column][row].texture = PIXI.Texture.from(name);
         this._symbol[column][row].scale.set(0.75, 0.75);
         this._symbol[column][row].position.set(80 + column * 75, 250);
@@ -23664,6 +23629,60 @@ exports.Grid = Grid;
 
 /***/ }),
 /* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var FindMatch = (function () {
+    function FindMatch() {
+        this._cloneSymbolTypeArray = [];
+        this._symbolLabelArray = [];
+        this.directionX = [1, 0, -1, 0];
+        this.directionY = [0, 1, 0, -1];
+    }
+    FindMatch.prototype.depthFirstSearch = function (i, j, currentLabel, group) {
+        if (i < 0 || i == 9)
+            return;
+        if (j < 0 || j == 9)
+            return;
+        if (this._symbolLabelArray[i][j] ||
+            group != this._cloneSymbolTypeArray[i][j])
+            return;
+        this._symbolLabelArray[i][j] = currentLabel;
+        for (var direction = 0; direction < 4; ++direction) {
+            this.depthFirstSearch(i + this.directionX[direction], j + this.directionY[direction], currentLabel, group);
+        }
+    };
+    FindMatch.prototype.getResult = function (result) {
+        var _this = this;
+        var initSetValue = function (seq) {
+            for (var i = 0; i < 9; i++) {
+                _this._cloneSymbolTypeArray[i] = [];
+                _this._symbolLabelArray[i] = [];
+                for (var j = 0; j < 9; j++) {
+                    _this._cloneSymbolTypeArray[i][j] = seq[i][j].type;
+                    _this._symbolLabelArray[i][j] = 0;
+                }
+            }
+        };
+        initSetValue(result);
+        var component = 0;
+        for (var i = 0; i < 9; ++i) {
+            for (var j = 0; j < 9; ++j) {
+                if (!this._symbolLabelArray[i][j] && this._cloneSymbolTypeArray[i][j])
+                    this.depthFirstSearch(i, j, ++component, this._cloneSymbolTypeArray[i][j]);
+            }
+        }
+        return this._symbolLabelArray;
+    };
+    return FindMatch;
+}());
+exports.FindMatch = FindMatch;
+
+
+/***/ }),
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23753,7 +23772,7 @@ exports.GameResultPopup = GameResultPopup;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23804,7 +23823,7 @@ exports.Data = Data;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23821,7 +23840,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var pixi_assets_loader_1 = __webpack_require__(9);
-var SoundController_1 = __webpack_require__(58);
+var SoundController_1 = __webpack_require__(59);
 var EntryPoint_1 = __webpack_require__(0);
 var GameSettings_1 = __webpack_require__(4);
 var ResourceController = (function (_super) {
@@ -23937,7 +23956,7 @@ exports.ResourceController = ResourceController;
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

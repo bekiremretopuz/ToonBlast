@@ -49,6 +49,7 @@ export class GridController extends PIXI.Container {
   }
 
   private onGridHandler(index: number[], button: SimpleButton2D): void {
+    this._grid.destroyParticleAnimation();
     this._clusters = [];
     this._clusters = new FindMatch().getResult(this._grid.symbol);
     const explodeType = this._clusters[index[1]][index[0]];

@@ -1,11 +1,16 @@
+import "pixi-particles";
 import { SimpleButton2D } from "src/scripts/core/Parts/SimpleButton2D";
-import { TweenLite, TweenMax } from "gsap";
+import { TweenMax } from "gsap";
+import { particleConfig } from "app/Helper/GameSettings";
 export class Grid extends PIXI.Container {
   private _gridContainer: PIXI.Container;
+  private _particleContainer: PIXI.particles.ParticleContainer = new PIXI.particles.ParticleContainer();
+  private _particleAnimation: PIXI.particles.Emitter[] = [];
   private _symbol: any[][] = [];
   private _rotateAnimation: TweenMax;
   private _scaleAnimation: TweenMax;
   private _gridMask: PIXI.Graphics;
+  private _requestAnimationFrameId: number;
   constructor(private readonly sequence: string[][]) {
     super();
   }
@@ -40,7 +45,7 @@ export class Grid extends PIXI.Container {
         if (this.sequence[i][j] == "solid4") {
           this._symbol[i][j].type = 4;
         }
-        this._symbol[i][j].shift = 0;
+        this._symbol[i][j].name = this.sequence[j][i];
         this._symbol[i][j].anchor.set(0.5, 0.5);
         this._symbol[i][j].scale.set(0.75, 0.75);
         this._gridContainer.addChild(this._symbol[i][j]);
@@ -80,7 +85,12 @@ export class Grid extends PIXI.Container {
       this._scaleAnimation.seek(this._scaleAnimation.duration, false);
     }
     this._symbol[column][row].scale.set(0.1, 0.1); //match animation olucak
-    // this.createSymbol(column, row, "solid1"); // random yada belli bir oranda gelicek
+    this.createAndPlayParticleAnimation(
+      column,
+      row,
+      this._symbol[column][row].name
+    );
+    //this.createSymbol(column, row, "solid1"); // random yada belli bir oranda gelicek
     // for (let i = 0; i < row; i++) {
     //   const posY = this._symbol[column][i].position.y;
     //   TweenLite.to(this._symbol[column][i].position, 1, {
@@ -90,9 +100,59 @@ export class Grid extends PIXI.Container {
     // this._symbol[column][row].emit("matchcompleted");
   }
 
+  public createAndPlayParticleAnimation(
+    column: number,
+    row: number,
+    symbolType: string
+  ): void {
+    window.cancelAnimationFrame(this._requestAnimationFrameId);
+    const i = this._particleAnimation.length;
+    this._particleAnimation[i] = new PIXI.particles.Emitter(
+      this._particleContainer,
+      ["solidParticle1", "solidParticle2"],
+      particleConfig
+    );
+    this.addChild(this._particleContainer);
+    let colorHax: number = 0x2b97e2;
+    console.log(symbolType);
+    switch (symbolType) {
+      case "solid1":
+        colorHax = 0xefd401;
+        break;
+      case "solid2":
+        colorHax = 0xe30e0e;
+        break;
+      case "solid3":
+        colorHax = 0x2b97e2;
+        break;
+      case "solid4":
+        colorHax = 0x40bb0b;
+        break;
+    }
+    this._particleContainer.tint = colorHax;
+    this._particleAnimation[i].updateSpawnPos(75 + column * 75, 360 + row * 90);
+    let elapsed = Date.now();
+    const update = () => {
+      this._requestAnimationFrameId = requestAnimationFrame(update);
+      let now = Date.now();
+      for (let i = 0; i < this._particleAnimation.length; i++) {
+        this._particleAnimation[i].update((now - elapsed) * 0.001);
+      }
+      elapsed = now;
+    };
+    this._particleAnimation[i].emit = true;
+    update();
+  }
+
+  public destroyParticleAnimation(): void {
+    for (let i = 0; i < this._particleAnimation.length; i++) {
+      this._particleAnimation[i].destroy();
+    }
+  }
+
   private createSymbol(column: number, row: number, symbolName: string): void {
-    this._symbol[column][row].type = symbolName;
     const name = symbolName + "_normal";
+    this._symbol[column][row].type = symbolName;
     this._symbol[column][row].texture = PIXI.Texture.from(name);
     this._symbol[column][row].scale.set(0.75, 0.75);
     this._symbol[column][row].position.set(80 + column * 75, 250);
@@ -100,9 +160,11 @@ export class Grid extends PIXI.Container {
   }
 
   private fallNewSymbol(column: number, row: number): void {
-    TweenLite.to(this._symbol[column][row].position, 1, {
-      y: 360,
-    });
+    let a: any = [];
+    for (let i = 1; i <= row; i++) {
+      console.log(i);
+      a.push(this._symbol[column][i]);
+    }
   }
 
   public get symbol(): any[][] {
