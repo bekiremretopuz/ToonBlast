@@ -27,7 +27,19 @@ export class Grid extends PIXI.Container {
           { x: 80 + i * 75, y: 360 + j * 90 },
           this.onButtonClick.bind(this, [i, j])
         );
-        this._symbol[i][j].type = this.sequence[j][i];
+        //TODO:need refactor
+        if (this.sequence[i][j] == "solid1") {
+          this._symbol[i][j].type = 1;
+        }
+        if (this.sequence[i][j] == "solid2") {
+          this._symbol[i][j].type = 2;
+        }
+        if (this.sequence[i][j] == "solid3") {
+          this._symbol[i][j].type = 3;
+        }
+        if (this.sequence[i][j] == "solid4") {
+          this._symbol[i][j].type = 4;
+        }
         this._symbol[i][j].shift = 0;
         this._symbol[i][j].anchor.set(0.5, 0.5);
         this._symbol[i][j].scale.set(0.75, 0.75);
@@ -68,14 +80,14 @@ export class Grid extends PIXI.Container {
       this._scaleAnimation.seek(this._scaleAnimation.duration, false);
     }
     this._symbol[column][row].scale.set(0.1, 0.1); //match animation olucak
-    this.createSymbol(column, row, "solid1"); // random yada belli bir oranda gelicek
-    for (let i = 0; i < row; i++) {
-      const posY = this._symbol[column][i].position.y;
-      TweenLite.to(this._symbol[column][i].position, 1, {
-        y: posY + 90,
-      });
-    }
-    this._symbol[column][row].emit("matchcompleted");
+    // this.createSymbol(column, row, "solid1"); // random yada belli bir oranda gelicek
+    // for (let i = 0; i < row; i++) {
+    //   const posY = this._symbol[column][i].position.y;
+    //   TweenLite.to(this._symbol[column][i].position, 1, {
+    //     y: posY + 90,
+    //   });
+    // }
+    // this._symbol[column][row].emit("matchcompleted");
   }
 
   private createSymbol(column: number, row: number, symbolName: string): void {

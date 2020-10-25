@@ -1,7 +1,7 @@
 import { Text } from "pixi.js";
 import { SimpleSprite2D } from "src/scripts/core/Parts/SimpleSprite2D";
 import { SimpleButton2D } from "src/scripts/core/Parts/SimpleButton2D";
-import { DefaultTextStyle } from "app/Config/GameSettings";
+import { DefaultTextStyle } from "app/Helper/GameSettings";
 export class UserInterface extends PIXI.Container {
   private _backgroundImage: SimpleSprite2D;
   private _moveText: Text;

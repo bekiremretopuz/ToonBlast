@@ -1,7 +1,7 @@
 import { AssetPriority, LoadAsset, PixiAssetsLoader } from "pixi-assets-loader";
 import SoundManager from "./SoundController";
 import { EmreBase } from "src/scripts/game/EntryPoint";
-import { AssetsList } from "../../game/Config/GameSettings";
+import { AssetsList } from "../../game/Helper/GameSettings";
 export class ResourceController extends PIXI.utils.EventEmitter {
   private _loader: PixiAssetsLoader;
   private _assetsCount: {

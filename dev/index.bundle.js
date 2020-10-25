@@ -72,9 +72,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var DisplayController_1 = __webpack_require__(18);
 var StorageController_1 = __webpack_require__(39);
-var StageController_1 = __webpack_require__(3);
+var StageController_1 = __webpack_require__(2);
 var LoaderStage_1 = __webpack_require__(40);
-var ResourceController_1 = __webpack_require__(56);
+var ResourceController_1 = __webpack_require__(57);
 var EmreBase;
 (function (EmreBase) {
     var EntryPoint = (function () {
@@ -156,316 +156,6 @@ var EmreBase;
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var pixi_assets_loader_1 = __webpack_require__(9);
-exports.GameProperty = {
-    colums: 9,
-    row: 9,
-};
-exports.GoalRules = [
-    { count: 5, symbol: "solid1" },
-    { count: 8, symbol: "solid2" },
-    { count: 10, symbol: "solid3" },
-];
-exports.InitialSequence = [
-    [
-        "solid1",
-        "solid1",
-        "solid3",
-        "solid1",
-        "solid4",
-        "solid3",
-        "solid2",
-        "solid1",
-        "solid4",
-    ],
-    [
-        "solid2",
-        "solid3",
-        "solid2",
-        "solid4",
-        "solid2",
-        "solid1",
-        "solid4",
-        "solid2",
-        "solid2",
-    ],
-    [
-        "solid3",
-        "solid2",
-        "solid1",
-        "solid3",
-        "solid3",
-        "solid2",
-        "solid1",
-        "solid4",
-        "solid3",
-    ],
-    [
-        "solid1",
-        "solid4",
-        "solid4",
-        "solid2",
-        "solid4",
-        "solid4",
-        "solid2",
-        "solid1",
-        "solid4",
-    ],
-    [
-        "solid4",
-        "solid1",
-        "solid1",
-        "solid4",
-        "solid3",
-        "solid1",
-        "solid2",
-        "solid2",
-        "solid1",
-    ],
-    [
-        "solid3",
-        "solid3",
-        "solid2",
-        "solid2",
-        "solid1",
-        "solid3",
-        "solid3",
-        "solid3",
-        "solid2",
-    ],
-    [
-        "solid2",
-        "solid2",
-        "solid3",
-        "solid1",
-        "solid2",
-        "solid3",
-        "solid4",
-        "solid3",
-        "solid2",
-    ],
-    [
-        "solid4",
-        "solid1",
-        "solid3",
-        "solid4",
-        "solid1",
-        "solid4",
-        "solid1",
-        "solid1",
-        "solid3",
-    ],
-    [
-        "solid1",
-        "solid4",
-        "solid4",
-        "solid3",
-        "solid2",
-        "solid1",
-        "solid2",
-        "solid2",
-        "solid4",
-    ],
-];
-exports.DefaultTextStyle = {
-    fontFamily: "Topaz-8-remake",
-    fontSize: 42,
-    fill: "#1f140a",
-    align: "center",
-    stroke: "#cecece",
-    strokeThickness: 3,
-};
-exports.AssetsList = [
-    {
-        id: "loading",
-        url: "assets/gfx/ui/loading.png",
-        priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
-        type: "texture",
-    },
-    {
-        id: "restart_normal",
-        url: "assets/gfx/ui/reset.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "restart_over",
-        url: "assets/gfx/ui/reset.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "restart_down",
-        url: "assets/gfx/ui/reset.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "restart_disabled",
-        url: "assets/gfx/ui/reset.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "spine",
-        url: "assets/gfx/animation/spineboy.json",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "animation",
-    },
-    {
-        id: "background",
-        url: "assets/gfx/background.jpg",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid1_normal",
-        url: "assets/gfx/ui/solidColor1.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid1_down",
-        url: "assets/gfx/ui/solidColor1.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid1_over",
-        url: "assets/gfx/ui/solidColor1.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid1_disabled",
-        url: "assets/gfx/ui/solidColor1.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid2_normal",
-        url: "assets/gfx/ui/solidColor2.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid2_down",
-        url: "assets/gfx/ui/solidColor2.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid2_over",
-        url: "assets/gfx/ui/solidColor2.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid2_disabled",
-        url: "assets/gfx/ui/solidColor2.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid3_normal",
-        url: "assets/gfx/ui/solidColor3.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid3_down",
-        url: "assets/gfx/ui/solidColor3.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid3_over",
-        url: "assets/gfx/ui/solidColor3.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid3_disabled",
-        url: "assets/gfx/ui/solidColor3.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid4_normal",
-        url: "assets/gfx/ui/solidColor4.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid4_down",
-        url: "assets/gfx/ui/solidColor4.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid4_over",
-        url: "assets/gfx/ui/solidColor4.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solid4_disabled",
-        url: "assets/gfx/ui/solidColor4.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solidParticle1",
-        url: "assets/gfx/animation/solidColorParticle1.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "solidParticle2",
-        url: "assets/gfx/animation/solidColorParticle2.png",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        type: "texture",
-    },
-    {
-        id: "collect",
-        url: "assets/sfx/cube_collect.wav",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        autoplay: false,
-        loop: false,
-        mute: false,
-        rate: 1,
-        type: "sound",
-    },
-    {
-        id: "explode",
-        url: "assets/sfx/cube_explode.wav",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        autoplay: false,
-        loop: false,
-        mute: false,
-        rate: 1,
-        type: "sound",
-    },
-    {
-        id: "theme",
-        url: "assets/sfx/theme.wav",
-        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
-        autoplay: false,
-        loop: false,
-        mute: false,
-        rate: 1,
-        type: "sound",
-    },
-];
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
@@ -476,7 +166,7 @@ __export(__webpack_require__(38));
 
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -563,7 +253,7 @@ exports.StageController = StageController;
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -8572,6 +8262,206 @@ if (_gsScope._gsDefine) { _gsScope._gsQueue.pop()(); } //necessary in case Tween
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var pixi_assets_loader_1 = __webpack_require__(9);
+exports.DefaultTextStyle = {
+    fontFamily: "Topaz-8-remake",
+    fontSize: 42,
+    fill: "#1f140a",
+    align: "center",
+    stroke: "#cecece",
+    strokeThickness: 3,
+};
+exports.AssetsList = [
+    {
+        id: "loading",
+        url: "assets/gfx/ui/loading.png",
+        priority: pixi_assets_loader_1.AssetPriority.HIGHEST,
+        type: "texture",
+    },
+    {
+        id: "restart_normal",
+        url: "assets/gfx/ui/reset.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "restart_over",
+        url: "assets/gfx/ui/reset.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "restart_down",
+        url: "assets/gfx/ui/reset.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "restart_disabled",
+        url: "assets/gfx/ui/reset.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "spine",
+        url: "assets/gfx/animation/spineboy.json",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "animation",
+    },
+    {
+        id: "background",
+        url: "assets/gfx/background.jpg",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid1_normal",
+        url: "assets/gfx/ui/solidColor1.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid1_down",
+        url: "assets/gfx/ui/solidColor1.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid1_over",
+        url: "assets/gfx/ui/solidColor1.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid1_disabled",
+        url: "assets/gfx/ui/solidColor1.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid2_normal",
+        url: "assets/gfx/ui/solidColor2.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid2_down",
+        url: "assets/gfx/ui/solidColor2.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid2_over",
+        url: "assets/gfx/ui/solidColor2.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid2_disabled",
+        url: "assets/gfx/ui/solidColor2.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid3_normal",
+        url: "assets/gfx/ui/solidColor3.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid3_down",
+        url: "assets/gfx/ui/solidColor3.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid3_over",
+        url: "assets/gfx/ui/solidColor3.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid3_disabled",
+        url: "assets/gfx/ui/solidColor3.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid4_normal",
+        url: "assets/gfx/ui/solidColor4.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid4_down",
+        url: "assets/gfx/ui/solidColor4.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid4_over",
+        url: "assets/gfx/ui/solidColor4.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solid4_disabled",
+        url: "assets/gfx/ui/solidColor4.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solidParticle1",
+        url: "assets/gfx/animation/solidColorParticle1.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "solidParticle2",
+        url: "assets/gfx/animation/solidColorParticle2.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
+        id: "collect",
+        url: "assets/sfx/cube_collect.wav",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        autoplay: false,
+        loop: false,
+        mute: false,
+        rate: 1,
+        type: "sound",
+    },
+    {
+        id: "explode",
+        url: "assets/sfx/cube_explode.wav",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        autoplay: false,
+        loop: false,
+        mute: false,
+        rate: 1,
+        type: "sound",
+    },
+    {
+        id: "theme",
+        url: "assets/sfx/theme.wav",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        autoplay: false,
+        loop: false,
+        mute: false,
+        rate: 1,
+        type: "sound",
+    },
+];
+
+
+/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9926,7 +9816,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var pixi_app_wrapper_1 = __webpack_require__(2);
+var pixi_app_wrapper_1 = __webpack_require__(1);
 var DisplayController = (function (_super) {
     __extends(DisplayController, _super);
     function DisplayController(rootContainer) {
@@ -9986,7 +9876,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var EventEmitter = __webpack_require__(6);
 __webpack_require__(20);
-var pixi_app_wrapper_1 = __webpack_require__(2);
+var pixi_app_wrapper_1 = __webpack_require__(1);
 __webpack_require__(21);
 var PIXI = __webpack_require__(22);
 var screenfull = __webpack_require__(23);
@@ -12054,7 +11944,7 @@ module.exports = PIXI;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var pixi_app_wrapper_1 = __webpack_require__(2);
+var pixi_app_wrapper_1 = __webpack_require__(1);
 __webpack_require__(7);
 var math_1 = __webpack_require__(7);
 var MediaInfoViewer = (function () {
@@ -12468,9 +12358,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var gsap_1 = __webpack_require__(4);
-var StageController_1 = __webpack_require__(3);
-var GameSettings_1 = __webpack_require__(1);
+var gsap_1 = __webpack_require__(3);
+var StageController_1 = __webpack_require__(2);
+var GameSettings_1 = __webpack_require__(4);
 var EntryPoint_1 = __webpack_require__(0);
 var BaseGame_1 = __webpack_require__(47);
 var LoaderStage = (function (_super) {
@@ -12528,8 +12418,12 @@ var LoaderStage = (function (_super) {
         this._backgroundImageDefault.buttonMode = true;
         this._backgroundImageDefault.interactive = true;
         this._backgroundImageDefault.once("pointerdown", function () {
-            _this._game.stageManager.createScene("BaseGame", new BaseGame_1.BaseGame());
-            _this._game.stageManager.goToScene("BaseGame", true);
+            fetch("assets/config/settings.json")
+                .then(function (res) { return res.json(); })
+                .then(function (out) {
+                _this._game.stageManager.createScene("BaseGame", new BaseGame_1.BaseGame(out));
+                _this._game.stageManager.goToScene("BaseGame", true);
+            });
         });
     };
     LoaderStage.prototype.progressUpdate = function (value) {
@@ -16030,22 +15924,25 @@ var AnimationsController_1 = __webpack_require__(48);
 var UserInterfaceController_1 = __webpack_require__(50);
 var EntryPoint_1 = __webpack_require__(0);
 var GridController_1 = __webpack_require__(53);
-var StageController_1 = __webpack_require__(3);
+var StageController_1 = __webpack_require__(2);
 var Animations_1 = __webpack_require__(10);
 var GameResultPopup_1 = __webpack_require__(55);
+var Data_1 = __webpack_require__(56);
 var BaseGame = (function (_super) {
     __extends(BaseGame, _super);
-    function BaseGame() {
+    function BaseGame(gameSettings) {
         var _this = _super.call(this) || this;
+        _this.gameSettings = gameSettings;
         _this._game = EntryPoint_1.EmreBase.EntryPoint.instance;
         return _this;
     }
     BaseGame.prototype.awake = function () {
-        this._uiController = new UserInterfaceController_1.UserInterfaceController();
+        this._dataController = new Data_1.Data(this._game);
+        this._uiController = new UserInterfaceController_1.UserInterfaceController(this.gameSettings, this._dataController.getLevel);
         this.addChild(this._uiController);
         this._animationController = new AnimationsController_1.AnimationsController();
         this.addChild(this._animationController);
-        this._gridController = new GridController_1.GridController();
+        this._gridController = new GridController_1.GridController(this.gameSettings, this._dataController.getLevel);
         this.addChild(this._gridController);
         this._gameResult = new GameResultPopup_1.GameResultPopup();
         this.addChild(this._gameResult);
@@ -23369,30 +23266,29 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var GameSettings_1 = __webpack_require__(1);
 var UserInterface_1 = __webpack_require__(51);
 var UserInterfaceController = (function (_super) {
     __extends(UserInterfaceController, _super);
-    function UserInterfaceController() {
+    function UserInterfaceController(gameSettings, level) {
         var _this = _super.call(this) || this;
+        _this.gameSettings = gameSettings;
+        _this.level = level;
         _this._goal = [];
         _this.awake();
         return _this;
     }
     UserInterfaceController.prototype.awake = function () {
-        var _this = this;
-        this.setGoals(GameSettings_1.GoalRules);
         this._userInterface = new UserInterface_1.UserInterface();
         this._userInterface.on("actiontaken", this.onInterfaceHandler, this);
+        this.setGoals(this.gameSettings.Levels[this.level].goal);
+        this.setMoves(this.gameSettings.Levels[this.level].moves);
         this.addChild(this._userInterface);
-        setTimeout(function () {
-            _this.updateGoals("solid1", 3);
-        }, 500);
     };
     UserInterfaceController.prototype.onInterfaceHandler = function (action) {
         this.emit("actiontaken", action);
     };
     UserInterfaceController.prototype.setMoves = function (value) {
+        this._userInterface.setMoves(value);
         this._moves = value;
     };
     UserInterfaceController.prototype.decreaseMoves = function () {
@@ -23400,15 +23296,16 @@ var UserInterfaceController = (function (_super) {
         this._userInterface.setMoves(this._moves);
     };
     UserInterfaceController.prototype.setGoals = function (value) {
+        this._userInterface.setGoal(value);
         this._goal = value;
     };
     UserInterfaceController.prototype.updateGoals = function (symbol, count) {
-        console.log("Goal", this._goal);
-        var result = this._goal.filter(function (elem) {
-            return elem.symbol === symbol;
-        });
-        console.log(result);
-        console.log("new Goals", this._goal);
+        for (var i = 0, iLen = this._goal.length; i < iLen; i++) {
+            if (this._goal[i].symbol == symbol) {
+                this._goal[i].count = count;
+            }
+        }
+        this._userInterface.setGoal(this._goal);
     };
     return UserInterfaceController;
 }(PIXI.Container));
@@ -23433,12 +23330,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var SimpleSprite2D_1 = __webpack_require__(52);
-var GameSettings_1 = __webpack_require__(1);
+var GameSettings_1 = __webpack_require__(4);
 var UserInterface = (function (_super) {
     __extends(UserInterface, _super);
     function UserInterface() {
         var _this = _super.call(this) || this;
-        _this._goalDesc = [];
+        _this._goalCount = [];
         _this._goalImage = [];
         _this.awake();
         return _this;
@@ -23457,18 +23354,16 @@ var UserInterface = (function (_super) {
             });
             this._goalImage[i].scale.set(0.6);
             this.addChild(this._goalImage[i]);
-            this._goalDesc[i] = new PIXI.Text("", GameSettings_1.DefaultTextStyle);
-            this._goalDesc[i].position.set(65 + i * 5, 100);
-            this._goalDesc[i].scale.set(0.9);
-            this._goalImage[i].addChild(this._goalDesc[i]);
+            this._goalCount[i] = new PIXI.Text("", GameSettings_1.DefaultTextStyle);
+            this._goalCount[i].position.set(68 + i * 5, 105);
+            this._goalCount[i].scale.set(0.9);
+            this._goalImage[i].addChild(this._goalCount[i]);
         }
-        this.setGoal(["solid1_normal", "solid2_normal", "solid3_normal"], [5, 10, 16]);
     };
-    UserInterface.prototype.setGoal = function (solid, count) {
-        this.clearGoalProp();
-        for (var i = 0; i < solid.length; i++) {
-            this._goalImage[i].texture = PIXI.Texture.from(solid[i]);
-            this._goalDesc[i].text = count[i].toString();
+    UserInterface.prototype.setGoal = function (value) {
+        for (var i = 0; i < value.length; i++) {
+            this._goalImage[i].texture = PIXI.Texture.from(value[i].symbol + "_normal");
+            this._goalCount[i].text = value[i].count.toString();
         }
     };
     UserInterface.prototype.setMoves = function (value) {
@@ -23478,8 +23373,8 @@ var UserInterface = (function (_super) {
         for (var i = 0; i < this._goalImage.length; i++) {
             this._goalImage[i].texture = PIXI.Texture.WHITE;
         }
-        for (var i = 0; i < this._goalDesc.length; i++) {
-            this._goalDesc[i].text = "";
+        for (var i = 0; i < this._goalCount.length; i++) {
+            this._goalCount[i].text = "";
         }
     };
     UserInterface.prototype.onButtonUp = function (name) {
@@ -23556,33 +23451,35 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Grid_1 = __webpack_require__(54);
-var GameSettings_1 = __webpack_require__(1);
 var GridController = (function (_super) {
     __extends(GridController, _super);
-    function GridController() {
+    function GridController(gameSettings, level) {
         var _this = _super.call(this) || this;
+        _this.gameSettings = gameSettings;
+        _this.level = level;
         _this._clusters = [];
         _this._currentSequence = [];
         _this.awake();
         return _this;
     }
     GridController.prototype.awake = function () {
-        this._currentSequence = GameSettings_1.InitialSequence;
-        this._grid = new Grid_1.Grid(GameSettings_1.InitialSequence);
+        this._currentSequence = this.gameSettings.Levels[this.level].initialSeqeunce;
+        this._grid = new Grid_1.Grid(this._currentSequence);
         this.addChild(this._grid);
         this._grid.on("animationstatus", this.onGridHandler, this);
-        this._grid.createGrid(GameSettings_1.GameProperty.colums, GameSettings_1.GameProperty.row);
+        this._grid.createGrid(this.gameSettings.Levels[this.level].column, this.gameSettings.Levels[this.level].row);
         this.updateCurrentSequence();
-    };
-    GridController.prototype.onGridHandler = function (index, button) {
-        this.getMatches();
     };
     GridController.prototype.updateCurrentSequence = function () {
         for (var i = 0; i < 9; i++) {
+            this._currentSequence[i] = [];
             for (var j = 0; j < 9; j++) {
                 this._currentSequence[i][j] = this._grid.symbol[j][i].type;
             }
         }
+    };
+    GridController.prototype.onGridHandler = function (index, button) {
+        this.getMatches();
     };
     GridController.prototype.getMatches = function () {
         this._clusters = [];
@@ -23644,7 +23541,7 @@ var GridController = (function (_super) {
                 }
             }
         }
-        console.log("sonuc", this._clusters);
+        console.log("RESULT:", this._clusters);
     };
     return GridController;
 }(PIXI.Container));
@@ -23669,7 +23566,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var SimpleButton2D_1 = __webpack_require__(11);
-var gsap_1 = __webpack_require__(4);
+var gsap_1 = __webpack_require__(3);
 var Grid = (function (_super) {
     __extends(Grid, _super);
     function Grid(sequence) {
@@ -23741,10 +23638,6 @@ var Grid = (function (_super) {
         this._symbol[column][row].emit("matchcompleted");
     };
     Grid.prototype.createSymbol = function (column, row, symbolName) {
-        this._symbol.sort(function (x, y) {
-            console.log(x, y);
-            return -1;
-        });
         this._symbol[column][row].type = symbolName;
         var name = symbolName + "_normal";
         this._symbol[column][row].texture = PIXI.Texture.from(name);
@@ -23786,7 +23679,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var gsap_1 = __webpack_require__(4);
+var gsap_1 = __webpack_require__(3);
 var SimpleButton2D_1 = __webpack_require__(11);
 var GameResultPopup = (function (_super) {
     __extends(GameResultPopup, _super);
@@ -23876,10 +23769,61 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var Data = (function (_super) {
+    __extends(Data, _super);
+    function Data(game) {
+        var _this = _super.call(this) || this;
+        _this._level = 0;
+        _this._game = game;
+        _this._game.localStorage.on("update", _this.onStorageUpdate, _this);
+        _this.setDefaultVariable();
+        return _this;
+    }
+    Data.prototype.setDefaultVariable = function () {
+        this._game.localStorage.setItem("level", 0);
+    };
+    Data.prototype.onStorageUpdate = function (key, value) { };
+    Object.defineProperty(Data.prototype, "getLevel", {
+        get: function () {
+            return this._game.localStorage.getItem("level");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Data.prototype, "setLevel", {
+        set: function (value) {
+            this._game.localStorage.setItem("level", value);
+            this._level = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Data;
+}(PIXI.utils.EventEmitter));
+exports.Data = Data;
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var pixi_assets_loader_1 = __webpack_require__(9);
-var SoundController_1 = __webpack_require__(57);
+var SoundController_1 = __webpack_require__(58);
 var EntryPoint_1 = __webpack_require__(0);
-var GameSettings_1 = __webpack_require__(1);
+var GameSettings_1 = __webpack_require__(4);
 var ResourceController = (function (_super) {
     __extends(ResourceController, _super);
     function ResourceController() {
@@ -23993,7 +23937,7 @@ exports.ResourceController = ResourceController;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

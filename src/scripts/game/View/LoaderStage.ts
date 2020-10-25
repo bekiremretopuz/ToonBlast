@@ -1,6 +1,6 @@
 import { Power0, TweenMax } from "gsap";
 import { Scene } from "src/scripts/core/Controller/StageController";
-import { DefaultTextStyle } from "app/Config/GameSettings";
+import { DefaultTextStyle } from "app/Helper/GameSettings";
 import { EmreBase } from "src/scripts/game/EntryPoint";
 import { BaseGame } from "./BaseGame";
 export class LoaderStage extends Scene {
