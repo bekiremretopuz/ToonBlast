@@ -1,18 +1,19 @@
 # ToonBlast
 
 ### Project Details ###
-Peak Games Interview Task
-Author Bekir Emre Topuz 
+* Peak Games Interview Task
+* Author Bekir Emre Topuz 
 
 * Pixi.js (4.8.1)
 * Display (Custom Sequence Animation & Custom Button & Custom Sprite)
-* GreenSock Animation (TweenLite & TweenMax & Timeline)
+* GreenSock Animation 
 * Sound Manager (Howl)
 * Spine Animation
 * Local Storage
-* Stage Manager (Scene Manager & Display Manager)
-* Resource Manager (Scene Manager & Display Manager)
-* AssetLoader (Pixi.AssetLoader)
+* Scene Manager 
+* Display Manager
+* Resource Manager 
+* DFS & Connected Component Labeling (Cluster Match Algorithm)
 
 ### How do I get set up? ###
 
