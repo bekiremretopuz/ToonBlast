@@ -1,6 +1,6 @@
 import "pixi-particles";
 import { SimpleButton2D } from "src/scripts/core/Parts/SimpleButton2D";
-import { TweenMax } from "gsap";
+import { TimelineLite, TweenLite, TweenMax } from "gsap";
 import { particleConfig } from "app/Helper/GameSettings";
 export class Grid extends PIXI.Container {
   private _gridContainer: PIXI.Container;
@@ -54,7 +54,7 @@ export class Grid extends PIXI.Container {
   }
 
   private onButtonClick(index: number[], button: SimpleButton2D): void {
-    this.emit("animationstatus", index, button);
+    this.emit("actiontaken", index, button);
   }
 
   public rotateAnimation(target: SimpleButton2D): void {
@@ -84,20 +84,27 @@ export class Grid extends PIXI.Container {
       this._scaleAnimation.kill();
       this._scaleAnimation.seek(this._scaleAnimation.duration, false);
     }
-    this._symbol[column][row].scale.set(0.1, 0.1); //match animation olucak
+    this._symbol[column][row].scale.set(0);
+    this.emit("matchanimationstarted", [column, row]);
     this.createAndPlayParticleAnimation(
       column,
       row,
       this._symbol[column][row].name
     );
-    //this.createSymbol(column, row, "solid1"); // random yada belli bir oranda gelicek
-    // for (let i = 0; i < row; i++) {
-    //   const posY = this._symbol[column][i].position.y;
-    //   TweenLite.to(this._symbol[column][i].position, 1, {
-    //     y: posY + 90,
-    //   });
-    // }
-    // this._symbol[column][row].emit("matchcompleted");
+    setTimeout(() => {
+      this.emit("matchanimationcompleted", [column, row]);
+    }, 300);
+  }
+
+  public fallAnimation(value: number[], callback: Function): void {
+    for (let i = 0; i <= value[1]; i++) {
+      TweenLite.to(this._symbol[value[0]][i].position, 0.5, {
+        y: 360 + i * 90,
+        onComplete: () => {
+          callback();
+        },
+      });
+    }
   }
 
   public createAndPlayParticleAnimation(
@@ -114,7 +121,6 @@ export class Grid extends PIXI.Container {
     );
     this.addChild(this._particleContainer);
     let colorHax: number = 0x2b97e2;
-    console.log(symbolType);
     switch (symbolType) {
       case "solid1":
         colorHax = 0xefd401;
@@ -147,23 +153,6 @@ export class Grid extends PIXI.Container {
   public destroyParticleAnimation(): void {
     for (let i = 0; i < this._particleAnimation.length; i++) {
       this._particleAnimation[i].destroy();
-    }
-  }
-
-  private createSymbol(column: number, row: number, symbolName: string): void {
-    const name = symbolName + "_normal";
-    this._symbol[column][row].type = symbolName;
-    this._symbol[column][row].texture = PIXI.Texture.from(name);
-    this._symbol[column][row].scale.set(0.75, 0.75);
-    this._symbol[column][row].position.set(80 + column * 75, 250);
-    this.fallNewSymbol(column, row);
-  }
-
-  private fallNewSymbol(column: number, row: number): void {
-    let a: any = [];
-    for (let i = 1; i <= row; i++) {
-      console.log(i);
-      a.push(this._symbol[column][i]);
     }
   }
 

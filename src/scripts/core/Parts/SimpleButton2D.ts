@@ -66,14 +66,13 @@ export class SimpleButton2D extends PIXI.Sprite {
     this.texture = PIXI.Texture.from(this._disabledFrame);
   }
 
-  public setTexture(frame: string, currentFrame: string, name: string): void {
+  public setTexture(frame: string, name: string): void {
     this._normalFrame = frame + "_normal";
     this._overFrame = frame + "_over";
     this._downFrame = frame + "_down";
     this._disabledFrame = frame + "_disabled";
     this.name = name;
-    if (currentFrame != null || currentFrame != "")
-      this._texture = PIXI.Texture.from(currentFrame);
+    this._texture = PIXI.Texture.from(this._normalFrame);
   }
 
   public setEnabled(): void {
