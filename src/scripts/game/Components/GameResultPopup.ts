@@ -59,6 +59,7 @@ export class GameResultPopup extends PIXI.Container {
     }
     TweenLite.to(this._popupContainer.position, 1.5, {
       y: 0,
+      delay: 0.75,
       ease: Bounce.easeOut,
       onComplete: () => {
         this._restartButton.setEnabled();

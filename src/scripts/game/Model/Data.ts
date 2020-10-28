@@ -13,9 +13,7 @@ export class Data extends PIXI.utils.EventEmitter {
     this._game.localStorage.setItem("level", 0);
   }
 
-  private onStorageUpdate(key: string, value: any): void {
-    console.log("storage update", key, value);
-  }
+  private onStorageUpdate(key: string, value: any): void {}
 
   public get getLevel(): number {
     return this._game.localStorage.getItem("level") as number | 0;
