@@ -54,28 +54,40 @@ export class BaseGame extends Scene {
   //UserInterfaceControl Event Handler.
   private onControlEventHandler(action: string, value: string): void {
     switch (action) {
-      case "bla":
-        this._game.sound.play("collect", 1, false);
+      case "gameover":
+        this.interactive = false;
+        this._gameResult.showResult(false);
         break;
-      case "bla":
-        this._game.sound.play("collect", 1, false);
+      case "gamewin":
+          this.interactive = false;
+          this._gameResult.showResult(true);
         break;
-    }
+    } 
   }
 
   private onGameResultEventHandler(action: string, value: string): void {
     switch (action) {
       case "restartGame":
-        //RestartGame
+        //next level => static 0
+        //read the next level and go to the next level
+        //you should add next level details here  assets/settings.json
+        const nextLevel = 0;
+        this.interactive = true;
+        this._gameResult.hideResult();
+        this._gridController.restartSetGrid(1);
+
+        this._uiController.restartSetInterface(nextLevel);
         break;
     }
   }
 
-  private onGridEventHandler(action: string): void {
+  private onGridEventHandler(action: string, symbolType: string): void {
     switch (action) {
       case "match":
-        this._animationController.setCharacterAnimation(BoyAnimations.Jump);
-        this._game.sound.play("explode", 1, true);
+        this._uiController.updateGoals(symbolType);
+        this._uiController.decreaseMoves();
+        this._animationController.setCharacterAnimation(BoyAnimations.Jump , false);
+        this._game.sound.play("explode", 1, false);
         break;
     }
   }

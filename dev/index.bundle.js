@@ -9132,9 +9132,11 @@ var SimpleButton2D = (function (_super) {
         return _this;
     }
     SimpleButton2D.prototype.onPointerDown = function (e) {
-        this.isDown = true;
-        this.texture = PIXI.Texture.from(this._downFrame);
-        this._callback(this);
+        if (this.Interactive) {
+            this.isDown = true;
+            this.texture = PIXI.Texture.from(this._downFrame);
+            this._callback(this);
+        }
     };
     SimpleButton2D.prototype.onPointerUp = function (e) {
         this.isDown = false;
@@ -9164,14 +9166,17 @@ var SimpleButton2D = (function (_super) {
         this.interactive = false;
         this.texture = PIXI.Texture.from(this._disabledFrame);
     };
-    SimpleButton2D.prototype.setTexture = function (frame, currentFrame, name) {
+    SimpleButton2D.prototype.setTexture = function (frame) {
         this._normalFrame = frame + "_normal";
         this._overFrame = frame + "_over";
         this._downFrame = frame + "_down";
         this._disabledFrame = frame + "_disabled";
-        this.name = name;
-        if (currentFrame != null || currentFrame != "")
-            this._texture = PIXI.Texture.from(currentFrame);
+        this.name = frame;
+        this._texture = PIXI.Texture.from(this._normalFrame);
+    };
+    SimpleButton2D.prototype.setCallback = function (callback) {
+        this._callback = callback;
+        ;
     };
     SimpleButton2D.prototype.setEnabled = function () {
         this.buttonMode = true;
@@ -16020,7 +16025,7 @@ var BaseGame = (function (_super) {
     };
     BaseGame.prototype.onGridEventHandler = function (action) {
         switch (action) {
-            case "match":
+            case "matchstarted":
                 this._animationController.setCharacterAnimation(Animations_1.BoyAnimations.Jump);
                 this._game.sound.play("explode", 1, true);
                 break;
@@ -23506,8 +23511,12 @@ var GridController = (function (_super) {
         var _this = _super.call(this) || this;
         _this.gameSettings = gameSettings;
         _this.level = level;
-        _this._clusters = [];
+        _this._allClusters = [];
+        _this._cluster = [];
         _this._currentSequence = [];
+        _this._newSymbolStack = [];
+        _this._old = 0;
+        _this._rowLength = 0;
         _this.awake();
         return _this;
     }
@@ -23515,17 +23524,20 @@ var GridController = (function (_super) {
         this._currentSequence = this.gameSettings.Levels[this.level].initialSeqeunce;
         this._grid = new Grid_1.Grid(this._currentSequence);
         this.addChild(this._grid);
-        this._grid.on("animationstatus", this.onGridHandler, this);
+        this._grid.on("actiontaken", this.onActionTaken, this);
+        this._grid.on("matchanimationstarted", this.createNewSymbol, this);
+        this._grid.once("matchanimationcompleted", this.matchCompleted, this);
         this._grid.createGrid(this.gameSettings.Levels[this.level].column, this.gameSettings.Levels[this.level].row);
-        this.updateCurrentSequence();
+        this.clearSequenceProperties();
     };
-    GridController.prototype.updateCurrentSequence = function () {
-        for (var i = 0; i < 9; i++) {
-            this._currentSequence[i] = [];
-            for (var j = 0; j < 9; j++) {
-                this._currentSequence[i][j] = this._grid.symbol[j][i].type;
-            }
-        }
+    GridController.prototype.getRandomSymbolName = function () {
+        var possibleSymbol = ["solid1", "solid2", "solid3", "solid4"];
+        return possibleSymbol[Math.floor(Math.random() * possibleSymbol.length)];
+    };
+    GridController.prototype.clearSequenceProperties = function () {
+        this._newSymbolStack = [];
+        this._cluster = [];
+        this._allClusters = [];
     };
     GridController.prototype.isItemInArray = function (arr, val) {
         var locations = [];
@@ -23538,19 +23550,55 @@ var GridController = (function (_super) {
         }
         return locations;
     };
-    GridController.prototype.onGridHandler = function (index, button) {
+    GridController.prototype.onActionTaken = function (index, button) {
         this._grid.destroyParticleAnimation();
-        this._clusters = [];
-        this._clusters = new FindMatch_1.FindMatch().getResult(this._grid.symbol);
-        var explodeType = this._clusters[index[1]][index[0]];
-        var allSymbols = this.isItemInArray(this._clusters, explodeType);
-        if (allSymbols.length >= 2) {
-            for (var i = 0; i < allSymbols.length; i++) {
-                this._grid.matchAnimation(allSymbols[i][1], allSymbols[i][0]);
+        this._allClusters = new FindMatch_1.FindMatch().getResult(this._grid._symbol);
+        var matchesType = this._allClusters[index[1]][index[0]];
+        this._cluster = this.isItemInArray(this._allClusters, matchesType);
+        if (this._cluster.length >= 2) {
+            this.emit("animationstatus", "matchstarted");
+            this._grid.setInteractivity(false);
+            for (var i = 0; i < this._cluster.length; i++) {
+                this._grid.matchAnimation(this._cluster[i][1], this._cluster[i][0]);
             }
         }
         else {
             this._grid.rotateAnimation(button);
+        }
+    };
+    GridController.prototype.createNewSymbol = function (value) {
+        if (this._old[0] == value[0]) {
+            this._rowLength++;
+        }
+        else {
+            this._rowLength = 0;
+        }
+        this._old = value;
+        var randSymbol = this.getRandomSymbolName();
+        var a = this._grid._symbol[value[0]].splice(0, 0, this._grid._symbol[value[0]].splice(value[1], 1)[0]);
+        this._grid._symbol[value[0]][0].setTexture(randSymbol);
+        this._grid._symbol[value[0]][0].position.set(80 + value[0] * 75, 360 - 90 * (this._rowLength + 1));
+        this._grid._symbol[value[0]][0].scale.set(0.75);
+        this._newSymbolStack.push([value[0], value[1]]);
+    };
+    GridController.prototype.matchCompleted = function () {
+        var _this = this;
+        var self = this;
+        for (var i = 0; i < this._newSymbolStack.length; i++) {
+            if (this._newSymbolStack[i]) {
+                this._grid.fallAnimation(this._newSymbolStack[i], function (completeIndex) {
+                    _this._grid.setCallback(completeIndex[0], completeIndex[1]);
+                    if (self._newSymbolStack[self._newSymbolStack.length - 1][0] ==
+                        completeIndex[0] &&
+                        self._newSymbolStack[self._newSymbolStack.length - 1][1] ==
+                            completeIndex[1]) {
+                        self.clearSequenceProperties();
+                        self._grid.setType();
+                        self._grid.setInteractivity(true);
+                        self._grid.once("matchanimationcompleted", self.matchCompleted, self);
+                    }
+                });
+            }
         }
     };
     return GridController;
@@ -23589,40 +23637,36 @@ var Grid = (function (_super) {
         _this._symbol = [];
         return _this;
     }
-    Grid.prototype.createGrid = function (column, row) {
+    Grid.prototype.createGrid = function (columns, rows) {
+        var _this = this;
         this._gridContainer = new PIXI.Container();
         this.addChild(this._gridContainer);
         this._gridMask = new PIXI.Graphics()
-            .beginFill(0xcecece, 1)
-            .drawRect(40, 300, 680, 825)
+            .beginFill(0xffffff, 1)
+            .drawRect(40, 315, 680, 825)
             .endFill();
         this._gridContainer.mask = this._gridMask;
         this.addChild(this._gridMask);
-        for (var i = 0; i < column; i++) {
-            this._symbol[i] = [];
-            for (var j = 0; j < row; j++) {
-                this._symbol[i][j] = new SimpleButton2D_1.SimpleButton2D(this.sequence[j][i], { x: 80 + i * 75, y: 360 + j * 90 }, this.onButtonClick.bind(this, [i, j]));
-                if (this.sequence[i][j] == "solid1") {
-                    this._symbol[i][j].type = 1;
-                }
-                if (this.sequence[i][j] == "solid2") {
-                    this._symbol[i][j].type = 2;
-                }
-                if (this.sequence[i][j] == "solid3") {
-                    this._symbol[i][j].type = 3;
-                }
-                if (this.sequence[i][j] == "solid4") {
-                    this._symbol[i][j].type = 4;
-                }
-                this._symbol[i][j].name = this.sequence[j][i];
-                this._symbol[i][j].anchor.set(0.5, 0.5);
-                this._symbol[i][j].scale.set(0.75, 0.75);
-                this._gridContainer.addChild(this._symbol[i][j]);
+        var _loop_1 = function (column) {
+            this_1._symbol[column] = [];
+            var _loop_2 = function (row) {
+                this_1._symbol[column][row] = new SimpleButton2D_1.SimpleButton2D(this_1.sequence[column][row], { x: 80 + column * 75, y: 360 + row * 90 }, function () {
+                    _this.emit("actiontaken", [column, row], _this._symbol[column][row]);
+                });
+                this_1._symbol[column][row].name = this_1.sequence[column][row];
+                this_1._symbol[column][row].anchor.set(0.5, 0.5);
+                this_1._symbol[column][row].scale.set(0.75, 0.75);
+                this_1._gridContainer.addChild(this_1._symbol[column][row]);
+            };
+            for (var row = 0; row < rows; row++) {
+                _loop_2(row);
             }
+        };
+        var this_1 = this;
+        for (var column = 0; column < columns; column++) {
+            _loop_1(column);
         }
-    };
-    Grid.prototype.onButtonClick = function (index, button) {
-        this.emit("animationstatus", index, button);
+        this.setType();
     };
     Grid.prototype.rotateAnimation = function (target) {
         if (this._rotateAnimation)
@@ -23644,6 +23688,7 @@ var Grid = (function (_super) {
         });
     };
     Grid.prototype.matchAnimation = function (column, row) {
+        var _this = this;
         if (this._rotateAnimation) {
             this._rotateAnimation.kill();
             this._rotateAnimation.seek(this._rotateAnimation.duration, false);
@@ -23652,12 +23697,34 @@ var Grid = (function (_super) {
             this._scaleAnimation.kill();
             this._scaleAnimation.seek(this._scaleAnimation.duration, false);
         }
-        this._symbol[column][row].scale.set(0.1, 0.1);
-        gsap_1.TweenLite.to(this._symbol[column][row].scake, 1, {
-            x: 0,
-            y: 0,
-        });
         this.createAndPlayParticleAnimation(column, row, this._symbol[column][row].name);
+        this._symbol[column][row].scale.set(0.1);
+        this.emit("matchanimationstarted", [column, row]);
+        setTimeout(function () {
+            _this.emit("matchanimationcompleted", [column, row]);
+        }, 100);
+    };
+    Grid.prototype.setCallback = function (column, row) {
+        var _this = this;
+        var callback = function () {
+            _this.emit("actiontaken", [column, row], _this._symbol[column][row]);
+        };
+        this._symbol[column][row].setCallback(callback);
+    };
+    Grid.prototype.fallAnimation = function (value, callback) {
+        var _loop_3 = function (i) {
+            gsap_1.TweenLite.to(this_2._symbol[value[0]][i].position, 0.85, {
+                y: 360 + i * 90,
+                ease: gsap_1.Bounce.easeOut,
+                onComplete: function () {
+                    callback([value[0], i]);
+                },
+            });
+        };
+        var this_2 = this;
+        for (var i = 0; i <= value[1]; i++) {
+            _loop_3(i);
+        }
     };
     Grid.prototype.createAndPlayParticleAnimation = function (column, row, symbolType) {
         var _this = this;
@@ -23666,7 +23733,6 @@ var Grid = (function (_super) {
         this._particleAnimation[i] = new PIXI.particles.Emitter(this._particleContainer, ["solidParticle1", "solidParticle2"], GameSettings_1.particleConfig);
         this.addChild(this._particleContainer);
         var colorHax = 0x2b97e2;
-        console.log(symbolType);
         switch (symbolType) {
             case "solid1":
                 colorHax = 0xefd401;
@@ -23700,28 +23766,32 @@ var Grid = (function (_super) {
             this._particleAnimation[i].destroy();
         }
     };
-    Grid.prototype.createSymbol = function (column, row, symbolName) {
-        var name = symbolName + "_normal";
-        this._symbol[column][row].type = symbolName;
-        this._symbol[column][row].texture = PIXI.Texture.from(name);
-        this._symbol[column][row].scale.set(0.75, 0.75);
-        this._symbol[column][row].position.set(80 + column * 75, 250);
-        this.fallNewSymbol(column, row);
-    };
-    Grid.prototype.fallNewSymbol = function (column, row) {
-        var a = [];
-        for (var i = 1; i <= row; i++) {
-            console.log(i);
-            a.push(this._symbol[column][i]);
+    Grid.prototype.setInteractivity = function (value) {
+        for (var column = 0; column < 9; column++) {
+            for (var row = 0; row < 9; row++) {
+                this._symbol[row][column].Interactive = value;
+            }
         }
     };
-    Object.defineProperty(Grid.prototype, "symbol", {
-        get: function () {
-            return this._symbol;
-        },
-        enumerable: true,
-        configurable: true
-    });
+    Grid.prototype.setType = function () {
+        for (var column = 0; column < 9; column++) {
+            for (var row = 0; row < 9; row++) {
+                var name_1 = this._symbol[row][column].name;
+                if (name_1 == "solid1") {
+                    this._symbol[column][row].type = 1;
+                }
+                if (name_1 == "solid2") {
+                    this._symbol[column][row].type = 2;
+                }
+                if (name_1 == "solid3") {
+                    this._symbol[column][row].type = 3;
+                }
+                if (name_1 == "solid4") {
+                    this._symbol[column][row].type = 4;
+                }
+            }
+        }
+    };
     return Grid;
 }(PIXI.Container));
 exports.Grid = Grid;

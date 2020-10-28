@@ -3,11 +3,20 @@
     {
       "column": 9,
       "row": 9,
-      "moves": 10,
+      "moves": 1,
       "goal": [
-        { "symbol": "solid1", "count": 5 },
-        { "symbol": "solid2", "count": 8 },
-        { "symbol": "solid3", "count": 10 }
+        {
+          "symbol": "solid1",
+          "count": 1
+        },
+        {
+          "symbol": "solid2",
+          "count": 1
+        },
+        {
+          "symbol": "solid3",
+          "count": 1
+        }
       ],
       "initialSeqeunce": [
         [

@@ -19,7 +19,8 @@ export class UserInterface extends PIXI.Container {
     this.addChild(this._backgroundImage);
     //Move Text
     this._moveText = new PIXI.Text("27", DefaultTextStyle);
-    this._moveText.position.set(620, 80);
+    this._moveText.anchor.set(0.5);
+    this._moveText.position.set(660, 100);
     this.addChild(this._moveText);
     for (let i = 0; i < 3; i++) {
       //Goal Image
@@ -38,7 +39,8 @@ export class UserInterface extends PIXI.Container {
   }
 
   public setGoal(value: { symbol: string; count: number }[]): void {
-    //this.clearGoalProp();
+    console.log("setgoal", value);
+    this.clearGoalProp();
     for (let i = 0; i < value.length; i++) {
       this._goalImage[i].texture = PIXI.Texture.from(
         value[i].symbol + "_normal"
@@ -48,6 +50,7 @@ export class UserInterface extends PIXI.Container {
   }
 
   public setMoves(value: number): void {
+    console.log("setMoves", value);
     this._moveText.text = value.toString();
   }
 

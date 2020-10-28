@@ -42,6 +42,11 @@ export class GridController extends PIXI.Container {
     this._allClusters = [];
   }
 
+  public restartSetGrid(level: number): void {
+    this.clearSequenceProperties();
+    this._grid.restartSetGrid(level);
+  }
+
   private isItemInArray(arr: number[][], val: number) {
     const locations: any = [];
     for (let i = 0; i < arr.length; i++) {
@@ -59,8 +64,10 @@ export class GridController extends PIXI.Container {
     this._allClusters = new FindMatch().getResult(this._grid._symbol);
     const matchesType = this._allClusters[index[1]][index[0]];
     this._cluster = this.isItemInArray(this._allClusters, matchesType);
+    const symbolType = this._grid._symbol[index[0]][index[1]].name;
     if (this._cluster.length >= 2) {
-      this._grid.setInteractivity(false)
+      this.emit("animationstatus", "match", symbolType);
+      this._grid.setInteractivity(false);
       for (let i = 0; i < this._cluster.length; i++) {
         this._grid.matchAnimation(this._cluster[i][1], this._cluster[i][0]);
       }
@@ -79,7 +86,7 @@ export class GridController extends PIXI.Container {
     }
     this._old = value;
     const randSymbol = this.getRandomSymbolName();
-    const a =    this._grid._symbol[value[0]].splice(
+    const a = this._grid._symbol[value[0]].splice(
       0,
       0,
       this._grid._symbol[value[0]].splice(value[1], 1)[0]
@@ -109,7 +116,7 @@ export class GridController extends PIXI.Container {
             ) {
               self.clearSequenceProperties();
               self._grid.setType();
-              self._grid.setInteractivity(true)
+              self._grid.setInteractivity(true);
               self._grid.once(
                 "matchanimationcompleted",
                 self.matchCompleted,

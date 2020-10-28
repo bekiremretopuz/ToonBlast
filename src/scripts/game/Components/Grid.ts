@@ -15,6 +15,15 @@ export class Grid extends PIXI.Container {
     super();
   }
 
+  public restartSetGrid(level: number): void {
+    for (let column = 0; column < 9; column++) {
+      for (let row = 0; row < 9; row++) {
+        this._symbol[column][row].setTexture(this.sequence[column][row]);
+      }
+    }
+    this.setInteractivity(true);
+  }
+
   public createGrid(columns: number, rows: number) {
     this._gridContainer = new PIXI.Container();
     this.addChild(this._gridContainer);
