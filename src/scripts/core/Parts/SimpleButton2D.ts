@@ -30,9 +30,12 @@ export class SimpleButton2D extends PIXI.Sprite {
   }
 
   private onPointerDown(e: any): void {
-    this.isDown = true;
-    this.texture = PIXI.Texture.from(this._downFrame);
-    this._callback(this);
+    if (this.Interactive) {
+       this.isDown = true;
+       this.texture = PIXI.Texture.from(this._downFrame);
+       this._callback(this);
+    }
+   
   }
 
   private onPointerUp(e: any): void {
@@ -66,13 +69,17 @@ export class SimpleButton2D extends PIXI.Sprite {
     this.texture = PIXI.Texture.from(this._disabledFrame);
   }
 
-  public setTexture(frame: string, name: string): void {
+  public setTexture(frame: string): void {
     this._normalFrame = frame + "_normal";
     this._overFrame = frame + "_over";
     this._downFrame = frame + "_down";
     this._disabledFrame = frame + "_disabled";
-    this.name = name;
+    this.name = frame;
     this._texture = PIXI.Texture.from(this._normalFrame);
+  }
+
+  public setCallback(callback: Function): void {
+    this._callback = callback;;
   }
 
   public setEnabled(): void {

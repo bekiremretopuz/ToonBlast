@@ -1,7 +1,6 @@
 import { Grid } from "src/scripts/game/Components/Grid";
 import { SimpleButton2D } from "src/scripts/core/Parts/SimpleButton2D";
 import { FindMatch } from "app/Helper/FindMatch";
-import { TweenLite } from "gsap";
 export class GridController extends PIXI.Container {
   private _grid: Grid;
   private _allClusters: number[][] = [];
@@ -29,20 +28,7 @@ export class GridController extends PIXI.Container {
       this.gameSettings.Levels[this.level].column,
       this.gameSettings.Levels[this.level].row
     );
-    this.updateCurrentSequence();
-  }
-
-  private shiftingOfGrid(array: any[], from: number, to: number): void {
-    // if (to >= array.length) {
-    //   let arrLength = to - array.length + 1;
-    //   while (arrLength--) {
-    //     array.push(undefined);
-    //   }
-    // }
-    // array.splice(to, 0, array.splice(from, 1)[0]);
-
-    let cutOut = array.splice(from, 1)[0]; // cut the element at index 'from'
-    array.splice(to, 0, cutOut); // insert it at index 'to'
+    this.clearSequenceProperties();
   }
 
   private getRandomSymbolName(): string {
@@ -50,7 +36,7 @@ export class GridController extends PIXI.Container {
     return possibleSymbol[Math.floor(Math.random() * possibleSymbol.length)];
   }
 
-  private updateCurrentSequence(): void {
+  private clearSequenceProperties(): void {
     this._newSymbolStack = [];
     this._cluster = [];
     this._allClusters = [];
@@ -70,10 +56,11 @@ export class GridController extends PIXI.Container {
 
   private onActionTaken(index: number[], button: SimpleButton2D): void {
     this._grid.destroyParticleAnimation();
-    this._allClusters = new FindMatch().getResult(this._grid.symbol);
+    this._allClusters = new FindMatch().getResult(this._grid._symbol);
     const matchesType = this._allClusters[index[1]][index[0]];
     this._cluster = this.isItemInArray(this._allClusters, matchesType);
     if (this._cluster.length >= 2) {
+      this._grid.setInteractivity(false)
       for (let i = 0; i < this._cluster.length; i++) {
         this._grid.matchAnimation(this._cluster[i][1], this._cluster[i][0]);
       }
@@ -85,48 +72,52 @@ export class GridController extends PIXI.Container {
   private _old: any = 0;
   private _rowLength: number = 0;
   private createNewSymbol(value: any): void {
-    this.interactive = false;
-    const randSymbol = this.getRandomSymbolName();
-    if (randSymbol == "solid1") {
-      this._grid.symbol[value[0]][this._rowLength].type = 1;
-    }
-    if (randSymbol == "solid2") {
-      this._grid.symbol[value[0]][this._rowLength].type = 2;
-    }
-    if (randSymbol == "solid3") {
-      this._grid.symbol[value[0]][this._rowLength].type = 3;
-    }
-    if (randSymbol == "solid4") {
-      this._grid.symbol[value[0]][this._rowLength].type = 4;
-    }
     if (this._old[0] == value[0]) {
       this._rowLength++;
     } else {
       this._rowLength = 0;
     }
     this._old = value;
-    this.shiftingOfGrid(this._grid.symbol[value[0]], value[1], 0);
-    this._grid.symbol[value[0]][0].name = randSymbol;
-    this._grid.symbol[value[0]][0].setTexture(randSymbol);
-    this._grid.symbol[value[0]][0].scale.set(0.75);
-    const posX = 80 + value[0] * 75;
-    const posY = 250;
-    this._grid.symbol[value[0]][0].position.set(posX, posY);
+    const randSymbol = this.getRandomSymbolName();
+    const a =    this._grid._symbol[value[0]].splice(
+      0,
+      0,
+      this._grid._symbol[value[0]].splice(value[1], 1)[0]
+    );
+    this._grid._symbol[value[0]][0].setTexture(randSymbol);
+    this._grid._symbol[value[0]][0].position.set(
+      80 + value[0] * 75,
+      360 - 90 * (this._rowLength + 1)
+    );
+    this._grid._symbol[value[0]][0].scale.set(0.75);
     this._newSymbolStack.push([value[0], value[1]]);
   }
-  
+
   private matchCompleted(): void {
+    const self = this;
     for (let i = 0; i < this._newSymbolStack.length; i++) {
-      if (this._newSymbolStack[i + 1]) {
-        this._grid.fallAnimation(this._newSymbolStack[i + 1], () => {
-          this.interactive = false;
-          this.updateCurrentSequence();
-          // this._grid.once(
-          //   "matchanimationcompleted",
-          //   this.matchCompleted,
-          //   this
-          // );
-        });
+      if (this._newSymbolStack[i]) {
+        this._grid.fallAnimation(
+          this._newSymbolStack[i],
+          (completeIndex: number[]) => {
+            this._grid.setCallback(completeIndex[0], completeIndex[1]);
+            if (
+              self._newSymbolStack[self._newSymbolStack.length - 1][0] ==
+                completeIndex[0] &&
+              self._newSymbolStack[self._newSymbolStack.length - 1][1] ==
+                completeIndex[1]
+            ) {
+              self.clearSequenceProperties();
+              self._grid.setType();
+              self._grid.setInteractivity(true)
+              self._grid.once(
+                "matchanimationcompleted",
+                self.matchCompleted,
+                self
+              );
+            }
+          }
+        );
       }
     }
   }
