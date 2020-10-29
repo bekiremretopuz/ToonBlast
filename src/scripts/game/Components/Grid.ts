@@ -1,18 +1,25 @@
 import "pixi-particles";
 import { SimpleButton2D } from "src/scripts/core/Parts/SimpleButton2D";
-import { Bounce, TimelineLite, TweenLite, TweenMax } from "gsap";
-import { particleConfig } from "app/Helper/GameSettings";
+import { Bounce, Linear, TweenLite, TweenMax } from "gsap";
+import {
+  explodeParticleConfig,
+  sparksParticleConfig,
+} from "app/Helper/GameSettings";
 export class Grid extends PIXI.Container {
   private _gridContainer: PIXI.Container;
-  private _particleContainer: PIXI.particles.ParticleContainer = new PIXI.particles.ParticleContainer();
-  private _particleAnimation: PIXI.particles.Emitter[] = [];
+  private _explodeParticleContainer: PIXI.particles.ParticleContainer = new PIXI.particles.ParticleContainer();
+  private _sparksParticleContainer: PIXI.particles.ParticleContainer = new PIXI.particles.ParticleContainer();
+  private _explodeParticleAnimation: PIXI.particles.Emitter[] = [];
+  private _sparksParticleAnimation: PIXI.particles.Emitter;
   public _symbol: any[][] = [];
   private _rotateAnimation: TweenMax;
   private _scaleAnimation: TweenMax;
   private _gridMask: PIXI.Graphics;
-  private _requestAnimationFrameId: number;
+  private _requestAnimationExplodeFrameId: number;
+  private _requestAnimationSparksFrameId: number;
   constructor(private readonly sequence: string[][]) {
     super();
+    this.addChild(this._sparksParticleContainer);
   }
 
   public restartSetGrid(level: number): void {
@@ -70,7 +77,61 @@ export class Grid extends PIXI.Container {
     });
   }
 
-  public matchAnimation(column: number, row: number) {
+  public createDuplicateSymbol(
+    column: number,
+    row: number,
+    symbolType: string
+  ): void {
+    const duplicateSymbol = new SimpleButton2D(
+      symbolType,
+      { x: 80 + column * 75, y: 360 + row * 90 },
+      null as any
+    );
+    duplicateSymbol.anchor.set(0.5);
+    duplicateSymbol.scale.set(0.75);
+    this.addChild(duplicateSymbol);
+    this.goalTransformAnimation(duplicateSymbol, symbolType);
+  }
+
+  public goalTransformAnimation(
+    targetSymbol: SimpleButton2D,
+    symbolType: string
+  ): void {
+    let targetPosX: number = 505;
+    if (symbolType == "solid1") targetPosX = 340;
+    else if (symbolType == "solid2") targetPosX = 420;
+    TweenLite.to(targetSymbol, 0.85, {
+      bezier: [{ x: targetPosX, y: 100 }],
+      ease: Linear.easeInOut,
+      onComplete: () => {
+        targetSymbol.destroy();
+        this.goalParticleAnimation(targetPosX, symbolType);
+      },
+    });
+  }
+
+  private goalParticleAnimation(posX: number, symbolType: string): void {
+    window.cancelAnimationFrame(this._requestAnimationSparksFrameId);
+    if (this._sparksParticleAnimation) this._sparksParticleAnimation.destroy();
+    this._sparksParticleAnimation = new PIXI.particles.Emitter(
+      this._sparksParticleContainer,
+      [PIXI.Texture.from("sparks")],
+      sparksParticleConfig
+    );
+    this._sparksParticleContainer.tint = this.getTintColor(symbolType);
+    this._sparksParticleAnimation.updateSpawnPos(posX, 100);
+    let elapsed = Date.now();
+    const update = () => {
+      this._requestAnimationSparksFrameId = requestAnimationFrame(update);
+      let now = Date.now();
+      this._sparksParticleAnimation.update((now - elapsed) * 0.001);
+      elapsed = now;
+    };
+    this._sparksParticleAnimation.emit = true;
+    update();
+  }
+
+  public matchAnimation(column: number, row: number, symbolType: string) {
     if (this._rotateAnimation) {
       this._rotateAnimation.kill();
       this._rotateAnimation.seek(this._rotateAnimation.duration, false);
@@ -87,6 +148,7 @@ export class Grid extends PIXI.Container {
     this._symbol[column][row].scale.set(0.1);
     this.emit("matchanimationstarted", [column, row]);
     setTimeout(() => {
+      this.createDuplicateSymbol(column, row, symbolType);
       this.emit("matchanimationcompleted", [column, row]);
     }, 100);
   }
@@ -110,52 +172,55 @@ export class Grid extends PIXI.Container {
     }
   }
 
+  public getTintColor(symbolType: string): number {
+    switch (symbolType) {
+      case "solid1":
+        return 0xefd401;
+      case "solid2":
+        return 0xe30e0e;
+      case "solid3":
+        return 0x2b97e2;
+      case "solid4":
+        return 0x40bb0b;
+      default:
+        throw new Error("Unexpected symbol type");
+    }
+  }
+
   public createAndPlayParticleAnimation(
     column: number,
     row: number,
     symbolType: string
   ): void {
-    window.cancelAnimationFrame(this._requestAnimationFrameId);
-    const i = this._particleAnimation.length;
-    this._particleAnimation[i] = new PIXI.particles.Emitter(
-      this._particleContainer,
+    window.cancelAnimationFrame(this._requestAnimationExplodeFrameId);
+    const i = this._explodeParticleAnimation.length;
+    this._explodeParticleAnimation[i] = new PIXI.particles.Emitter(
+      this._explodeParticleContainer,
       ["solidParticle1", "solidParticle2"],
-      particleConfig
+      explodeParticleConfig
     );
-    this.addChild(this._particleContainer);
-    let colorHax: number = 0x2b97e2;
-    switch (symbolType) {
-      case "solid1":
-        colorHax = 0xefd401;
-        break;
-      case "solid2":
-        colorHax = 0xe30e0e;
-        break;
-      case "solid3":
-        colorHax = 0x2b97e2;
-        break;
-      case "solid4":
-        colorHax = 0x40bb0b;
-        break;
-    }
-    this._particleContainer.tint = colorHax;
-    this._particleAnimation[i].updateSpawnPos(75 + column * 75, 360 + row * 90);
+    this.addChild(this._explodeParticleContainer);
+    this._explodeParticleContainer.tint = this.getTintColor(symbolType);
+    this._explodeParticleAnimation[i].updateSpawnPos(
+      75 + column * 75,
+      360 + row * 90
+    );
     let elapsed = Date.now();
     const update = () => {
-      this._requestAnimationFrameId = requestAnimationFrame(update);
+      this._requestAnimationExplodeFrameId = requestAnimationFrame(update);
       let now = Date.now();
-      for (let i = 0; i < this._particleAnimation.length; i++) {
-        this._particleAnimation[i].update((now - elapsed) * 0.001);
+      for (let i = 0; i < this._explodeParticleAnimation.length; i++) {
+        this._explodeParticleAnimation[i].update((now - elapsed) * 0.001);
       }
       elapsed = now;
     };
-    this._particleAnimation[i].emit = true;
+    this._explodeParticleAnimation[i].emit = true;
     update();
   }
 
   public destroyParticleAnimation(): void {
-    for (let i = 0; i < this._particleAnimation.length; i++) {
-      this._particleAnimation[i].destroy();
+    for (let i = 0; i < this._explodeParticleAnimation.length; i++) {
+      this._explodeParticleAnimation[i].destroy();
     }
   }
 

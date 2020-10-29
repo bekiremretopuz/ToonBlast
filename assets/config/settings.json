@@ -3,19 +3,19 @@
     {
       "column": 9,
       "row": 9,
-      "moves": 1,
+      "moves": 50,
       "goal": [
         {
           "symbol": "solid1",
-          "count": 1
+          "count": 20
         },
         {
           "symbol": "solid2",
-          "count": 1
+          "count": 25
         },
         {
           "symbol": "solid3",
-          "count": 1
+          "count": 30
         }
       ],
       "initialSeqeunce": [

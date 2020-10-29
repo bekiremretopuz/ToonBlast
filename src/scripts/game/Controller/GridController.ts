@@ -66,10 +66,14 @@ export class GridController extends PIXI.Container {
     this._cluster = this.isItemInArray(this._allClusters, matchesType);
     const symbolType = this._grid._symbol[index[0]][index[1]].name;
     if (this._cluster.length >= 2) {
-      this.emit("animationstatus", "match", symbolType);
+      this.emit("animationstatus", "match", symbolType, this._cluster.length);
       this._grid.setInteractivity(false);
       for (let i = 0; i < this._cluster.length; i++) {
-        this._grid.matchAnimation(this._cluster[i][1], this._cluster[i][0]);
+        this._grid.matchAnimation(
+          this._cluster[i][1],
+          this._cluster[i][0],
+          symbolType
+        );
       }
     } else {
       this._grid.rotateAnimation(button);
@@ -86,7 +90,7 @@ export class GridController extends PIXI.Container {
     }
     this._old = value;
     const randSymbol = this.getRandomSymbolName();
-    const a = this._grid._symbol[value[0]].splice(
+    this._grid._symbol[value[0]].splice(
       0,
       0,
       this._grid._symbol[value[0]].splice(value[1], 1)[0]

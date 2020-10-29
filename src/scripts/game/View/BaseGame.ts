@@ -59,10 +59,10 @@ export class BaseGame extends Scene {
         this._gameResult.showResult(false);
         break;
       case "gamewin":
-          this.interactive = false;
-          this._gameResult.showResult(true);
+        this.interactive = false;
+        this._gameResult.showResult(true);
         break;
-    } 
+    }
   }
 
   private onGameResultEventHandler(action: string, value: string): void {
@@ -75,18 +75,24 @@ export class BaseGame extends Scene {
         this.interactive = true;
         this._gameResult.hideResult();
         this._gridController.restartSetGrid(1);
-
         this._uiController.restartSetInterface(nextLevel);
         break;
     }
   }
 
-  private onGridEventHandler(action: string, symbolType: string): void {
+  private onGridEventHandler(
+    action: string,
+    symbolType: string,
+    clusterLength: number
+  ): void {
     switch (action) {
       case "match":
-        this._uiController.updateGoals(symbolType);
+        this._uiController.updateGoals(symbolType, clusterLength);
         this._uiController.decreaseMoves();
-        this._animationController.setCharacterAnimation(BoyAnimations.Jump , false);
+        this._animationController.setCharacterAnimation(
+          BoyAnimations.Jump,
+          false
+        );
         this._game.sound.play("explode", 1, false);
         break;
     }

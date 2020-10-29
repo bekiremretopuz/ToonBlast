@@ -162,6 +162,12 @@ export const AssetsList = [
     type: "texture",
   },
   {
+    id: "sparks",
+    url: "assets/gfx/animation/sparks.png",
+    priority: AssetPriority.NORMAL,
+    type: "texture",
+  },
+  {
     id: "collect",
     url: "assets/sfx/cube_collect.wav",
     priority: AssetPriority.NORMAL,
@@ -193,51 +199,103 @@ export const AssetsList = [
   } as Asset,
 ];
 
-export const particleConfig = {
+export const explodeParticleConfig = {
   alpha: {
     start: 1,
-    end: 0.1,
+    end: 1,
   },
   scale: {
     start: 0.25,
-    end: 0.1,
+    end: 0.001,
     minimumScaleMultiplier: 1,
   },
   color: {
     start: "#ffffff",
-    end: "#fffffff",
+    end: "#ffffff",
   },
   speed: {
-    start: 50,
-    end: 500,
+    start: 200,
+    end: 30,
     minimumSpeedMultiplier: 1,
   },
   acceleration: {
     x: 0,
-    y: 190,
+    y: 640,
   },
   maxSpeed: 0,
   startRotation: {
-    min: 230,
-    max: 310,
+    min: 250,
+    max: 290,
   },
   noRotation: false,
   rotationSpeed: {
-    min: 0,
-    max: 0,
+    min: 360,
+    max: 360,
   },
   lifetime: {
-    min: 1.5,
-    max: 1.5,
+    min: 1,
+    max: 1,
   },
   blendMode: "normal",
-  frequency: 0.01,
+  frequency: 0.025,
   emitterLifetime: 1,
-  maxParticles: 5,
+  maxParticles: 6,
   pos: {
     x: 0,
     y: 0,
   },
   addAtBack: false,
   spawnType: "point",
+};
+
+export const sparksParticleConfig = {
+  alpha: {
+    start: 1,
+    end: 1,
+  },
+  scale: {
+    start: 0.35,
+    end: 0.2,
+    minimumScaleMultiplier: 1,
+  },
+  color: {
+    start: "#ffffff",
+    end: "#ffffff",
+  },
+  speed: {
+    start: 150,
+    end: 150,
+    minimumSpeedMultiplier: 1,
+  },
+  acceleration: {
+    x: 0,
+    y: 0,
+  },
+  maxSpeed: 0,
+  startRotation: {
+    min: 0,
+    max: 360,
+  },
+  noRotation: false,
+  rotationSpeed: {
+    min: 90,
+    max: 180,
+  },
+  lifetime: {
+    min: 1,
+    max: 1,
+  },
+  blendMode: "normal",
+  frequency: 0.05,
+  emitterLifetime: 1,
+  maxParticles: 10,
+  pos: {
+    x: 0,
+    y: 0,
+  },
+  addAtBack: false,
+  spawnType: "burst",
+  particlesPerWave: 1,
+  particleSpacing: 0,
+  angleStart: 0,
 };

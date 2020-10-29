@@ -3,10 +3,10 @@ export class UserInterfaceController extends PIXI.Container {
   private _userInterface: UserInterface;
   private _moves: number;
   private _goal: { symbol: string; count: number }[] = [];
-  private _currentLevel: number
-  constructor(private gameSettings: any, private  readonly level: number) {
+  private _currentLevel: number;
+  constructor(private gameSettings: any, private readonly level: number) {
     super();
-    this._currentLevel = level
+    this._currentLevel = level;
     this.awake();
   }
 
@@ -36,7 +36,7 @@ export class UserInterfaceController extends PIXI.Container {
   }
 
   public decreaseMoves(): void {
-    this._moves--;
+    this._moves --;
     this._userInterface.setMoves(this._moves);
     if (this._moves == 0 && this.isSuccesLevel() == false) {
       this.emit("actiontaken", "gameover");
@@ -59,10 +59,10 @@ export class UserInterfaceController extends PIXI.Container {
     this._goal = value;
   }
 
-  public updateGoals(symbol: string): void {
+  public updateGoals(symbol: string ,count: number): void {
     for (let i = 0, iLen = this._goal.length; i < iLen; i++) {
       if (this._goal[i].symbol == symbol) {
-        if (this._goal[i].count != 0) this._goal[i].count--;
+        if (this._goal[i].count != 0) this._goal[i].count-=count;
       }
     }
     this._userInterface.setGoal(this._goal);

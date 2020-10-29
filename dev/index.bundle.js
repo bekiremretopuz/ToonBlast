@@ -16009,25 +16009,34 @@ var BaseGame = (function (_super) {
     };
     BaseGame.prototype.onControlEventHandler = function (action, value) {
         switch (action) {
-            case "bla":
-                this._game.sound.play("collect", 1, false);
+            case "gameover":
+                this.interactive = false;
+                this._gameResult.showResult(false);
                 break;
-            case "bla":
-                this._game.sound.play("collect", 1, false);
+            case "gamewin":
+                this.interactive = false;
+                this._gameResult.showResult(true);
                 break;
         }
     };
     BaseGame.prototype.onGameResultEventHandler = function (action, value) {
         switch (action) {
             case "restartGame":
+                var nextLevel = 0;
+                this.interactive = true;
+                this._gameResult.hideResult();
+                this._gridController.restartSetGrid(1);
+                this._uiController.restartSetInterface(nextLevel);
                 break;
         }
     };
-    BaseGame.prototype.onGridEventHandler = function (action) {
+    BaseGame.prototype.onGridEventHandler = function (action, symbolType) {
         switch (action) {
-            case "matchstarted":
-                this._animationController.setCharacterAnimation(Animations_1.BoyAnimations.Jump);
-                this._game.sound.play("explode", 1, true);
+            case "match":
+                this._uiController.updateGoals(symbolType);
+                this._uiController.decreaseMoves();
+                this._animationController.setCharacterAnimation(Animations_1.BoyAnimations.Jump, false);
+                this._game.sound.play("explode", 1, false);
                 break;
         }
     };
@@ -23327,18 +23336,26 @@ var UserInterfaceController = (function (_super) {
         _this.gameSettings = gameSettings;
         _this.level = level;
         _this._goal = [];
+        _this._currentLevel = level;
         _this.awake();
         return _this;
     }
     UserInterfaceController.prototype.awake = function () {
         this._userInterface = new UserInterface_1.UserInterface();
         this._userInterface.on("actiontaken", this.onInterfaceHandler, this);
-        this.setGoals(this.gameSettings.Levels[this.level].goal);
+        var goals = this.gameSettings.Levels[this.level].goal.slice();
+        this.setGoals(goals);
         this.setMoves(this.gameSettings.Levels[this.level].moves);
         this.addChild(this._userInterface);
     };
     UserInterfaceController.prototype.onInterfaceHandler = function (action) {
         this.emit("actiontaken", action);
+    };
+    UserInterfaceController.prototype.restartSetInterface = function (level) {
+        this._currentLevel = level;
+        var goals = this.gameSettings.Levels[this._currentLevel].goal.slice();
+        this.setGoals(goals);
+        this.setMoves(this.gameSettings.Levels[this.level].moves);
     };
     UserInterfaceController.prototype.setMoves = function (value) {
         this._userInterface.setMoves(value);
@@ -23347,18 +23364,40 @@ var UserInterfaceController = (function (_super) {
     UserInterfaceController.prototype.decreaseMoves = function () {
         this._moves--;
         this._userInterface.setMoves(this._moves);
+        if (this._moves == 0 && this.isSuccesLevel() == false) {
+            this.emit("actiontaken", "gameover");
+        }
+    };
+    UserInterfaceController.prototype.isSuccesLevel = function () {
+        if (this._moves >= 0) {
+            var count = 0;
+            for (var i = 0; i < this._goal.length; i++) {
+                if (this._goal[i].count == 0)
+                    count++;
+            }
+            if (this._goal.length == count)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
     };
     UserInterfaceController.prototype.setGoals = function (value) {
         this._userInterface.setGoal(value);
         this._goal = value;
     };
-    UserInterfaceController.prototype.updateGoals = function (symbol, count) {
+    UserInterfaceController.prototype.updateGoals = function (symbol) {
         for (var i = 0, iLen = this._goal.length; i < iLen; i++) {
             if (this._goal[i].symbol == symbol) {
-                this._goal[i].count = count;
+                if (this._goal[i].count != 0)
+                    this._goal[i].count--;
             }
         }
         this._userInterface.setGoal(this._goal);
+        if (this.isSuccesLevel() == true) {
+            this.emit("actiontaken", "gamewin");
+        }
     };
     return UserInterfaceController;
 }(PIXI.Container));
@@ -23398,7 +23437,8 @@ var UserInterface = (function (_super) {
         this._backgroundImage.name = "BackgroundImage";
         this.addChild(this._backgroundImage);
         this._moveText = new PIXI.Text("27", GameSettings_1.DefaultTextStyle);
-        this._moveText.position.set(620, 80);
+        this._moveText.anchor.set(0.5);
+        this._moveText.position.set(660, 100);
         this.addChild(this._moveText);
         for (var i = 0; i < 3; i++) {
             this._goalImage[i] = new SimpleSprite2D_1.SimpleSprite2D("solid1_normal", {
@@ -23414,12 +23454,15 @@ var UserInterface = (function (_super) {
         }
     };
     UserInterface.prototype.setGoal = function (value) {
+        console.log("setgoal", value);
+        this.clearGoalProp();
         for (var i = 0; i < value.length; i++) {
             this._goalImage[i].texture = PIXI.Texture.from(value[i].symbol + "_normal");
             this._goalCount[i].text = value[i].count.toString();
         }
     };
     UserInterface.prototype.setMoves = function (value) {
+        console.log("setMoves", value);
         this._moveText.text = value.toString();
     };
     UserInterface.prototype.clearGoalProp = function () {
@@ -23539,6 +23582,10 @@ var GridController = (function (_super) {
         this._cluster = [];
         this._allClusters = [];
     };
+    GridController.prototype.restartSetGrid = function (level) {
+        this.clearSequenceProperties();
+        this._grid.restartSetGrid(level);
+    };
     GridController.prototype.isItemInArray = function (arr, val) {
         var locations = [];
         for (var i = 0; i < arr.length; i++) {
@@ -23555,8 +23602,9 @@ var GridController = (function (_super) {
         this._allClusters = new FindMatch_1.FindMatch().getResult(this._grid._symbol);
         var matchesType = this._allClusters[index[1]][index[0]];
         this._cluster = this.isItemInArray(this._allClusters, matchesType);
+        var symbolType = this._grid._symbol[index[0]][index[1]].name;
         if (this._cluster.length >= 2) {
-            this.emit("animationstatus", "matchstarted");
+            this.emit("animationstatus", "match", symbolType);
             this._grid.setInteractivity(false);
             for (var i = 0; i < this._cluster.length; i++) {
                 this._grid.matchAnimation(this._cluster[i][1], this._cluster[i][0]);
@@ -23637,6 +23685,14 @@ var Grid = (function (_super) {
         _this._symbol = [];
         return _this;
     }
+    Grid.prototype.restartSetGrid = function (level) {
+        for (var column = 0; column < 9; column++) {
+            for (var row = 0; row < 9; row++) {
+                this._symbol[column][row].setTexture(this.sequence[column][row]);
+            }
+        }
+        this.setInteractivity(true);
+    };
     Grid.prototype.createGrid = function (columns, rows) {
         var _this = this;
         this._gridContainer = new PIXI.Container();
@@ -25838,6 +25894,7 @@ var GameResultPopup = (function (_super) {
         }
         gsap_1.TweenLite.to(this._popupContainer.position, 1.5, {
             y: 0,
+            delay: 0.75,
             ease: gsap_1.Bounce.easeOut,
             onComplete: function () {
                 _this._restartButton.setEnabled();
