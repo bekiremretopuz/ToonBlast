@@ -318,6 +318,12 @@ exports.AssetsList = [
         type: "texture",
     },
     {
+        id: "sparks",
+        url: "assets/gfx/animation/sparks.png",
+        priority: pixi_assets_loader_1.AssetPriority.NORMAL,
+        type: "texture",
+    },
+    {
         id: "collect",
         url: "assets/sfx/cube_collect.wav",
         priority: pixi_assets_loader_1.AssetPriority.NORMAL,
@@ -348,53 +354,104 @@ exports.AssetsList = [
         type: "sound",
     },
 ];
-exports.particleConfig = {
+exports.explodeParticleConfig = {
     alpha: {
         start: 1,
-        end: 0.1,
+        end: 1,
     },
     scale: {
         start: 0.25,
-        end: 0.1,
+        end: 0.001,
         minimumScaleMultiplier: 1,
     },
     color: {
         start: "#ffffff",
-        end: "#fffffff",
+        end: "#ffffff",
     },
     speed: {
-        start: 50,
-        end: 500,
+        start: 200,
+        end: 30,
         minimumSpeedMultiplier: 1,
     },
     acceleration: {
         x: 0,
-        y: 190,
+        y: 640,
     },
     maxSpeed: 0,
     startRotation: {
-        min: 230,
-        max: 310,
+        min: 250,
+        max: 290,
     },
     noRotation: false,
     rotationSpeed: {
-        min: 0,
-        max: 0,
+        min: 360,
+        max: 360,
     },
     lifetime: {
-        min: 1.5,
-        max: 1.5,
+        min: 1,
+        max: 1,
     },
     blendMode: "normal",
-    frequency: 0.01,
+    frequency: 0.025,
     emitterLifetime: 1,
-    maxParticles: 5,
+    maxParticles: 6,
     pos: {
         x: 0,
         y: 0,
     },
     addAtBack: false,
     spawnType: "point",
+};
+exports.sparksParticleConfig = {
+    alpha: {
+        start: 1,
+        end: 1,
+    },
+    scale: {
+        start: 0.35,
+        end: 0.2,
+        minimumScaleMultiplier: 1,
+    },
+    color: {
+        start: "#ffffff",
+        end: "#ffffff",
+    },
+    speed: {
+        start: 150,
+        end: 150,
+        minimumSpeedMultiplier: 1,
+    },
+    acceleration: {
+        x: 0,
+        y: 0,
+    },
+    maxSpeed: 0,
+    startRotation: {
+        min: 0,
+        max: 360,
+    },
+    noRotation: false,
+    rotationSpeed: {
+        min: 90,
+        max: 180,
+    },
+    lifetime: {
+        min: 1,
+        max: 1,
+    },
+    blendMode: "normal",
+    frequency: 0.05,
+    emitterLifetime: 1,
+    maxParticles: 10,
+    pos: {
+        x: 0,
+        y: 0,
+    },
+    addAtBack: false,
+    spawnType: "burst",
+    particlesPerWave: 1,
+    particleSpacing: 0,
+    angleStart: 0,
 };
 
 
@@ -16030,10 +16087,10 @@ var BaseGame = (function (_super) {
                 break;
         }
     };
-    BaseGame.prototype.onGridEventHandler = function (action, symbolType) {
+    BaseGame.prototype.onGridEventHandler = function (action, symbolType, clusterLength) {
         switch (action) {
             case "match":
-                this._uiController.updateGoals(symbolType);
+                this._uiController.updateGoals(symbolType, clusterLength);
                 this._uiController.decreaseMoves();
                 this._animationController.setCharacterAnimation(Animations_1.BoyAnimations.Jump, false);
                 this._game.sound.play("explode", 1, false);
@@ -23387,11 +23444,11 @@ var UserInterfaceController = (function (_super) {
         this._userInterface.setGoal(value);
         this._goal = value;
     };
-    UserInterfaceController.prototype.updateGoals = function (symbol) {
+    UserInterfaceController.prototype.updateGoals = function (symbol, count) {
         for (var i = 0, iLen = this._goal.length; i < iLen; i++) {
             if (this._goal[i].symbol == symbol) {
                 if (this._goal[i].count != 0)
-                    this._goal[i].count--;
+                    this._goal[i].count -= count;
             }
         }
         this._userInterface.setGoal(this._goal);
@@ -23604,10 +23661,10 @@ var GridController = (function (_super) {
         this._cluster = this.isItemInArray(this._allClusters, matchesType);
         var symbolType = this._grid._symbol[index[0]][index[1]].name;
         if (this._cluster.length >= 2) {
-            this.emit("animationstatus", "match", symbolType);
+            this.emit("animationstatus", "match", symbolType, this._cluster.length);
             this._grid.setInteractivity(false);
             for (var i = 0; i < this._cluster.length; i++) {
-                this._grid.matchAnimation(this._cluster[i][1], this._cluster[i][0]);
+                this._grid.matchAnimation(this._cluster[i][1], this._cluster[i][0], symbolType);
             }
         }
         else {
@@ -23623,7 +23680,7 @@ var GridController = (function (_super) {
         }
         this._old = value;
         var randSymbol = this.getRandomSymbolName();
-        var a = this._grid._symbol[value[0]].splice(0, 0, this._grid._symbol[value[0]].splice(value[1], 1)[0]);
+        this._grid._symbol[value[0]].splice(0, 0, this._grid._symbol[value[0]].splice(value[1], 1)[0]);
         this._grid._symbol[value[0]][0].setTexture(randSymbol);
         this._grid._symbol[value[0]][0].position.set(80 + value[0] * 75, 360 - 90 * (this._rowLength + 1));
         this._grid._symbol[value[0]][0].scale.set(0.75);
@@ -23680,9 +23737,11 @@ var Grid = (function (_super) {
     function Grid(sequence) {
         var _this = _super.call(this) || this;
         _this.sequence = sequence;
-        _this._particleContainer = new PIXI.particles.ParticleContainer();
-        _this._particleAnimation = [];
+        _this._explodeParticleContainer = new PIXI.particles.ParticleContainer();
+        _this._sparksParticleContainer = new PIXI.particles.ParticleContainer();
+        _this._explodeParticleAnimation = [];
         _this._symbol = [];
+        _this.addChild(_this._sparksParticleContainer);
         return _this;
     }
     Grid.prototype.restartSetGrid = function (level) {
@@ -23743,7 +23802,48 @@ var Grid = (function (_super) {
             yoyo: true,
         });
     };
-    Grid.prototype.matchAnimation = function (column, row) {
+    Grid.prototype.createDuplicateSymbol = function (column, row, symbolType) {
+        var duplicateSymbol = new SimpleButton2D_1.SimpleButton2D(symbolType, { x: 80 + column * 75, y: 360 + row * 90 }, null);
+        duplicateSymbol.anchor.set(0.5);
+        duplicateSymbol.scale.set(0.75);
+        this.addChild(duplicateSymbol);
+        this.goalTransformAnimation(duplicateSymbol, symbolType);
+    };
+    Grid.prototype.goalTransformAnimation = function (targetSymbol, symbolType) {
+        var _this = this;
+        var targetPosX = 505;
+        if (symbolType == "solid1")
+            targetPosX = 340;
+        else if (symbolType == "solid2")
+            targetPosX = 420;
+        gsap_1.TweenLite.to(targetSymbol, 0.85, {
+            bezier: [{ x: targetPosX, y: 100 }],
+            ease: gsap_1.Linear.easeInOut,
+            onComplete: function () {
+                targetSymbol.destroy();
+                _this.goalParticleAnimation(targetPosX, symbolType);
+            },
+        });
+    };
+    Grid.prototype.goalParticleAnimation = function (posX, symbolType) {
+        var _this = this;
+        window.cancelAnimationFrame(this._requestAnimationSparksFrameId);
+        if (this._sparksParticleAnimation)
+            this._sparksParticleAnimation.destroy();
+        this._sparksParticleAnimation = new PIXI.particles.Emitter(this._sparksParticleContainer, [PIXI.Texture.from("sparks")], GameSettings_1.sparksParticleConfig);
+        this._sparksParticleContainer.tint = this.getTintColor(symbolType);
+        this._sparksParticleAnimation.updateSpawnPos(posX, 100);
+        var elapsed = Date.now();
+        var update = function () {
+            _this._requestAnimationSparksFrameId = requestAnimationFrame(update);
+            var now = Date.now();
+            _this._sparksParticleAnimation.update((now - elapsed) * 0.001);
+            elapsed = now;
+        };
+        this._sparksParticleAnimation.emit = true;
+        update();
+    };
+    Grid.prototype.matchAnimation = function (column, row, symbolType) {
         var _this = this;
         if (this._rotateAnimation) {
             this._rotateAnimation.kill();
@@ -23757,6 +23857,7 @@ var Grid = (function (_super) {
         this._symbol[column][row].scale.set(0.1);
         this.emit("matchanimationstarted", [column, row]);
         setTimeout(function () {
+            _this.createDuplicateSymbol(column, row, symbolType);
             _this.emit("matchanimationcompleted", [column, row]);
         }, 100);
     };
@@ -23782,44 +23883,43 @@ var Grid = (function (_super) {
             _loop_3(i);
         }
     };
-    Grid.prototype.createAndPlayParticleAnimation = function (column, row, symbolType) {
-        var _this = this;
-        window.cancelAnimationFrame(this._requestAnimationFrameId);
-        var i = this._particleAnimation.length;
-        this._particleAnimation[i] = new PIXI.particles.Emitter(this._particleContainer, ["solidParticle1", "solidParticle2"], GameSettings_1.particleConfig);
-        this.addChild(this._particleContainer);
-        var colorHax = 0x2b97e2;
+    Grid.prototype.getTintColor = function (symbolType) {
         switch (symbolType) {
             case "solid1":
-                colorHax = 0xefd401;
-                break;
+                return 0xefd401;
             case "solid2":
-                colorHax = 0xe30e0e;
-                break;
+                return 0xe30e0e;
             case "solid3":
-                colorHax = 0x2b97e2;
-                break;
+                return 0x2b97e2;
             case "solid4":
-                colorHax = 0x40bb0b;
-                break;
+                return 0x40bb0b;
+            default:
+                throw new Error("Unexpected symbol type");
         }
-        this._particleContainer.tint = colorHax;
-        this._particleAnimation[i].updateSpawnPos(75 + column * 75, 360 + row * 90);
+    };
+    Grid.prototype.createAndPlayParticleAnimation = function (column, row, symbolType) {
+        var _this = this;
+        window.cancelAnimationFrame(this._requestAnimationExplodeFrameId);
+        var i = this._explodeParticleAnimation.length;
+        this._explodeParticleAnimation[i] = new PIXI.particles.Emitter(this._explodeParticleContainer, ["solidParticle1", "solidParticle2"], GameSettings_1.explodeParticleConfig);
+        this.addChild(this._explodeParticleContainer);
+        this._explodeParticleContainer.tint = this.getTintColor(symbolType);
+        this._explodeParticleAnimation[i].updateSpawnPos(75 + column * 75, 360 + row * 90);
         var elapsed = Date.now();
         var update = function () {
-            _this._requestAnimationFrameId = requestAnimationFrame(update);
+            _this._requestAnimationExplodeFrameId = requestAnimationFrame(update);
             var now = Date.now();
-            for (var i_1 = 0; i_1 < _this._particleAnimation.length; i_1++) {
-                _this._particleAnimation[i_1].update((now - elapsed) * 0.001);
+            for (var i_1 = 0; i_1 < _this._explodeParticleAnimation.length; i_1++) {
+                _this._explodeParticleAnimation[i_1].update((now - elapsed) * 0.001);
             }
             elapsed = now;
         };
-        this._particleAnimation[i].emit = true;
+        this._explodeParticleAnimation[i].emit = true;
         update();
     };
     Grid.prototype.destroyParticleAnimation = function () {
-        for (var i = 0; i < this._particleAnimation.length; i++) {
-            this._particleAnimation[i].destroy();
+        for (var i = 0; i < this._explodeParticleAnimation.length; i++) {
+            this._explodeParticleAnimation[i].destroy();
         }
     };
     Grid.prototype.setInteractivity = function (value) {

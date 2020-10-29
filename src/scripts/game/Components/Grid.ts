@@ -28,7 +28,6 @@ export class Grid extends PIXI.Container {
         this._symbol[column][row].setTexture(this.sequence[column][row]);
       }
     }
-    this.setInteractivity(true);
   }
 
   public createGrid(columns: number, rows: number) {
@@ -80,7 +79,8 @@ export class Grid extends PIXI.Container {
   public createDuplicateSymbol(
     column: number,
     row: number,
-    symbolType: string
+    symbolType: string,
+    clusterLength: number
   ): void {
     const duplicateSymbol = new SimpleButton2D(
       symbolType,
@@ -90,20 +90,22 @@ export class Grid extends PIXI.Container {
     duplicateSymbol.anchor.set(0.5);
     duplicateSymbol.scale.set(0.75);
     this.addChild(duplicateSymbol);
-    this.goalTransformAnimation(duplicateSymbol, symbolType);
+    this.goalTransformAnimation(duplicateSymbol, symbolType, clusterLength);
   }
 
   public goalTransformAnimation(
     targetSymbol: SimpleButton2D,
-    symbolType: string
+    symbolType: string,
+    clusterLength: number
   ): void {
     let targetPosX: number = 505;
     if (symbolType == "solid1") targetPosX = 340;
     else if (symbolType == "solid2") targetPosX = 420;
-    TweenLite.to(targetSymbol, 0.85, {
+    TweenLite.to(targetSymbol, 0.6, {
       bezier: [{ x: targetPosX, y: 100 }],
       ease: Linear.easeInOut,
       onComplete: () => {
+        this.emit("goaltransformcompleted");
         targetSymbol.destroy();
         this.goalParticleAnimation(targetPosX, symbolType);
       },
@@ -131,7 +133,13 @@ export class Grid extends PIXI.Container {
     update();
   }
 
-  public matchAnimation(column: number, row: number, symbolType: string) {
+  public matchAnimation(
+    column: number,
+    row: number,
+    symbolType: string,
+    clusterLength: number,
+    isGoalAnimation: boolean
+  ) {
     if (this._rotateAnimation) {
       this._rotateAnimation.kill();
       this._rotateAnimation.seek(this._rotateAnimation.duration, false);
@@ -145,10 +153,11 @@ export class Grid extends PIXI.Container {
       row,
       this._symbol[column][row].name
     );
-    this._symbol[column][row].scale.set(0.1);
+    this._symbol[column][row].scale.set(0);
     this.emit("matchanimationstarted", [column, row]);
     setTimeout(() => {
-      this.createDuplicateSymbol(column, row, symbolType);
+      if (isGoalAnimation)
+        this.createDuplicateSymbol(column, row, symbolType, clusterLength);
       this.emit("matchanimationcompleted", [column, row]);
     }, 100);
   }

@@ -72,6 +72,7 @@ export class GameResultPopup extends PIXI.Container {
       y: -960,
       ease: Sine.easeOut,
       onComplete: () => {
+        this.interactive = false;
         this._restartButton.setDisabled();
       },
     });

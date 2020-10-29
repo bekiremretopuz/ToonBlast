@@ -39,7 +39,6 @@ export class UserInterface extends PIXI.Container {
   }
 
   public setGoal(value: { symbol: string; count: number }[]): void {
-    console.log("setgoal", value);
     this.clearGoalProp();
     for (let i = 0; i < value.length; i++) {
       this._goalImage[i].texture = PIXI.Texture.from(
@@ -50,7 +49,6 @@ export class UserInterface extends PIXI.Container {
   }
 
   public setMoves(value: number): void {
-    console.log("setMoves", value);
     this._moveText.text = value.toString();
   }
 
