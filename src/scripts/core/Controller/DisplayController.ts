@@ -3,7 +3,8 @@ import {
   PixiAppWrapper as Wrapper,
   pixiAppWrapperEvent as WrapperEvent,
   PixiAppWrapperOptions as WrapperOpts,
-} from "pixi-app-wrapper";
+} from "pixi-app-wrapper"; 
+import * as PIXI from "pixi.js";
 export class DisplayController extends PIXI.utils.EventEmitter {
   private _app: Wrapper;
   private _rootContainer: PIXI.Container;
