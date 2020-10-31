@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@types/pixi.js": "^4.8.1",
+    "@types/webfontloader": "^1.6.32",
     "awesome-typescript-loader": "^3.5.0",
     "css-loader": "^0.28.11",
     "es-abstract": "^1.14.2",

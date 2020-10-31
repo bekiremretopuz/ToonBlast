@@ -1,6 +1,7 @@
 import { AssetPriority, LoadAsset, PixiAssetsLoader } from "pixi-assets-loader";
 import SoundManager from "./SoundController";
 import { AssetsList } from "../../game/Helper/GameSettings";
+import * as WebFont from "webfontloader";
 export class ResourceController extends PIXI.utils.EventEmitter {
   private _loader: PixiAssetsLoader;
   private _assetsCount: {
@@ -28,7 +29,7 @@ export class ResourceController extends PIXI.utils.EventEmitter {
         families: ["Topaz-8-remake"],
         urls: ["assets/fonts/stylesheet.css"],
       },
-      active: (familyName: any, fwd: any) => {
+      active: () => {
         this.emit("completeLoadFont");
       },
     });
@@ -78,7 +79,7 @@ export class ResourceController extends PIXI.utils.EventEmitter {
   }
 
   private onAssetsLoaded(args: { priority: number; assets: LoadAsset[] }): void {
-    args.assets.forEach((loadAsset) => {
+    args.assets.forEach((loadAsset) => { 
       if (loadAsset.asset.type == "sound") {
         this._soundManager.addSound(loadAsset);
       }

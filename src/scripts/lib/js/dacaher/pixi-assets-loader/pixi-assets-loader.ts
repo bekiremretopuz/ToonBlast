@@ -2,10 +2,10 @@ import {EventEmitter} from "eventemitter3";
 import PriorityQueue from "typescript-collections/PriorityQueue";
 import "howler";
 export interface Asset {
-    id: string;
-    url: string;
-    priority: number;
-    type?: any;
+  id: string;
+  url: string;
+  priority: number;
+  type?: any;
 }
 
 export interface SoundAsset extends Asset {

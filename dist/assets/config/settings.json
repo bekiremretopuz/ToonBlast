@@ -7,15 +7,15 @@
       "goal": [
         {
           "symbol": "solid1",
-          "count": 20
+          "count": 30
         },
         {
           "symbol": "solid2",
-          "count": 25
+          "count": 35
         },
         {
           "symbol": "solid3",
-          "count": 30
+          "count": 40
         }
       ],
       "initialSeqeunce": [

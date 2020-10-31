@@ -5,6 +5,8 @@ export default class SoundController extends PIXI.utils.EventEmitter {
   }
 
   public addSound(loadAsset: any): void {
+    console.log("loadsound", loadAsset);
+    
     if (loadAsset.asset.id in this._sounds == false) {
       this._sounds[loadAsset.asset.id] = {
         sound: new Howl({

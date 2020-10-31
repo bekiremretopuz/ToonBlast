@@ -169,7 +169,7 @@ export const AssetsList = [
   },
   {
     id: "collect",
-    url: "assets/sfx/cube_collect.ogg",
+    url:  "assets/sfx/mp3/cube_collect.mp3",
     priority: AssetPriority.NORMAL,
     autoplay: false,
     loop: false,
@@ -179,7 +179,7 @@ export const AssetsList = [
   } as Asset,
   {
     id: "explode",
-    url: "assets/sfx/cube_explode.ogg",
+    url:  "assets/sfx/mp3/cube_explode.mp3",
     priority: AssetPriority.NORMAL,
     autoplay: false,
     loop: false,
@@ -189,7 +189,7 @@ export const AssetsList = [
   } as Asset,
   {
     id: "theme",
-    url: "assets/sfx/theme.ogg",
+    url: "assets/sfx/mp3/theme.mp3",
     priority: AssetPriority.NORMAL,
     autoplay: false,
     loop: false,
