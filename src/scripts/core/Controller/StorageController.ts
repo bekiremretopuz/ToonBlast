@@ -1,6 +1,5 @@
 export class StorageController extends PIXI.utils.EventEmitter {
   private _localStorage: any;
-
   constructor() {
     super();
     this._localStorage = window.localStorage;

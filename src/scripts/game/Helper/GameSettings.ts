@@ -169,7 +169,7 @@ export const AssetsList = [
   },
   {
     id: "collect",
-    url: "assets/sfx/cube_collect.wav",
+    url: "assets/sfx/cube_collect.ogg",
     priority: AssetPriority.NORMAL,
     autoplay: false,
     loop: false,
@@ -179,7 +179,7 @@ export const AssetsList = [
   } as Asset,
   {
     id: "explode",
-    url: "assets/sfx/cube_explode.wav",
+    url: "assets/sfx/cube_explode.ogg",
     priority: AssetPriority.NORMAL,
     autoplay: false,
     loop: false,
@@ -189,7 +189,7 @@ export const AssetsList = [
   } as Asset,
   {
     id: "theme",
-    url: "assets/sfx/theme.wav",
+    url: "assets/sfx/theme.ogg",
     priority: AssetPriority.NORMAL,
     autoplay: false,
     loop: false,
@@ -199,15 +199,15 @@ export const AssetsList = [
   } as Asset,
 ];
 
-export const explodeParticleConfig = {
+export const explodeConfig = {
   alpha: {
     start: 1,
     end: 1,
   },
   scale: {
-    start: 0.25,
-    end: 0.001,
-    minimumScaleMultiplier: 1,
+    start: 0.3,
+    end: 0,
+    minimumScaleMultiplier: 0,
   },
   color: {
     start: "#ffffff",
@@ -233,22 +233,22 @@ export const explodeParticleConfig = {
     max: 360,
   },
   lifetime: {
-    min: 1,
-    max: 1,
+    min: 1.25,
+    max: 1.25,
   },
   blendMode: "normal",
   frequency: 0.025,
-  emitterLifetime: 1,
-  maxParticles: 6,
+  emitterLifetime: 0.5,
+  maxParticles: 5,
   pos: {
     x: 0,
     y: 0,
   },
   addAtBack: false,
-  spawnType: "point",
+  spawnType: "rectangle",
 };
 
-export const sparksParticleConfig = {
+export const sparksConfig = {
   alpha: {
     start: 1,
     end: 1,

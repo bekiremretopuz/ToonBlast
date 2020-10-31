@@ -29,23 +29,23 @@ export class LoaderStage extends Scene {
     this._gameName = new PIXI.Text("TOON BLAST", DefaultTextStyle);
     this._gameName.anchor.set(0.5, 0.5);
     this._gameName.scale.set(1.5, 1.5);
-    this._gameName.position.set(390, 200);
+    this._gameName.position.set(375, 200);
     this.addChild(this._gameName);
     //Circle loading Sprite
     this._loadingSprite = new PIXI.Sprite(PIXI.Texture.from("loading"));
     this._loadingSprite.anchor.set(0.5, 0.5);
-    this._loadingSprite.position.set(390, 640);
+    this._loadingSprite.position.set(375, 640);
     this._loadingSprite.anchor.set(0.5, 0.5);
     this._loadingSprite.name = "LoadingSprite";
     this.addChild(this._loadingSprite);
     //Find the status of the asset installation
     this._loadingText = new PIXI.Text("Loader Scene", {});
     this._loadingText.anchor.set(0.5, 0.5);
-    this._loadingText.position.set(390, 640);
+    this._loadingText.position.set(375, 640);
     this.addChild(this._loadingText);
     this._loadingProgressText = new PIXI.Text("", DefaultTextStyle);
     this._loadingProgressText.anchor.set(0.5, 0.5);
-    this._loadingProgressText.position.set(385, 700);
+    this._loadingProgressText.position.set(375, 700);
     this.addChild(this._loadingProgressText);
     this.loadingAnimation();
   }
@@ -65,7 +65,7 @@ export class LoaderStage extends Scene {
     this._startGameText = new PIXI.Text(text, DefaultTextStyle);
     this._startGameText.anchor.set(0.5, 0.5);
     this._startGameText.scale.set(0.9, 0.9);
-    this._startGameText.position.set(374, 1150);
+    this._startGameText.position.set(375, 1150);
     this.addChild(this._startGameText);
     this._backgroundImageDefault.buttonMode = true;
     this._backgroundImageDefault.interactive = true;
@@ -73,8 +73,8 @@ export class LoaderStage extends Scene {
       fetch("assets/config/settings.json")
         .then((res) => res.json())
         .then((out) => {
-          this._game.stageManager.createScene("BaseGame", new BaseGame(out));
-          this._game.stageManager.goToScene("BaseGame", true);
+           this._game.stageManager.createScene("BaseGame", new BaseGame(out));
+           this._game.stageManager.goToScene("BaseGame", true);
         });
     });
   }

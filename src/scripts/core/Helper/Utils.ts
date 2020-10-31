@@ -3,21 +3,6 @@ export class Utils {
     return (a << 24) | (r << 16) | (g << 8) | b;
   }
 
-  public static deepCopyFunction = (inObject: any) => {
-    let outObject: any;
-    let value: any;
-    let key: any;
-    if (typeof inObject !== "object" || inObject === null) {
-      return inObject;
-    }
-    outObject = Array.isArray(inObject) ? [] : {};
-    for (key in inObject) {
-      value = inObject[key];
-      outObject[key] = Utils.deepCopyFunction(value);
-    }
-    return outObject;
-  };
-
   public static getRGB(color: number): any {
     if (color > 16777215) {
       return {
@@ -92,4 +77,19 @@ export class Utils {
     }
     return Math.floor(this.float(min, max));
   }
+  
+  public static deepCopyFunction = (inObject: any) => {
+    let outObject: any;
+    let value: any;
+    let key: any;
+    if (typeof inObject !== "object" || inObject === null) {
+      return inObject;
+    }
+    outObject = Array.isArray(inObject) ? [] : {};
+    for (key in inObject) {
+      value = inObject[key];
+      outObject[key] = Utils.deepCopyFunction(value);
+    }
+    return outObject;
+  };
 }

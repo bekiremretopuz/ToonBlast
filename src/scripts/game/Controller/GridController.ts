@@ -10,18 +10,13 @@ export class GridController extends PIXI.Container {
   private _newSymbolStack: number[][] = [];
   private _currentSymboType: string = "";
   private _currentMatchLength: number = 0;
-  constructor(
-    private readonly gameSettings: any,
-    private readonly level: number
-  ) {
+  constructor(private readonly gameSettings: any, private readonly level: number) {
     super();
     this.awake();
   }
 
   private awake(): void {
-    this._currentSequence = this.gameSettings.Levels[
-      this.level
-    ].initialSeqeunce;
+    this._currentSequence = this.gameSettings.Levels[this.level].initialSeqeunce;
     this._grid = new Grid(this._currentSequence);
     this.addChild(this._grid);
     this._grid.on("actiontaken", this.onActionTaken, this);
@@ -31,10 +26,7 @@ export class GridController extends PIXI.Container {
       this.emit("animationstatus", "goaltransformcompleted");
     });
     this._grid.once("matchanimationcompleted", this.matchCompleted, this);
-    this._grid.createGrid(
-      this.gameSettings.Levels[this.level].column,
-      this.gameSettings.Levels[this.level].row
-    );
+    this._grid.createGrid(this.gameSettings.Levels[this.level].column, this.gameSettings.Levels[this.level].row);
     this.clearSequenceProperties();
   }
 
@@ -98,13 +90,7 @@ export class GridController extends PIXI.Container {
       this.emit("animationstatus", "match");
       this._grid.setInteractivity(false);
       for (let i = 0; i < this._cluster.length; i++) {
-        this._grid.matchAnimation(
-          this._cluster[i][1],
-          this._cluster[i][0],
-          symbolType,
-          this._cluster.length,
-          this.isInGoals(this._currentSymboType)
-        );
+        this._grid.matchAnimation(this._cluster[i][1], this._cluster[i][0], symbolType, this._cluster.length, this.isInGoals(this._currentSymboType));
       }
     } else {
       this._grid.rotateAnimation(button);
@@ -121,16 +107,9 @@ export class GridController extends PIXI.Container {
     }
     this._old = value;
     const randSymbol = this.getRandomSymbolName();
-    this._grid._symbol[value[0]].splice(
-      0,
-      0,
-      this._grid._symbol[value[0]].splice(value[1], 1)[0]
-    );
+    this._grid._symbol[value[0]].splice(0, 0, this._grid._symbol[value[0]].splice(value[1], 1)[0]);
     this._grid._symbol[value[0]][0].setTexture(randSymbol);
-    this._grid._symbol[value[0]][0].position.set(
-      80 + value[0] * 75,
-      360 - 90 * (this._rowLength + 1)
-    );
+    this._grid._symbol[value[0]][0].position.set(80 + value[0] * 75, 360 - 90 * (this._rowLength + 1));
     this._grid._symbol[value[0]][0].scale.set(0.75);
     this._newSymbolStack.push([value[0], value[1]]);
   }
@@ -139,33 +118,19 @@ export class GridController extends PIXI.Container {
     const self = this;
     for (let i = 0; i < this._newSymbolStack.length; i++) {
       if (this._newSymbolStack[i]) {
-        this._grid.fallAnimation(
-          this._newSymbolStack[i],
-          (completeIndex: number[]) => {
-            this._grid.setCallback(completeIndex[0], completeIndex[1]);
-            if (
-              self._newSymbolStack[self._newSymbolStack.length - 1][0] ==
-                completeIndex[0] &&
-              self._newSymbolStack[self._newSymbolStack.length - 1][1] ==
-                completeIndex[1]
-            ) {
-              self._grid.once(
-                "matchanimationcompleted",
-                self.matchCompleted,
-                self
-              );
-              self._grid.setType();
-              self._grid.setInteractivity(true);
-              self.emit(
-                "animationstatus",
-                "updategoal",
-                this._currentSymboType,
-                this._currentMatchLength
-              );
-              self.clearSequenceProperties();
-            }
+        this._grid.fallAnimation(this._newSymbolStack[i], (completeIndex: number[]) => {
+          this._grid.setCallback(completeIndex[0], completeIndex[1]);
+          if (
+            self._newSymbolStack[self._newSymbolStack.length - 1][0] == completeIndex[0] &&
+            self._newSymbolStack[self._newSymbolStack.length - 1][1] == completeIndex[1]
+          ) {
+            self._grid.once("matchanimationcompleted", self.matchCompleted, self);
+            self._grid.setType();
+            self._grid.setInteractivity(true);
+            self.emit("animationstatus", "updategoal", this._currentSymboType, this._currentMatchLength);
+            self.clearSequenceProperties();
           }
-        );
+        });
       }
     }
   }

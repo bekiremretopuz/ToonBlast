@@ -13,11 +13,7 @@ export class DisplayController extends PIXI.utils.EventEmitter {
   }
 
   public create() {
-    const canvas = Dom.getElementOrCreateNew<HTMLCanvasElement>(
-      "app-canvas",
-      "canvas",
-      document.getElementById("app-root")
-    );
+    const canvas = Dom.getElementOrCreateNew<HTMLCanvasElement>("app-canvas", "canvas", document.getElementById("app-root"));
     const appOptions: WrapperOpts = {
       width: 750,
       height: 1334,

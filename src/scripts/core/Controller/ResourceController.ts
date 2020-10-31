@@ -1,20 +1,20 @@
 import { AssetPriority, LoadAsset, PixiAssetsLoader } from "pixi-assets-loader";
 import SoundManager from "./SoundController";
-import { EmreBase } from "src/scripts/game/EntryPoint";
 import { AssetsList } from "../../game/Helper/GameSettings";
 export class ResourceController extends PIXI.utils.EventEmitter {
   private _loader: PixiAssetsLoader;
   private _assetsCount: {
-    [key: number]: { total: number; progress: number };
+    [key: number]: {
+      total: number;
+      progress: number;
+    };
   } = {};
   private _totalAssets: number;
   private _loadingProgress: number;
   private _soundManager: SoundManager = new SoundManager();
   private _isSoundLoaded: boolean;
-  private _game: EmreBase.EntryPoint;
   constructor() {
     super();
-    this._game = EmreBase.EntryPoint.instance;
   }
 
   public init(): void {
@@ -37,7 +37,10 @@ export class ResourceController extends PIXI.utils.EventEmitter {
   public loadAssets(): void {
     AssetsList.forEach((asset) => {
       if (!this._assetsCount[asset.priority]) {
-        this._assetsCount[asset.priority] = { total: 1, progress: 0 };
+        this._assetsCount[asset.priority] = {
+          total: 1,
+          progress: 0,
+        };
       } else {
         this._assetsCount[asset.priority].total++;
       }
@@ -48,24 +51,24 @@ export class ResourceController extends PIXI.utils.EventEmitter {
     this._loader = new PixiAssetsLoader();
     this._loader.on(
       PixiAssetsLoader.PRIORITY_GROUP_LOADED,
+
       this.onAssetsLoaded.bind(this)
     );
     this._loader.on(
       PixiAssetsLoader.PRIORITY_GROUP_PROGRESS,
+
       this.onAssetsProgress.bind(this)
     );
     this._loader.on(
       PixiAssetsLoader.ASSET_ERROR,
+
       this.onAssetsError.bind(this)
     );
     this._loader.addAssets(AssetsList).load();
   }
   private onAssetsProgress(args: { priority: number; progress: number }): void {
-    const percentFactor =
-      this._assetsCount[args.priority].total / this._totalAssets;
-    this._loadingProgress +=
-      (args.progress - this._assetsCount[args.priority].progress) *
-      percentFactor;
+    const percentFactor = this._assetsCount[args.priority].total / this._totalAssets;
+    this._loadingProgress += (args.progress - this._assetsCount[args.priority].progress) * percentFactor;
     this._assetsCount[args.priority].progress = args.progress;
     this.emit("progress", this._loadingProgress);
   }
@@ -74,10 +77,7 @@ export class ResourceController extends PIXI.utils.EventEmitter {
     this.emit("assetLoadfailed");
   }
 
-  private onAssetsLoaded(args: {
-    priority: number;
-    assets: LoadAsset[];
-  }): void {
+  private onAssetsLoaded(args: { priority: number; assets: LoadAsset[] }): void {
     args.assets.forEach((loadAsset) => {
       if (loadAsset.asset.type == "sound") {
         this._soundManager.addSound(loadAsset);

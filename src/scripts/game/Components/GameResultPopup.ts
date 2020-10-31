@@ -1,8 +1,7 @@
 import { Bounce, Sine, TweenLite } from "gsap";
 import { SimpleButton2D } from "src/scripts/core/Parts/SimpleButton2D";
-
 export class GameResultPopup extends PIXI.Container {
-  private _popupContainer: PIXI.Container;
+  private _resultContainer: PIXI.Container;
   private _resultText: PIXI.Text;
   private _restartButton: SimpleButton2D;
   constructor() {
@@ -12,17 +11,12 @@ export class GameResultPopup extends PIXI.Container {
   }
 
   private awake(): void {
-    this._popupContainer = new PIXI.Container();
-    this._popupContainer.visible = false;
-    this.addChild(this._popupContainer);
-
-    const popup = new PIXI.Graphics()
-      .beginFill(0xcecece, 0.9)
-      .drawRect(375, 683, 650, 500)
-      .endFill();
-    popup.pivot.set(popup.width / 2, popup.height / 2);
-    this._popupContainer.addChild(popup);
-
+    this._resultContainer = new PIXI.Container();
+    this._resultContainer.visible = false;
+    this.addChild(this._resultContainer);
+    const resultPopup = new PIXI.Graphics().beginFill(0xcecece, 0.9).drawRect(375, 683, 650, 500).endFill();
+    resultPopup.pivot.set(resultPopup.width / 2, resultPopup.height / 2);
+    this._resultContainer.addChild(resultPopup);
     this._resultText = new PIXI.Text("", {
       fontFamily: "Topaz-8-remake",
       fontSize: 50,
@@ -32,23 +26,18 @@ export class GameResultPopup extends PIXI.Container {
       strokeThickness: 3,
     });
     this._resultText.position.set(550, 745);
-    popup.addChild(this._resultText);
-
-    this._restartButton = new SimpleButton2D(
-      "restart",
-      { x: 605, y: 860 },
-      () => {
-        this.emit("actiontaken", "restartGame");
-      }
-    );
+    resultPopup.addChild(this._resultText);
+    this._restartButton = new SimpleButton2D("restart", { x: 605, y: 860 }, () => {
+      this.emit("actiontaken", "restartGame");
+    });
     this._restartButton.scale.set(0.4);
     this._restartButton.setDisabled();
-    popup.addChild(this._restartButton);
+    resultPopup.addChild(this._restartButton);
   }
 
   public showResult(isWin: boolean): void {
-    this._popupContainer.position.y = -960;
-    this._popupContainer.visible = true;
+    this._resultContainer.position.y = -960;
+    this._resultContainer.visible = true;
     switch (isWin) {
       case true:
         this._resultText.text = "You Win";
@@ -57,7 +46,7 @@ export class GameResultPopup extends PIXI.Container {
         this._resultText.text = "You Lose";
         break;
     }
-    TweenLite.to(this._popupContainer.position, 1.5, {
+    TweenLite.to(this._resultContainer.position, 1.5, {
       y: 0,
       delay: 0.75,
       ease: Bounce.easeOut,
@@ -68,7 +57,7 @@ export class GameResultPopup extends PIXI.Container {
   }
 
   public hideResult(): void {
-    TweenLite.to(this._popupContainer.position, 0.75, {
+    TweenLite.to(this._resultContainer.position, 0.75, {
       y: -960,
       ease: Sine.easeOut,
       onComplete: () => {

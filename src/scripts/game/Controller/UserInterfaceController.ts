@@ -14,9 +14,7 @@ export class UserInterfaceController extends PIXI.Container {
   private awake(): void {
     this._userInterface = new UserInterface();
     this._userInterface.on("actiontaken", this.onInterfaceHandler, this);
-    this._goal = Utils.deepCopyFunction(
-      this.gameSettings.Levels[this._currentLevel].goal
-    );
+    this._goal = Utils.deepCopyFunction(this.gameSettings.Levels[this._currentLevel].goal);
     this.setGoals(this._goal);
     this.setMoves(this.gameSettings.Levels[this._currentLevel].moves);
     this.addChild(this._userInterface);
@@ -31,17 +29,17 @@ export class UserInterfaceController extends PIXI.Container {
     this._moves = value;
   }
 
-  private setGoals(value: { symbol: string; count: number }[]): void {
-    this._userInterface.setGoal(value);
-    this._goal = value;
-  }
-
   public decreaseMoves(): void {
     this._moves--;
     this._userInterface.setMoves(this._moves);
     if (this._moves == 0 && this.isSuccesLevel() == false) {
       this.emit("actiontaken", "gameover");
     }
+  }
+
+  private setGoals(value: { symbol: string; count: number }[]): void {
+    this._userInterface.setGoal(value);
+    this._goal = value;
   }
 
   public updateGoals(symbol: string, count: number): void {
@@ -72,16 +70,12 @@ export class UserInterfaceController extends PIXI.Container {
 
   public restartSetInterface(level: number): void {
     this._currentLevel = level;
-    this._goal = Utils.deepCopyFunction(
-      this.gameSettings.Levels[this._currentLevel].goal
-    );
+    this._goal = Utils.deepCopyFunction(this.gameSettings.Levels[this._currentLevel].goal);
     this.setGoals(this._goal);
     this.setMoves(this.gameSettings.Levels[this._currentLevel].moves);
   }
 
   public get currentGoal(): { symbol: string; count: number }[] {
-    return Utils.deepCopyFunction(
-      this.gameSettings.Levels[this._currentLevel].goal
-    );
+    return Utils.deepCopyFunction(this.gameSettings.Levels[this._currentLevel].goal);
   }
 }

@@ -22,19 +22,13 @@ export class BaseGame extends Scene {
     //Data controller initiliaze
     this._dataController = new Data(this._game);
     //Interface control initiliaze
-    this._uiController = new UserInterfaceController(
-      this.gameSettings,
-      this._dataController.getLevel
-    );
+    this._uiController = new UserInterfaceController(this.gameSettings, this._dataController.getLevel);
     this.addChild(this._uiController);
     //Animation control initiliaze
     this._animationController = new AnimationsController();
     this.addChild(this._animationController);
     //Grid initiliaze
-    this._gridController = new GridController(
-      this.gameSettings,
-      this._dataController.getLevel
-    );
+    this._gridController = new GridController(this.gameSettings, this._dataController.getLevel);
     this.addChild(this._gridController);
     //Game result initiliaze
     this._gameResult = new GameResultPopup();
@@ -81,25 +75,18 @@ export class BaseGame extends Scene {
     }
   }
 
-  private onGridEventHandler(
-    action: string,
-    symbolType: string,
-    clusterLength: number
-  ): void {
+  private onGridEventHandler(action: string, symbolType: string, clusterLength: number): void {
     switch (action) {
       case "match":
         this._uiController.decreaseMoves();
-        this._animationController.setCharacterAnimation(
-          BoyAnimations.Jump,
-          false
-        );
+        this._animationController.setCharacterAnimation(BoyAnimations.Jump, false);
         this._game.sound.play("explode", 1, false);
         break;
       case "goaltransformcompleted":
         this._game.sound.play("collect", 1, false);
         break;
-        case "updategoal":
-          this._uiController.updateGoals(symbolType, clusterLength);
+      case "updategoal":
+        this._uiController.updateGoals(symbolType, clusterLength);
         break;
     }
   }

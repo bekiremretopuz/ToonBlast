@@ -16,9 +16,7 @@ export class Animations extends PIXI.Container {
   }
 
   private awake(): void {
-    this._spineBoyAnim = new PIXI.spine.Spine(
-      this._game.resource.loader.resources.spine.spineData
-    );
+    this._spineBoyAnim = new PIXI.spine.Spine(this._game.resource.loader.resources.spine.spineData);
     this._spineBoyAnim.scale.set(0.5, 0.5);
     this._spineBoyAnim.position.set(137, 215);
     this.addChild(this._spineBoyAnim);
@@ -26,26 +24,10 @@ export class Animations extends PIXI.Container {
 
   private initSpineEvents(): void {
     //Spine animation state data mix.
-    this._spineBoyAnim.stateData.setMix(
-      BoyAnimations.Walk,
-      BoyAnimations.Jump,
-      0.1
-    );
-    this._spineBoyAnim.stateData.setMix(
-      BoyAnimations.Walk,
-      BoyAnimations.Walk,
-      0.01
-    );
-    this._spineBoyAnim.stateData.setMix(
-      BoyAnimations.Jump,
-      BoyAnimations.Walk,
-      0.1
-    );
-    this._spineBoyAnim.stateData.setMix(
-      BoyAnimations.Jump,
-      BoyAnimations.Jump,
-      0.01
-    );
+    this._spineBoyAnim.stateData.setMix(BoyAnimations.Walk, BoyAnimations.Jump, 0.01);
+    this._spineBoyAnim.stateData.setMix(BoyAnimations.Walk, BoyAnimations.Walk, 0.01);
+    this._spineBoyAnim.stateData.setMix(BoyAnimations.Jump, BoyAnimations.Walk, 0.01);
+    this._spineBoyAnim.stateData.setMix(BoyAnimations.Jump, BoyAnimations.Jump, 0.01);
     //Spine events.
     this._spineBoyAnim.state.addListener({
       complete: (event) => {
