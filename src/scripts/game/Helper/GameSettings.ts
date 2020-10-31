@@ -48,7 +48,7 @@ export const AssetsList = [
   },
   {
     id: "background",
-    url: "assets/gfx/background.jpg",
+    url: "assets/gfx/ui/background.jpg",
     priority: AssetPriority.NORMAL,
     type: "texture",
   },

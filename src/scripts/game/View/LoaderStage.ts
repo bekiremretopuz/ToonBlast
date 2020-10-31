@@ -19,10 +19,7 @@ export class LoaderStage extends Scene {
 
   public awake(): void {
     //Green Background Image.
-    this._backgroundImageDefault = new PIXI.Graphics()
-      .beginFill(0x01c6b2, 1)
-      .drawRect(0, 0, 740, 1334)
-      .endFill();
+    this._backgroundImageDefault = new PIXI.Graphics().beginFill(0x01c6b2, 1).drawRect(0, 0, 750, 1334).endFill();
     this._backgroundImageDefault.name = "BackgroundImageDef";
     this.addChild(this._backgroundImageDefault);
     //Game name
@@ -73,8 +70,8 @@ export class LoaderStage extends Scene {
       fetch("assets/config/settings.json")
         .then((res) => res.json())
         .then((out) => {
-           this._game.stageManager.createScene("BaseGame", new BaseGame(out));
-           this._game.stageManager.goToScene("BaseGame", true);
+          this._game.stageManager.createScene("BaseGame", new BaseGame(out));
+          this._game.stageManager.goToScene("BaseGame", true);
         });
     });
   }

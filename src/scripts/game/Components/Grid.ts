@@ -151,7 +151,6 @@ export class Grid extends PIXI.Container {
   }
 
   public createAndPlayParticleAnimation(column: number, row: number, symbolType: string): void {
-    console.log("cancel animation frame");
     window.cancelAnimationFrame(this._requestAnimationExplodeFrameId);
     const i = this._explodeParticleAnimation.length;
     this._explodeParticleAnimation[i] = new PIXI.particles.Emitter(this._explodeParticleContainer, ["solidParticle1", "solidParticle2"], explodeConfig);
@@ -183,6 +182,7 @@ export class Grid extends PIXI.Container {
         this._symbol[column][row].setTexture(this.sequence[column][row]);
       }
     }
+    this.setType();
   }
 
   public setInteractivity(value: boolean): void {
