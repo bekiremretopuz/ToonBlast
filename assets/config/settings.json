@@ -3,7 +3,7 @@
     {
       "column": 9,
       "row": 9,
-      "moves": 20,
+      "moves": 1,
       "goal": [
         {
           "symbol": "solid1",
@@ -21,7 +21,7 @@
       "initialSeqeunce": [
         [
           "solid1",
-          "solid1",
+          "solid4",
           "solid3",
           "solid1",
           "solid4",
@@ -33,20 +33,20 @@
         [
           "solid2",
           "solid3",
-          "solid2",
+          "solid4",
           "solid4",
           "solid2",
           "solid1",
           "solid4",
           "solid2",
-          "solid2"
+          "solid4"
         ],
         [
           "solid3",
-          "solid2",
+          "solid4",
           "solid1",
           "solid3",
-          "solid3",
+          "solid4",
           "solid2",
           "solid1",
           "solid4",
@@ -66,37 +66,37 @@
         [
           "solid4",
           "solid1",
-          "solid1",
+          "solid4",
           "solid4",
           "solid3",
           "solid1",
           "solid2",
-          "solid2",
+          "solid4",
           "solid1"
         ],
         [
           "solid3",
-          "solid3",
+          "solid4",
           "solid2",
           "solid2",
           "solid1",
-          "solid3",
-          "solid3",
-          "solid3",
-          "solid2"
-        ],
-        [
-          "solid2",
-          "solid2",
-          "solid3",
-          "solid1",
-          "solid2",
           "solid3",
           "solid4",
           "solid3",
           "solid2"
         ],
         [
+          "solid2",
+          "solid4",
+          "solid3",
+          "solid1",
+          "solid2",
+          "solid3",
+          "solid4",
+          "solid3",
+          "solid2"
+        ],
+        [
           "solid4",
           "solid1",
           "solid3",
@@ -104,17 +104,17 @@
           "solid1",
           "solid4",
           "solid1",
-          "solid1",
+          "solid4",
           "solid3"
         ],
         [
-          "solid1",
+          "solid4",
           "solid4",
           "solid4",
           "solid3",
           "solid2",
           "solid1",
-          "solid2",
+          "solid4",
           "solid2",
           "solid4"
         ]

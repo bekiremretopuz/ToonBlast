@@ -41,13 +41,14 @@ export class BaseGame extends Scene {
   }
 
   private eventListener(): void {
-    this._uiController.on("actiontaken", this.onControlEventHandler, this);
     this._gridController.on("animationstatus", this.onGridEventHandler, this);
+    this._uiController.on("actiontaken", this.onControlEventHandler, this);
     this._gameResult.on("actiontaken", this.onGameResultEventHandler, this);
   }
 
   //UserInterfaceControl Event Handler.
   private onControlEventHandler(action: string, value: string): void {
+    console.log("controleventhandler",  action, value);
     switch (action) {
       case "gameover":
         this._gridController.setInteractivity(false);

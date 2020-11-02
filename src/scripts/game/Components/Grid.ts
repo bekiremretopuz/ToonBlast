@@ -110,10 +110,10 @@ export class Grid extends PIXI.Container {
     this.createAndPlayParticleAnimation(column, row, this._symbol[column][row].name);
     this._symbol[column][row].scale.set(0);
     this.emit("matchanimationstarted", [column, row]);
-    setTimeout(() => {
+    TweenLite.delayedCall(0.1, () => {
       if (isGoalAnimation) this.createDuplicateSymbol(column, row, symbolType, clusterLength);
       this.emit("matchanimationcompleted", [column, row]);
-    }, 100);
+    });;
   }
 
   public setCallback(column: number, row: number) {
@@ -186,6 +186,7 @@ export class Grid extends PIXI.Container {
   }
 
   public setInteractivity(value: boolean): void {
+    console.log("setInteractivity", value);
     for (let column = 0; column < 9; column++) {
       for (let row = 0; row < 9; row++) {
         this._symbol[row][column].Interactive = value;

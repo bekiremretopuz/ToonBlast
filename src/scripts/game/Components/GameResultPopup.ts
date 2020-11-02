@@ -46,9 +46,10 @@ export class GameResultPopup extends PIXI.Container {
         this._resultText.text = "You Lose";
         break;
     }
+
     TweenLite.to(this._resultContainer.position, 1.5, {
       y: 0,
-      delay: 0.75,
+      delay: 0.25,
       ease: Bounce.easeOut,
       onComplete: () => {
         this._restartButton.setEnabled();

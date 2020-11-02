@@ -19,7 +19,7 @@ export class DisplayController extends PIXI.utils.EventEmitter {
       width: 750,
       height: 1334,
       scale: "keep-aspect-ratio",
-      align: "top-center",
+      align: "middle",
       resolution: window.devicePixelRatio || 1,
       antialias: true,
       roundPixels: true,

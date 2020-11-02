@@ -7,6 +7,7 @@ const outputDir = "dist";
 const publicPath = "./";
 const tsConfig = "tsconfig.dev.json";
 module.exports = merge(common, {
+  devtool: "",
   output: {
     path: path.resolve(__dirname, outputDir),
     filename: "[name].bundle.js",

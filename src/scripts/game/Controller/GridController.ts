@@ -124,9 +124,9 @@ export class GridController extends PIXI.Container {
             self._newSymbolStack[self._newSymbolStack.length - 1][0] == completeIndex[0] &&
             self._newSymbolStack[self._newSymbolStack.length - 1][1] == completeIndex[1]
           ) {
+            self._grid.setInteractivity(true);
             self._grid.once("matchanimationcompleted", self.matchCompleted, self);
             self._grid.setType();
-            self._grid.setInteractivity(true);
             self.emit("animationstatus", "updategoal", this._currentSymboType, this._currentMatchLength);
             self.clearSequenceProperties();
           }

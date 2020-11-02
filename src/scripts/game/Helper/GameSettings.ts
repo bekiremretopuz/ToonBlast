@@ -17,6 +17,12 @@ export const AssetsList = [
     type: "texture",
   },
   {
+    id: "company_logo",
+    url: "assets/gfx/ui/company_logo.png",
+    priority: AssetPriority.HIGHEST,
+    type: "texture",
+  },
+  {
     id: "restart_normal",
     url: "assets/gfx/ui/reset.png",
     priority: AssetPriority.NORMAL,
@@ -169,7 +175,7 @@ export const AssetsList = [
   },
   {
     id: "collect",
-    url:  "assets/sfx/mp3/cube_collect.mp3",
+    url: "assets/sfx/mp3/cube_collect.mp3",
     priority: AssetPriority.NORMAL,
     autoplay: false,
     loop: false,
@@ -179,7 +185,7 @@ export const AssetsList = [
   } as Asset,
   {
     id: "explode",
-    url:  "assets/sfx/mp3/cube_explode.mp3",
+    url: "assets/sfx/mp3/cube_explode.mp3",
     priority: AssetPriority.NORMAL,
     autoplay: false,
     loop: false,
