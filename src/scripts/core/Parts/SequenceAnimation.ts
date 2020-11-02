@@ -1,13 +1,6 @@
 import { Texture } from "pixi.js";
-
 export class SequenceAnimation extends PIXI.extras.AnimatedSprite {
-  private _frame: string;
-  private _lenght: number;
-  constructor(
-    frame: string,
-    length: number,
-    position: { x: number; y: number }
-  ) {
+  constructor(frame: string, length: number, position: { x: number; y: number }) {
     super(SequenceAnimation.generateTextures(frame, length));
     this.position.set(position.x, position.y);
   }

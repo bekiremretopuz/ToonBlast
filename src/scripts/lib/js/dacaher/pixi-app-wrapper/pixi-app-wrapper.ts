@@ -1,8 +1,6 @@
 import EventEmitter = require("eventemitter3");
 import "fpsmeter";
-import {Dom, pixiAppWrapperEvent} from "pixi-app-wrapper";
-import "pixi-layers";
-import * as PIXI from "pixi.js";
+import { Dom, pixiAppWrapperEvent } from "pixi-app-wrapper";
 import * as screenfull from "screenfull";
 import {MediaInfoData, MediaInfoViewer} from "./info/media-info-viewer";
 import {AlignBottomCenter} from "./stage/align/align-bottom-center";
@@ -93,7 +91,7 @@ export class PixiAppWrapper extends EventEmitter {
         this.mediaInfoViewer = new MediaInfoViewer();
 
         this.app = new PIXI.Application(options);
-        this.app.stage = new PIXI.display.Stage();
+        this.app.stage = new PIXI.Container();
 
         this.configure(options);
         this.appOptions = options;

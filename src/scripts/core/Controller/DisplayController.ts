@@ -3,7 +3,8 @@ import {
   PixiAppWrapper as Wrapper,
   pixiAppWrapperEvent as WrapperEvent,
   PixiAppWrapperOptions as WrapperOpts,
-} from "pixi-app-wrapper";
+} from "pixi-app-wrapper"; 
+import * as PIXI from "pixi.js";
 export class DisplayController extends PIXI.utils.EventEmitter {
   private _app: Wrapper;
   private _rootContainer: PIXI.Container;
@@ -13,16 +14,12 @@ export class DisplayController extends PIXI.utils.EventEmitter {
   }
 
   public create() {
-    const canvas = Dom.getElementOrCreateNew<HTMLCanvasElement>(
-      "app-canvas",
-      "canvas",
-      document.getElementById("app-root")
-    );
+    const canvas = Dom.getElementOrCreateNew<HTMLCanvasElement>("app-canvas", "canvas", document.getElementById("app-root"));
     const appOptions: WrapperOpts = {
       width: 750,
       height: 1334,
       scale: "keep-aspect-ratio",
-      align: "top-center",
+      align: "middle",
       resolution: window.devicePixelRatio || 1,
       antialias: true,
       roundPixels: true,

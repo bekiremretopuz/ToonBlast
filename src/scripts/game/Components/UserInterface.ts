@@ -1,6 +1,5 @@
 import { Text } from "pixi.js";
 import { SimpleSprite2D } from "src/scripts/core/Parts/SimpleSprite2D";
-import { SimpleButton2D } from "src/scripts/core/Parts/SimpleButton2D";
 import { DefaultTextStyle } from "app/Helper/GameSettings";
 export class UserInterface extends PIXI.Container {
   private _backgroundImage: SimpleSprite2D;
@@ -39,18 +38,14 @@ export class UserInterface extends PIXI.Container {
   }
 
   public setGoal(value: { symbol: string; count: number }[]): void {
-    console.log("setgoal", value);
     this.clearGoalProp();
     for (let i = 0; i < value.length; i++) {
-      this._goalImage[i].texture = PIXI.Texture.from(
-        value[i].symbol + "_normal"
-      );
+      this._goalImage[i].texture = PIXI.Texture.from(value[i].symbol + "_normal");
       this._goalCount[i].text = value[i].count.toString();
     }
   }
 
   public setMoves(value: number): void {
-    console.log("setMoves", value);
     this._moveText.text = value.toString();
   }
 
@@ -60,14 +55,6 @@ export class UserInterface extends PIXI.Container {
     }
     for (let i = 0; i < this._goalCount.length; i++) {
       this._goalCount[i].text = "";
-    }
-  }
-  //Button OnClick
-  private onButtonUp(name: string): void {
-    switch (name) {
-      case "start":
-        this.emit("actiontaken", "Start");
-        break;
     }
   }
 }
