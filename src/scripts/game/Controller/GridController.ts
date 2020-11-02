@@ -10,6 +10,8 @@ export class GridController extends PIXI.Container {
   private _newSymbolStack: number[][] = [];
   private _currentSymboType: string = "";
   private _currentMatchLength: number = 0;
+  private _createNewSymbolIndex: number[] = [];
+  private _createNewSymbolRowLength: number = 0;
   constructor(private readonly gameSettings: any, private readonly level: number) {
     super();
     this.awake();
@@ -97,19 +99,17 @@ export class GridController extends PIXI.Container {
     }
   }
 
-  private _old: any = 0;
-  private _rowLength: number = 0;
   private createNewSymbol(value: any): void {
-    if (this._old[0] == value[0]) {
-      this._rowLength++;
+    if (this._createNewSymbolIndex[0] == value[0]) {
+      this._createNewSymbolRowLength++;
     } else {
-      this._rowLength = 0;
+      this._createNewSymbolRowLength = 0;
     }
-    this._old = value;
+    this._createNewSymbolIndex = value;
     const randSymbol = this.getRandomSymbolName();
     this._grid._symbol[value[0]].splice(0, 0, this._grid._symbol[value[0]].splice(value[1], 1)[0]);
     this._grid._symbol[value[0]][0].setTexture(randSymbol);
-    this._grid._symbol[value[0]][0].position.set(80 + value[0] * 75, 360 - 90 * (this._rowLength + 1));
+    this._grid._symbol[value[0]][0].position.set(80 + value[0] * 75, 360 - 90 * (this._createNewSymbolRowLength + 1));
     this._grid._symbol[value[0]][0].scale.set(0.75);
     this._newSymbolStack.push([value[0], value[1]]);
   }

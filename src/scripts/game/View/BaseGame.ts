@@ -48,7 +48,6 @@ export class BaseGame extends Scene {
 
   //UserInterfaceControl Event Handler.
   private onControlEventHandler(action: string, value: string): void {
-    console.log("controleventhandler",  action, value);
     switch (action) {
       case "gameover":
         this._gridController.setInteractivity(false);

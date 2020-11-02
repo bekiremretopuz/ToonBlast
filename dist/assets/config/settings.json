@@ -3,7 +3,7 @@
     {
       "column": 9,
       "row": 9,
-      "moves": 1,
+      "moves": 20,
       "goal": [
         {
           "symbol": "solid1",
