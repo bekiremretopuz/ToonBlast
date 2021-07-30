@@ -1,7 +1,6 @@
 # ToonBlast
 
 ### Project Details ###
-* Peak Games Interview Task
 * Author Bekir Emre Topuz 
 
 * Pixi.js (4.8.1)
